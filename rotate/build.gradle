@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.application'
+}
+android {
+    defaultConfig {
+        applicationId "com.pqixing.rotate"
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    // 官方依赖
+    implementation project(":base")
+}
+apply from: "../android.gradle"

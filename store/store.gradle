@@ -1,0 +1,44 @@
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
+import java.nio.charset.Charset
+
+def pros = new Properties()
+def reader = new File(rootDir, "local.properties").newInputStream()
+pros.load(reader)
+reader.close()
+def jksPassword = pros.getProperty("jks.key", "")
+def jksFile = new File(rootDir, "store/pqx.jks")
+if (!jksFile.exists() && !jksPassword.isEmpty()) {
+    crypt(false, jksPassword, new File(rootDir, "store/pqx.aes"), jksFile)
+}
+
+android {
+    signingConfigs {
+        release {
+            storeFile new File(rootDir, "store/pqx.jks")
+            storePassword "$jksPassword"
+            keyAlias 'pengqixing'
+            keyPassword "$jksPassword"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+public static void crypt(boolean encrypt, String password, File input, File output) {
+    input.parentFile.mkdirs()
+    output.parentFile.mkdirs()
+    def cipher = Cipher.getInstance("AES")
+    cipher.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, new SecretKeySpec(password.getBytes(Charset.forName("UTF-8")), "AES"))
+    def writer = output.newOutputStream()
+    writer.write(cipher.doFinal(input.readBytes()))
+    writer.flush()
+    writer.close()
+}
