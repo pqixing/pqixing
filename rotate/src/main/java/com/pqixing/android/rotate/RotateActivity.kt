@@ -33,8 +33,7 @@ class RotateActivity : Activity() {
 
         cbBoot.setOnCheckedChangeListener { _, checked -> sp.edit().putBoolean("boot", checked).apply() }
         findViewById<RadioGroup>(R.id.group).setOnCheckedChangeListener { _, checkedId -> onCheckChange(checkedId) }
-        findViewById<View>(R.id.tvGitee).setOnClickListener { startBrowse("https://gitee.com/pqixing/pqixing") }
-        findViewById<View>(R.id.tvGitHub).setOnClickListener { startBrowse("https://github.com/pqixing/pqixing") }
+        findViewById<View>(R.id.tvAbout).setOnClickListener { startBrowse("https://github.com/pqixing/pqixing") }
     }
 
     private fun findRadioId(orientation: Int): Int {
