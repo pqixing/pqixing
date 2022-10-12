@@ -1,0 +1,11 @@
+plugins {
+    id 'com.android.application'
+}
+apply from: "../android.gradle"
+android {
+    defaultConfig {
+        applicationId "com.pqixing.byd"
+        versionCode 1
+        versionName "1.0"
+    }
+}

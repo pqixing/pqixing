@@ -1,0 +1,1 @@
+adb shell am broadcast -a com.byd.action.AUTOVOICE_SEARCH_PLUS -p com.ting.mp3.android --es EXTRA_KEYWORDS_SEARCH "雾里" --es pkgName "com.ting.mp3.android" --es IS_BACKGROUND TRUE
