@@ -1,0 +1,49 @@
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
+import java.nio.charset.Charset
+
+def pros = new Properties()
+def reader = new File(rootDir, "local.properties").newInputStream()
+pros.load(reader)
+reader.close()
+def jksPassword = pros.getProperty("jks.key", "")
+if (jksPassword.isEmpty()) {
+    println("miss ks.key on local.properties")
+    return
+}
+
+def jksFile = new File(rootProject.buildDir, "pqx.jks")
+if (!jksFile.exists() && !jksPassword.isEmpty()) try {
+    File localAes = new File(rootDir, "asessts/sign/pqx.aes")
+    InputStream input = localAes.exists() ? localAes.newInputStream() : "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/sign/pqx.aes".toURL().newInputStream()
+    crypt(false, jksPassword, input, jksFile)
+} catch (Exception e) {
+    e.printStackTrace()
+    return
+}
+
+android {
+    signingConfigs {
+        pqx {
+            storeFile jksFile
+            storePassword "$jksPassword"
+            keyAlias 'pengqixing'
+            keyPassword "$jksPassword"
+        }
+    }
+
+    buildTypes.all {
+        signingConfig signingConfigs.pqx
+    }
+}
+
+public static void crypt(boolean encrypt, String password, InputStream input, File output) {
+    output.parentFile.mkdirs()
+    def cipher = Cipher.getInstance("AES")
+    cipher.init(encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, new SecretKeySpec(password.getBytes(Charset.forName("UTF-8")), "AES"))
+    def writer = output.newOutputStream()
+    writer.write(cipher.doFinal(input.bytes))
+    writer.flush()
+    writer.close()
+    input.close()
+}

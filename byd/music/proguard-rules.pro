@@ -1,0 +1,1 @@
+-keep public class com.pqixing.android.byd.BYDAutoInstrumentUtils{*;}

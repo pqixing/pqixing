@@ -1,0 +1,16 @@
+2022-11-16 20:22:12.551  3760-3760  BYDAutoRadarDevice      com.byd.avc                          D  getAllRadarProbeStates: left front state is 1, right front state is 1, left rear state is 1, right rear state 1, left state is 1, right state is 1, front left min state is 1, front right state is 1, middle rear radar is 1
+2022-11-16 20:22:12.828  3760-3760  BYDAutoRadarDevice      com.byd.avc                          D  getReverseRadarSwitchState is: 1
+2022-11-16 20:22:13.018  3760-3760  BYDAutoRadarDevice      com.byd.avc                          D  getAllRadarDistance: left front is 150, right front is 150, left rear is 150, right rear is 150, left is 150, right is 150, front left is 150, front right is 150, middle rear radar is 150
+2022-11-16 20:22:13.019  3760-3760  BYDAutoRadarDevice      com.byd.avc                          D  getReverseRadarSwitchState is: 1
+2022-11-16 20:22:13.020  3760-3760  BYDAutoRadarDevice      com.byd.avc                          D  getAllRadarProbeStates: left front state is 1, right front state is 1, left rear state is 1, right rear state 1, left state is 1, right state is 1, front left min state is 1, front right state is 1, middle rear radar is 1
+2022-11-16 20:22:13.020  3760-3760  BYDAutoRadarDevice      com.byd.avc                          I  registerListener2
+
+
+
+
+2022-11-16 20:23:54.917  1219-2695  ActivityTaskManager     system_server                        I  START u0 {flg=0x10000000 cmp=com.byd.avc/.AutoVideoActivity (has extras)} from uid 1000
+2022-11-16 20:23:54.950  1219-2695  ActivityTaskManager     system_server                        I  The Process com.byd.avc Already Exists in BG. So sending its PID: 3760
+2022-11-16 20:23:54.952  1219-2695  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 0
+2022-11-16 20:23:55.343  1219-2694  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.avc.AutoVideoActivity
+2022-11-16 20:23:55.445  1219-1347  ActivityTaskManager     system_server                        I  Displayed com.byd.avd/.AutoVideoActivity: +510ms
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/group"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rbChargeClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭" />
+
+    <RadioButton
+        android:id="@+id/rbChargeOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开启" />
+
+    <RadioButton
+        android:id="@+id/rbChargeNone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="不处理" />
+
+</RadioGroup>

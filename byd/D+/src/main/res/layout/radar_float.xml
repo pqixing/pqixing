@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/left_front"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/front_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/left_rear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/right_front"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/right_rear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/front_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+    <com.pqixing.android.radar.MoveTextView
+        android:id="@+id/middle_rear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="40dp" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="60dp"
+        android:text="保存"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="100dp"
+        android:text="重置"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="140dp"
+        android:text="取消"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="40dp"
+        android:text="倒车距离显示"
+        android:textColor="#18F507" />
+
+    <TextView
+        android:id="@+id/tvLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="center"
+        android:text="完整数据显示"
+        android:textColor="@android:color/darker_gray" />
+
+</merge>

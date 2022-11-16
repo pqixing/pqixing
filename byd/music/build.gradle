@@ -1,0 +1,11 @@
+plugins {
+    id 'com.android.application'
+}
+apply from: "$rootDir/script/android.gradle"
+android {
+    defaultConfig {
+        applicationId "com.kuwo.radio"
+        versionCode 1
+        versionName "1.0"
+    }
+}

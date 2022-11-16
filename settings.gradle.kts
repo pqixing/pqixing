@@ -13,5 +13,10 @@ dependencyResolutionManagement {
     }
 }
 //include ':app'
-include(":byd")
-include(":code")
+include(":byd:D+",":byd:music")
+//private val launchReg = Regex(".*ActivityTaskManager.*(START|activityResumedForAcBar).*")
+//val str =
+//    "2022-11-16 20:23:54.917  1219-2695  ActivityTaskManager     system_server                        I  START u0 {flg=0x10000000 cmp=com.byd.avc/.AutoVideoActivity (has extras)} from uid 1000"
+//
+//println("test match ${str.matches(launchReg)}")
+include(":code",":service")
