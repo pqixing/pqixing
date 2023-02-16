@@ -70,4 +70,13 @@ class App : Application() {
             handle?.uncaughtException(t, e)
         }
     }
+
+
+    override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
+        Log.w("MainService", "enable enforceCallingOrSelfPermission: $permission", )
+    }
+
+    override fun enforceCallingPermission(permission: String, message: String?) {
+        Log.w("MainService", "enable enforceCallingPermission: ", )
+    }
 }

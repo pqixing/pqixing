@@ -6,12 +6,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.pqixing.android.boot.BootSetting
 import com.pqixing.android.setting.SettingManager
 import java.io.File
@@ -44,7 +46,12 @@ class MainActivity : Activity() {
 
         findViewById<View>(R.id.tvAdd).setOnClickListener {
             App.sp.edit().remove("exclude").apply()
-            refreshContainer()
+            refreshContainer(false)
+        }
+        findViewById<View>(R.id.tvAdd).setOnLongClickListener {
+            App.sp.edit().remove("exclude").apply()
+            refreshContainer(true)
+            true
         }
 
         val file = File(cacheDir, "crash.log")
@@ -55,7 +62,7 @@ class MainActivity : Activity() {
         ivLog.setOnClickListener { showCrashLog(file, ivLog) }
 
         ivLog.setOnLongClickListener { throw RuntimeException("---Crash Mock ${System.currentTimeMillis()} : ${Date().toLocaleString()}---") }
-        refreshContainer()
+        refreshContainer(false)
     }
 
     private fun showCrashLog(file: File, ivLog: View) {
@@ -68,7 +75,7 @@ class MainActivity : Activity() {
             .setPositiveButton("删除") { d, i ->
                 d.dismiss()
                 kotlin.runCatching {
-                    file.deleteOnExit()
+                    file.delete()
                     App.toast("崩溃日志已删除")
                 }
                 ivLog.visibility = View.GONE
@@ -85,7 +92,7 @@ class MainActivity : Activity() {
         return false
     }
 
-    private fun refreshContainer() {
+    private fun refreshContainer(debug: Boolean) {
 
         val inflater = LayoutInflater.from(this);
         val llContainer = findViewById<LinearLayout>(R.id.llContainer)
@@ -97,6 +104,9 @@ class MainActivity : Activity() {
             it.setBounds(0, 0, 40, 40)
         }
         val exclude = App.sp.getStringSet("exclude", null)?.toMutableSet() ?: mutableSetOf()
+        if (!debug) {
+            exclude.add("调试开关")
+        }
         SettingManager.settings.filter { !exclude.contains(it.getName()) }.forEach { item ->
             val title = TextView(this).apply {
                 text = item.getName()
@@ -129,5 +139,16 @@ class MainActivity : Activity() {
         if (realLaunch) {
             SettingManager.settings.forEach { it.onUiDestroy(this) }
         }
+    }
+
+
+    override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
+        Log.w("MainService", "enforceCallingOrSelfPermission: $permission", )
+        Toast.makeText(this, "enforceCallingOrSelfPermission", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun enforceCallingPermission(permission: String, message: String?) {
+        Log.w("MainService", "enforceCallingPermission: ", )
+        Toast.makeText(this, "enforceCallingPermission $permission", Toast.LENGTH_SHORT).show()
     }
 }

@@ -2,9 +2,8 @@ package com.pqixing.android.byd;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice;
+import android.hardware.bydauto.radar.BYDAutoRadarDevice;
 import android.media.AudioManager;
 import android.util.Log;
 
@@ -12,13 +11,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class BYDAutoInstrumentUtils {
 
     private static final int FAIL = -2147482648;
     private static final String TAG = "BYDAutoInstrumentUtils";
     private static final String FROM_TAG = "HAD_BEEN_RESEND_TO";
-
 
     private static final List<String> MATCH_ACTIONS = Arrays.asList(
             "pqx.intent.action.MEDIA",
@@ -79,6 +78,7 @@ public class BYDAutoInstrumentUtils {
         mContext = context;
         //绕过反射Api限制
         setHiddenApiExemptions();
+
     }
 
     /**
@@ -89,20 +89,25 @@ public class BYDAutoInstrumentUtils {
     }
 
     /**
+     * 设置空调开关
+     */
+    public static String setWirelessCharging(int state) {
+        return call("error", () -> {
+            BYDAutoInstrumentDevice instance = BYDAutoInstrumentDevice.getInstance(mContext);
+            int deviceType = instance.getType();
+            int id = getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202);
+            getSetMethod(int.class).invoke(instance, deviceType, id, state);
+            return "setWirelessCharging " + deviceType + " ; " + id;
+        });
+    }
+
+    /**
      * 设置仪表盘音乐名称
      *
      * @param name
      */
     public static int sendMusicName(String name) {
-        try {
-            byte[] bytes = name.getBytes("UnicodeLittleUnmarked");
-            if (bytes.length <= 255) {
-                return (int) invokeSet(getAutoFeatureId("INSTRUMENT_MUSIC_INFO_SET", 41), bytes, byte[].class);
-            }
-        } catch (Exception e) {
-            Log.w(TAG, "sendMusicName: ", e);
-        }
-        return FAIL;
+        return call(FAIL, () -> BYDAutoInstrumentDevice.getInstance(mContext).sendMusicName(name));
     }
 
     /**
@@ -112,7 +117,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicInfo(byte[] bytes) {
         if (bytes.length <= 255) try {
-            return (int) invokeSet(getAutoFeatureId("INSTRUMENT_MUSIC_INFO_SET", 41), bytes, byte[].class);
+            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicInfo(bytes);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicInfo: ", e);
         }
@@ -126,7 +131,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicSource(int source) {
         try {
-            return (int) invokeSet(getAutoFeatureId("INSTRUMENT_MUSIC_SOURCE_SET", 40), source, int.class);
+            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicSource(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicSource: ", e);
         }
@@ -140,7 +145,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicPlaybackProgress(int source) {
         try {
-            return (int) invokeSet(getAutoFeatureId("INSTRUMENT_MUSIC_PLAYBACK_PROGRESS_SET", 36), source, int.class);
+            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicPlaybackProgress(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicPlaybackProgress: ", e);
         }
@@ -154,8 +159,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicState(int source) {
         try {
-
-            return (int) invokeSet(getAutoFeatureId("INSTRUMENT_MUSIC_STATE_SET", 33), source, int.class);
+            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicState(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicState: ", e);
         }
@@ -218,18 +222,27 @@ public class BYDAutoInstrumentUtils {
 
             Object device = getInstance.invoke(null, mContext);
             int mDeviceType = getDeviceType(deviceClass, device);
-
-
-            Class absAutoClass = Class.forName("android.hardware.bydauto.AbsBYDAutoDevice");
-
-            Method setMethod = absAutoClass.getDeclaredMethod("set", int.class, int.class, valueClass);
-            setMethod.setAccessible(true);
+            Method setMethod = getSetMethod(valueClass);
             return setMethod.invoke(device, mDeviceType, id, value);
         } catch (Exception e) {
             Log.w(TAG, "invokeSet: ", e);
         }
 
         return null;
+    }
+
+    /**
+     * @param valueClass 值对应的class
+     * @return 是否正常调用
+     */
+    private static Method getSetMethod(Class<?> valueClass) {
+        return call(null, () -> {
+            Class absAutoClass = Class.forName("android.hardware.bydauto.AbsBYDAutoDevice");
+
+            Method setMethod = absAutoClass.getDeclaredMethod("set", int.class, int.class, valueClass);
+            setMethod.setAccessible(true);
+            return setMethod;
+        });
     }
 
 
@@ -247,98 +260,28 @@ public class BYDAutoInstrumentUtils {
     }
 
     /**
-     * 处理
-     *
-     * @param context
-     * @param intent
-     * @return
-     */
-    public static boolean onMusicBroadcast(Context context, Intent intent) {
-        if (intent == null) {
-            return false;
-        }
-        String action = intent.getAction();
-        String fromTag = intent.getStringExtra(FROM_TAG);
-        if (fromTag != null || !MATCH_ACTIONS.contains(action)) {
-            return false;
-        }
-
-        List<ResolveInfo> infos = context.getPackageManager().queryBroadcastReceivers(new Intent("pqx.intent.action.MEDIA"), PackageManager.GET_META_DATA);
-        if (infos.isEmpty()) {
-            return false;
-        }
-
-        String resendPkg = infos.get(0).activityInfo.packageName;
-        Log.i(TAG, "start resend onMusicBroadcast: action = " + action + " to = " + resendPkg);
-        Intent newIntent = new Intent(action);
-        newIntent.setFlags(intent.getFlags());
-        newIntent.putExtras(intent);
-        newIntent.putExtra(FROM_TAG, resendPkg);
-        newIntent.setPackage(resendPkg);
-        context.sendBroadcast(newIntent);
-        return true;
-    }
-
-    /**
      * 获取雷达数据
      *
      * @return
      */
     public static int[] getAllRadarDistance() {
-        try {
-            Class autoRadar = Class.forName("android.hardware.bydauto.radar.BYDAutoRadarDevice");
-            Object device = autoRadar.getMethod("getInstance", Context.class).invoke(null, mContext);
-            Method method = Class.forName("android.hardware.bydauto.AbsBYDAutoDevice").getDeclaredMethod("getIntArray", int.class, int[].class);
-            method.setAccessible(true);
-            int[] intArray = (int[]) method.invoke(device, 1025, new int[]{2, 4, 6, 8, 10, 12, 14, 16, 21});
-            if (intArray.length < 2) {
-                Log.e(TAG, "getAllRadarDistance: error is " + intArray[0]);
-                return new int[]{intArray[0], intArray[0], intArray[0], intArray[0], intArray[0], intArray[0], intArray[0], intArray[0], intArray[0]};
-            }
-            Log.d(TAG, "getAllRadarDistance: left front is " + intArray[0] + ", right front is " + intArray[1] + ", left rear is " + intArray[2] + ", right rear is " + intArray[3] + ", left is " + intArray[4] + ", right is " + intArray[5] + ", front left is " + intArray[6] + ", front right is " + intArray[7] + ", middle rear radar is " + intArray[8]);
-            return intArray;
-        } catch (Exception e) {
-            Log.w(TAG, "getAllRadarDistance: ", e);
-        }
-        return new int[0];
+        return call(new int[9], () -> BYDAutoRadarDevice.getInstance(mContext).getAllRadarDistance());
     }
 
-    /**
-     * 获取雷达数据
-     *
-     * @return
-     */
-    public static int[] getAllRadarStatus() {
+    public static <T> T call(T t, Callable<T> run) {
         try {
-            Class autoRadar = Class.forName("android.hardware.bydauto.radar.BYDAutoRadarDevice");
-            Object device = autoRadar.getMethod("getInstance", Context.class).invoke(null, mContext);
-            Method method = Class.forName("android.hardware.bydauto.AbsBYDAutoDevice").getDeclaredMethod("getBuffer", int.class, int.class);
-            method.setAccessible(true);
-            byte[] buffer = (byte[]) method.invoke(device, 1025, 1);
-
-            int[] iArr = new int[8];
-            byte[] copyOfRange = Arrays.copyOfRange(buffer, 4, buffer.length);
-            int i = 0;
-            if (16 != copyOfRange.length) {
-                while (i < 8) {
-                    iArr[i] = -2147482648;
-                    i++;
-                }
-                Log.e(TAG, "getAllRadarObstacleDistances vformat.length is: " + copyOfRange.length);
-                return iArr;
-            }
-            Log.d(TAG, "getAllRadarObstacleDistances int value: \n");
-            while (i < 8) {
-                iArr[i] = copyOfRange[(i * 2) + 1];
-                Log.d(TAG, "[" + i + "]: " + iArr[i] + " ");
-                i++;
-            }
-            return iArr;
-        } catch (Exception e) {
-            Log.w(TAG, "getAllRadarDistance: ", e);
+            return (T) run.call();
+        } catch (Exception | NoClassDefFoundError e) {
+            e.printStackTrace();
         }
-        return new int[0];
+        return t;
     }
 
-
+    public static void run(Runnable run) {
+        try {
+            run.run();
+        } catch (Exception | NoClassDefFoundError e) {
+            e.printStackTrace();
+        }
+    }
 }

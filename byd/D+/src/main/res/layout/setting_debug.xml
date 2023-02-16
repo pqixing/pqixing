@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/tv_send_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发送名称" />
+            <Button
+                android:id="@+id/tv_radar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="雷达" />
+
+            <CheckBox
+                android:id="@+id/ib_air_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="充电" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp" />
+    </HorizontalScrollView>
+</LinearLayout>

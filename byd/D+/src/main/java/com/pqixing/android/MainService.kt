@@ -3,6 +3,9 @@ package com.pqixing.android
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
+import android.widget.Toast
+import com.pqixing.android.byd.BYDAutoInstrumentUtils
 import com.pqixing.android.setting.SettingManager
 
 class MainService : Service() {
@@ -16,5 +19,15 @@ class MainService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         SettingManager.settings.forEach { it.onServiceDestroy(this) }
+    }
+
+    override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
+        Log.w("MainService", "enforceCallingOrSelfPermission: $permission", )
+        Toast.makeText(this, "enforceCallingOrSelfPermission", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun enforceCallingPermission(permission: String, message: String?) {
+        Log.w("MainService", "enforceCallingPermission: ", )
+        Toast.makeText(this, "enforceCallingPermission $permission", Toast.LENGTH_SHORT).show()
     }
 }

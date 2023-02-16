@@ -13,5 +13,6 @@ android {
 dependencies {
     // 官方依赖
     implementation 'com.google.code.gson:gson:2.9.0'
+    compileOnly project(":byd:compile")
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
