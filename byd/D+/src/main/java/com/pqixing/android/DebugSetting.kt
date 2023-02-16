@@ -2,6 +2,8 @@ package com.pqixing.android
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.hardware.bydauto.radar.AbsBYDAutoRadarListener
+import android.hardware.bydauto.radar.BYDAutoRadarDevice
 import android.hardware.bydauto.setting.BYDAutoSettingDevice
 import android.view.LayoutInflater
 import android.view.View
@@ -33,7 +35,7 @@ class DebugSetting : DSetting("调试开关") {
     }
 
     private fun onSettingClick(ac: Activity, result: TextView) {
-        val settins = arrayOf("后视镜状态", "空调", "后备箱")
+        val settins = arrayOf("后视镜状态", "空调", "后备箱", "雷达监听")
         AlertDialog.Builder(ac).setTitle("设置项目").setSingleChoiceItems(settins, 0) { d, i ->
             d.dismiss()
 
@@ -43,11 +45,36 @@ class DebugSetting : DSetting("调试开关") {
                     0 -> "autoExternalRearMirrorFollowUpSwitch=${instance.autoExternalRearMirrorFollowUpSwitch} ; rearMirrorFlip=${instance.rearMirrorFlip} ; flipAngle=${instance.leftViewMirrorFlipAngle} ,${instance.rightViewMirrorFlipAngle} ; rearViewMirrorAutoFoldMode=${instance.rearViewMirrorAutoFoldMode} ; rearViewMirrorFlip=${instance.rearViewMirrorFlip} ;"
                     1 -> "acAutoWindLevel=${instance.acAutoWindLevel} ; acAutoAir =${instance.acAutoAir}"
                     2 -> "backDoorOpenedHeight=${instance.backDoorOpenedHeight} ; backDoorElectricMode=${instance.backDoorElectricMode} ; backDoorElectricModeOnlineState=${instance.backDoorElectricModeOnlineState}"
+                    3 -> BYDAutoRadarDevice.getInstance(ac).registerListener(RadrListener(result)).toString()
                     else -> ""
                 }.toString()
                 result.text = "${settins.getOrNull(i)} : $r"
+            }.onFailure {
+                it.printStackTrace()
+                App.toast(it.message.toString())
             }
         }.show()
     }
 
+}
+
+class RadrListener(val textView: TextView) : AbsBYDAutoRadarListener() {
+    override fun onRadarObstacleDistanceChanged(i: Int, i2: Int) {
+        super.onRadarObstacleDistanceChanged(i, i2)
+        setText("onRadarObstacleDistanceChanged : $i ; $i2")
+    }
+
+    override fun onRadarProbeStateChanged(i: Int, i2: Int) {
+        super.onRadarProbeStateChanged(i, i2)
+        setText("onRadarProbeStateChanged : $i ; $i2")
+    }
+
+    override fun onReverseRadarSwitchStateChanged(i: Int) {
+        super.onReverseRadarSwitchStateChanged(i)
+        setText("onReverseRadarSwitchStateChanged : $i")
+    }
+
+    fun setText(string: String) = textView.post {
+        textView.text = string
+    }
 }

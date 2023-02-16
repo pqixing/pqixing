@@ -68,4 +68,11 @@ public final class BYDAutoRadarDevice extends AbsBYDAutoDevice {
     public int setReverseRadarSwitchState(int i) {
         return 0;
     }
+
+    public void registerListener(AbsBYDAutoRadarListener absBYDAutoRadarListener) {
+    }
+
+    public void unregisterListener(AbsBYDAutoRadarListener absBYDAutoRadarListener) {
+    }
+
 }
