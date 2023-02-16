@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.SystemClock
 import com.pqixing.android.App
-import com.pqixing.android.byd.BYDAutoInstrumentUtils
+import com.pqixing.android.byd.BYDAutoUtils
 
 
 class BYDMediaReceiver : BroadcastReceiver() {
@@ -50,7 +50,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
         val modePkg = App.sp.getString(MusicSetting.MUSIC_PKG, MusicSetting.DEFAULT_PKG)!!
 
         //获取当前正在播放的软件
-        val currentPlayPkg = BYDAutoInstrumentUtils.getCurrentAudioFocusPackage()
+        val currentPlayPkg = BYDAutoUtils.getCurrentAudioFocusPackage()
 
         //支持小迪语音的软件
         val matchPkgs = pm.queryBroadcastReceivers(

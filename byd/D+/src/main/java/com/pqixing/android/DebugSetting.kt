@@ -3,32 +3,34 @@ package com.pqixing.android
 import android.app.Activity
 import android.app.AlertDialog
 import android.hardware.bydauto.radar.AbsBYDAutoRadarListener
-import android.hardware.bydauto.radar.BYDAutoRadarDevice
-import android.hardware.bydauto.setting.BYDAutoSettingDevice
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import com.pqixing.android.byd.BYDAutoInstrumentUtils
+import com.pqixing.android.byd.BYDAutoUtils
 import com.pqixing.android.setting.DSetting
 
 class DebugSetting : DSetting("调试开关") {
 
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onUiCreate(
+        activity: Activity,
+        inflater: LayoutInflater,
+        container: ViewGroup
+    ): View {
         val view = inflater.inflate(R.layout.setting_debug, container, false)
         val result = view.findViewById<TextView>(R.id.tv_result)
         view.findViewById<View>(R.id.tv_send_name).setOnClickListener {
-            result.text = BYDAutoInstrumentUtils.sendMusicName("名称设置新").toString()
+            result.text = BYDAutoUtils.sendMusicName("名称设置新").toString()
         }
         view.findViewById<View>(R.id.tv_radar).setOnClickListener {
-            result.text = BYDAutoInstrumentUtils.getAllRadarDistance().joinToString()
+            result.text = BYDAutoUtils.getAllRadarDistance().joinToString()
         }
         view.findViewById<View>(R.id.tv_setting).setOnClickListener {
             onSettingClick(activity, result)
         }
         view.findViewById<CheckBox>(R.id.ib_air_control).setOnCheckedChangeListener { _, check ->
-            result.text = BYDAutoInstrumentUtils.setWirelessCharging(if (check) 1 else 0).toString()
+            result.text = BYDAutoUtils.setWirelessCharging(check).toString()
         }
 
         return view
@@ -40,12 +42,12 @@ class DebugSetting : DSetting("调试开关") {
             d.dismiss()
 
             kotlin.runCatching {
-                val instance = BYDAutoSettingDevice.getInstance(ac) ?: return@setSingleChoiceItems
+                val instance = BYDAutoUtils.getSetting() ?: return@setSingleChoiceItems
                 val r = when (i) {
                     0 -> "autoExternalRearMirrorFollowUpSwitch=${instance.autoExternalRearMirrorFollowUpSwitch} ; rearMirrorFlip=${instance.rearMirrorFlip} ; flipAngle=${instance.leftViewMirrorFlipAngle} ,${instance.rightViewMirrorFlipAngle} ; rearViewMirrorAutoFoldMode=${instance.rearViewMirrorAutoFoldMode} ; rearViewMirrorFlip=${instance.rearViewMirrorFlip} ;"
                     1 -> "acAutoWindLevel=${instance.acAutoWindLevel} ; acAutoAir =${instance.acAutoAir}"
                     2 -> "backDoorOpenedHeight=${instance.backDoorOpenedHeight} ; backDoorElectricMode=${instance.backDoorElectricMode} ; backDoorElectricModeOnlineState=${instance.backDoorElectricModeOnlineState}"
-                    3 -> BYDAutoRadarDevice.getInstance(ac).registerListener(RadrListener(result)).toString()
+                    3 -> BYDAutoUtils.getRadar().registerListener(RadrListener(result)).toString()
                     else -> ""
                 }.toString()
                 result.text = "${settins.getOrNull(i)} : $r"

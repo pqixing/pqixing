@@ -16,14 +16,25 @@ class ChargeSetting : DSetting("无线充电") {
         const val CHARGE_TYPE: String = "CHARGE_TYPE"
     }
 
-    val ids = mapOf("NONE" to R.id.rbChargeNone, "OPEN" to R.id.rbChargeOpen, "CLOSE" to R.id.rbChargeClose)
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    val ids = mapOf(
+        "NONE" to R.id.rbChargeNone,
+        "OPEN" to R.id.rbChargeOpen,
+        "CLOSE" to R.id.rbChargeClose
+    )
+
+    override fun onUiCreate(
+        activity: Activity,
+        inflater: LayoutInflater,
+        container: ViewGroup
+    ): View {
         val charge = inflater.inflate(R.layout.setting_charge, container, false) as RadioGroup
         val lastId = ids[App.sp.getString(CHARGE_TYPE, "NONE")] ?: R.id.rbChargeNone
         onChargeSet(activity, lastId)
         charge.findViewById<RadioButton>(lastId)?.isChecked = true
         charge.setOnCheckedChangeListener { _, checkedId ->
-            App.sp.edit().putString(CHARGE_TYPE, ids.entries.find { it.value == checkedId }?.key ?: "NONE").apply()
+            App.sp.edit()
+                .putString(CHARGE_TYPE, ids.entries.find { it.value == checkedId }?.key ?: "NONE")
+                .apply()
             onChargeSet(activity, checkedId)
         }
         return charge
@@ -37,8 +48,8 @@ class ChargeSetting : DSetting("无线充电") {
 
     private fun onChargeSet(context: Context, id: Int) {
         when (id) {
-            R.id.rbChargeOpen -> BYDAutoInstrumentUtils.setAir(1)
-            R.id.rbChargeClose -> BYDAutoInstrumentUtils.setAir(2)
+            R.id.rbChargeOpen -> BYDAutoUtils.setWirelessCharging(true)
+            R.id.rbChargeClose -> BYDAutoUtils.setWirelessCharging(false)
         }
     }
 }

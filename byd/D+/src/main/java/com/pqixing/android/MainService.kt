@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
-import com.pqixing.android.byd.BYDAutoInstrumentUtils
 import com.pqixing.android.setting.SettingManager
 
 class MainService : Service() {

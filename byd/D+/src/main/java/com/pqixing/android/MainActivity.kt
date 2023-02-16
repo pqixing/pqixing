@@ -13,11 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.pqixing.android.boot.BootSetting
 import com.pqixing.android.setting.SettingManager
 import java.io.File
-import java.util.Date
+import java.util.*
 
 class MainActivity : Activity() {
 
@@ -45,12 +44,12 @@ class MainActivity : Activity() {
         }
 
         findViewById<View>(R.id.tvAdd).setOnClickListener {
-            App.sp.edit().remove("exclude").apply()
-            refreshContainer(false)
+            App.sp.edit().putStringSet("exclude", setOf("调试开关")).apply()
+            refreshContainer()
         }
         findViewById<View>(R.id.tvAdd).setOnLongClickListener {
             App.sp.edit().remove("exclude").apply()
-            refreshContainer(true)
+            refreshContainer()
             true
         }
 
@@ -62,7 +61,7 @@ class MainActivity : Activity() {
         ivLog.setOnClickListener { showCrashLog(file, ivLog) }
 
         ivLog.setOnLongClickListener { throw RuntimeException("---Crash Mock ${System.currentTimeMillis()} : ${Date().toLocaleString()}---") }
-        refreshContainer(false)
+        refreshContainer()
     }
 
     private fun showCrashLog(file: File, ivLog: View) {
@@ -92,7 +91,7 @@ class MainActivity : Activity() {
         return false
     }
 
-    private fun refreshContainer(debug: Boolean) {
+    private fun refreshContainer() {
 
         val inflater = LayoutInflater.from(this);
         val llContainer = findViewById<LinearLayout>(R.id.llContainer)
@@ -104,9 +103,6 @@ class MainActivity : Activity() {
             it.setBounds(0, 0, 40, 40)
         }
         val exclude = App.sp.getStringSet("exclude", null)?.toMutableSet() ?: mutableSetOf()
-        if (!debug) {
-            exclude.add("调试开关")
-        }
         SettingManager.settings.filter { !exclude.contains(it.getName()) }.forEach { item ->
             val title = TextView(this).apply {
                 text = item.getName()
@@ -118,7 +114,10 @@ class MainActivity : Activity() {
             }
             val child = item.onUiCreate(this, inflater, llContainer)
             llContainer.addView(title,
-                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                     .also {
                         it.setMargins(0, 20, 0, 15)
                     })
@@ -143,12 +142,10 @@ class MainActivity : Activity() {
 
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
-        Log.w("MainService", "enforceCallingOrSelfPermission: $permission", )
-        Toast.makeText(this, "enforceCallingOrSelfPermission", Toast.LENGTH_SHORT).show()
+        Log.w("MainService", "enforceCallingOrSelfPermission: $permission")
     }
 
     override fun enforceCallingPermission(permission: String, message: String?) {
-        Log.w("MainService", "enforceCallingPermission: ", )
-        Toast.makeText(this, "enforceCallingPermission $permission", Toast.LENGTH_SHORT).show()
+        Log.w("MainService", "enforceCallingPermission: ")
     }
 }

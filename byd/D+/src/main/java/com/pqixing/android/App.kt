@@ -8,7 +8,7 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import com.pqixing.android.byd.BYDAutoInstrumentUtils
+import com.pqixing.android.byd.BYDAutoUtils
 import java.io.File
 
 class App : Application() {
@@ -58,7 +58,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        BYDAutoInstrumentUtils.init(this)
+        BYDAutoUtils.init(this)
         val handle = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             log(t.name, e)
@@ -73,10 +73,10 @@ class App : Application() {
 
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
-        Log.w("MainService", "enable enforceCallingOrSelfPermission: $permission", )
+        Log.w("MainService", "enable enforceCallingOrSelfPermission: $permission")
     }
 
     override fun enforceCallingPermission(permission: String, message: String?) {
-        Log.w("MainService", "enable enforceCallingPermission: ", )
+        Log.w("MainService", "enable enforceCallingPermission: ")
     }
 }

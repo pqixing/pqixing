@@ -31,7 +31,7 @@
         android:name="com.pqixing.android.App"
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_compass"
-        android:label="迪+">
+        android:label="D+">
 
         <activity
             android:name="com.pqixing.android.MainActivity"

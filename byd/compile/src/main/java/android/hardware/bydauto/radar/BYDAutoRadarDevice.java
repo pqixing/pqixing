@@ -15,18 +15,33 @@ public final class BYDAutoRadarDevice extends AbsBYDAutoDevice {
         return null;
     }
 
+    /**
+     * 获取所有雷达距离
+     * @return
+     */
     public int[] getAllRadarDistance() {
         return null;
     }
 
+    /**
+     *获取所有雷达障碍距离
+     * @return
+     */
     public int[] getAllRadarObstacleDistances() {
         return null;
     }
 
+    /**
+     *获取所有雷达距离
+     */
     public int[] getAllRadarProbeStates() {
         return null;
     }
 
+    /**
+     * 获取所有雷达探测状态
+     * @return
+     */
     public int[][] getAllRadarStatus() {
         return null;
     }

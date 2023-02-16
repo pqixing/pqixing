@@ -4,73 +4,18 @@ import android.app.Application;
 import android.content.Context;
 import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice;
 import android.hardware.bydauto.radar.BYDAutoRadarDevice;
+import android.hardware.bydauto.setting.BYDAutoSettingDevice;
 import android.media.AudioManager;
 import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Callable;
 
-public class BYDAutoInstrumentUtils {
+public class BYDAutoUtils {
 
     private static final int FAIL = -2147482648;
-    private static final String TAG = "BYDAutoInstrumentUtils";
-    private static final String FROM_TAG = "HAD_BEEN_RESEND_TO";
-
-    private static final List<String> MATCH_ACTIONS = Arrays.asList(
-            "pqx.intent.action.MEDIA",
-            "byd.intent.action.MEDIA_MODE",
-            "byd.intent.action.MEDIA_BUTTON",
-            "kg.intent.action.MEDIA_BUTTON",
-            "byd.intent.action.KILL_KUGOU",
-            "com.byd.action.FUNCTION_UPDATE_RESULT",
-            "com.byd.action.AUTOVOICE_PLAY_MODE",
-            "com.byd.action.AUTOVOICE_SEARCH_PLUS",
-            "com.kg.action.AUTOVOICE_SEARCH_PLUS",
-            "com.byd.action.AUTOVOICE_RECOMMEND",
-            "com.byd.action.AUTOVOICE_PLAY_RANDOM",
-            "com.byd.action.AUTOVOICE_BOOK",
-            "com.byd.action.AUTOVOICE_UNBOOK",
-            "com.byd.action.AUTOVOICE_OPEN_LYRIC",
-            "com.byd.action.AUTOVOICE_CLOSE_LYRIC",
-            "com.byd.action.AUTOVOICE_REVERSE",
-            "com.byd.action.AUTOVOICE_ORDER",
-            "com.byd.action.AUTOVOICE_PLAY_MODE",
-            "com.byd.action.AUTOVOICE_JUMP_TO",
-            "com.byd.action.AUTOVOICE_FORWARD",
-            "com.byd.action.AUTOVOICE_REWIND",
-            "com.byd.action.AUTOVOICE_FULL_SCREEN",
-            "com.byd.action.AUTOVOICE_UNFULL_SCREEN",
-            "com.byd.action.AUTOVOICE_SPEED_ADJUST",
-            "com.byd.action.AUTOVOICE_SKIP_TITLE",
-            "com.byd.action.AUTOVOICE_SKIP_END",
-            "com.byd.action.AUTOVOICE_DOWNLOAD",
-            "com.byd.action.AUTOVOICE_UNDOWNLOAD",
-            "com.byd.action.AUTOVOICE_QUIT",
-            "com.byd.action.AUTOVOICE_DEFINITION_SET",
-            "com.byd.action.AUTOVOICE_PLAY_FAVORITE",
-            "com.byd.action.AUTOVOICE_PLAY_LIKE",
-            "com.byd.action.AUTOVOICE_PLAY_BOOK",
-            "com.byd.action.AUTOVOICE_PLAY_DOWNLOAD",
-            "com.byd.action.AUTOVOICE_COLLECT",
-            "com.byd.action.AUTOVOICE_UNCOLLECT",
-            "com.byd.action.AUTOVOICE_PLAY_LATELY",
-            "com.byd.action.AUTOVOICE_PLAY_SONG_SHEET",
-            "com.byd.action.AUTOVOICE_OPEN_LIST",
-            "com.byd.action.AUTOVOICE_CLOSE_LIST",
-            "kugou.intent.action.update.byd.metadata",
-            "kugou.intent.action.update.byd.playback.progress",
-            "com.byd.action.query_tri_part_account_state",
-            "com.byd.action.byd_account_state_change",
-            "com.byd.action.byd_account_go_tripart_login_page",
-            "byd.intent.action.AUTO_PLAY",
-            "com.byd.action.AUTOVOICE_ACTIVECARE",
-            "com.byd.action.AUTOVOICE_BOOK",
-            "com.byd.action.AUTOVOICE_QUALITY"
-    );
-
+    private static final String TAG = "BYDAutoUtils";
 
     private static Application mContext;
 
@@ -78,25 +23,36 @@ public class BYDAutoInstrumentUtils {
         mContext = context;
         //绕过反射Api限制
         setHiddenApiExemptions();
-
     }
+
+    public static BYDAutoRadarDevice getRadar() {
+        return BYDAutoRadarDevice.getInstance(mContext);
+    }
+
+    public static BYDAutoSettingDevice getSetting() {
+        return BYDAutoSettingDevice.getInstance(mContext);
+    }
+
+    public static BYDAutoInstrumentDevice getInstrument() {
+        return BYDAutoInstrumentDevice.getInstance(mContext);
+    }
+
+//    /**
+//     * 设置空调开关
+//     */
+//    public static void setAir(int state) {
+//        invokeSet(getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202), state, int.class);
+//    }
 
     /**
      * 设置空调开关
      */
-    public static void setAir(int state) {
-        invokeSet(getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202), state, int.class);
-    }
-
-    /**
-     * 设置空调开关
-     */
-    public static String setWirelessCharging(int state) {
+    public static String setWirelessCharging(boolean open) {
         return call("error", () -> {
             BYDAutoInstrumentDevice instance = BYDAutoInstrumentDevice.getInstance(mContext);
             int deviceType = instance.getType();
             int id = getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202);
-            getSetMethod(int.class).invoke(instance, deviceType, id, state);
+            getSetMethod(int.class).invoke(instance, deviceType, id, open ? 1 : 2);
             return "setWirelessCharging " + deviceType + " ; " + id;
         });
     }
@@ -107,7 +63,7 @@ public class BYDAutoInstrumentUtils {
      * @param name
      */
     public static int sendMusicName(String name) {
-        return call(FAIL, () -> BYDAutoInstrumentDevice.getInstance(mContext).sendMusicName(name));
+        return call(FAIL, () -> getInstrument().sendMusicName(name));
     }
 
     /**
@@ -117,7 +73,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicInfo(byte[] bytes) {
         if (bytes.length <= 255) try {
-            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicInfo(bytes);
+            return getInstrument().sendMusicInfo(bytes);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicInfo: ", e);
         }
@@ -131,7 +87,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicSource(int source) {
         try {
-            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicSource(source);
+            return getInstrument().sendMusicSource(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicSource: ", e);
         }
@@ -145,7 +101,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicPlaybackProgress(int source) {
         try {
-            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicPlaybackProgress(source);
+            return getInstrument().sendMusicPlaybackProgress(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicPlaybackProgress: ", e);
         }
@@ -159,7 +115,7 @@ public class BYDAutoInstrumentUtils {
      */
     public static int sendMusicState(int source) {
         try {
-            return BYDAutoInstrumentDevice.getInstance(mContext).sendMusicState(source);
+            return getInstrument().sendMusicState(source);
         } catch (Exception e) {
             Log.w(TAG, "sendMusicState: ", e);
         }
@@ -207,29 +163,29 @@ public class BYDAutoInstrumentUtils {
         return 1007;
     }
 
-    /**
-     * @param id         需要设置的Id
-     * @param value      需要设置的值
-     * @param valueClass 值对应的class
-     * @return 是否正常调用
-     */
-    private static Object invokeSet(int id, Object value, Class<?> valueClass) {
-
-        try {
-            // Use reflection to get BYD framework classes.
-            Class deviceClass = Class.forName("android.hardware.bydauto.charging.BYDAutoChargingDevice");
-            Method getInstance = deviceClass.getMethod("getInstance", Context.class);
-
-            Object device = getInstance.invoke(null, mContext);
-            int mDeviceType = getDeviceType(deviceClass, device);
-            Method setMethod = getSetMethod(valueClass);
-            return setMethod.invoke(device, mDeviceType, id, value);
-        } catch (Exception e) {
-            Log.w(TAG, "invokeSet: ", e);
-        }
-
-        return null;
-    }
+//    /**
+//     * @param id         需要设置的Id
+//     * @param value      需要设置的值
+//     * @param valueClass 值对应的class
+//     * @return 是否正常调用
+//     */
+//    private static Object invokeSet(int id, Object value, Class<?> valueClass) {
+//
+//        try {
+//            // Use reflection to get BYD framework classes.
+//            Class deviceClass = Class.forName("android.hardware.bydauto.charging.BYDAutoChargingDevice");
+//            Method getInstance = deviceClass.getMethod("getInstance", Context.class);
+//
+//            Object device = getInstance.invoke(null, mContext);
+//            int mDeviceType = getDeviceType(deviceClass, device);
+//            Method setMethod = getSetMethod(valueClass);
+//            return setMethod.invoke(device, mDeviceType, id, value);
+//        } catch (Exception e) {
+//            Log.w(TAG, "invokeSet: ", e);
+//        }
+//
+//        return null;
+//    }
 
     /**
      * @param valueClass 值对应的class
@@ -265,7 +221,7 @@ public class BYDAutoInstrumentUtils {
      * @return
      */
     public static int[] getAllRadarDistance() {
-        return call(new int[9], () -> BYDAutoRadarDevice.getInstance(mContext).getAllRadarDistance());
+        return call(new int[9], () -> getRadar().getAllRadarDistance());
     }
 
     public static <T> T call(T t, Callable<T> run) {
