@@ -9,18 +9,17 @@ public abstract class AbsBYDAutoRadarListener implements IBYDAutoListener {
     private static final boolean DEBUG = true;
     protected static final String TAG = "AbsBYDAutoRadarListener";
 
-    /* renamed from: android.hardware.bydauto.radar.AbsBYDAutoRadarListener$a */
     /* loaded from: classes.dex */
-    private class C0040a {
+    private class a {
     }
 
-    private C0040a parse(Object obj) {
+    private a parse(Object obj) {
         return null;
     }
 
     @Override // android.hardware.IBYDAutoListener
     public void onDataChanged(IBYDAutoEvent iBYDAutoEvent) {
-        C0040a parse = parse(iBYDAutoEvent.getData());
+        a parse = parse(iBYDAutoEvent.getData());
         int eventType = iBYDAutoEvent.getEventType();
         int value = iBYDAutoEvent.getValue();
         Log.d(TAG, "onDataChanged: type is " + eventType + " value is " + value);

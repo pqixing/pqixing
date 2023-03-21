@@ -45,11 +45,11 @@ class DebugSetting : DSetting("调试开关") {
                 val set = BYDAutoUtils.getSetting() ?: return@setSingleChoiceItems
                 val ac = BYDAutoUtils.getAcControl() ?: return@setSingleChoiceItems
                 val r = when (i) {
-                    0 -> "autoExternalRearMirrorFollowUpSwitch=${set.autoExternalRearMirrorFollowUpSwitch} ; rearViewMirrorFlip=${set.rearViewMirrorFlip} ; rearMirrorFlip=${set.rearMirrorFlip} ; flipAngle=${set.leftViewMirrorFlipAngle} ,${set.rightViewMirrorFlipAngle} ; rearViewMirrorAutoFoldMode=${set.rearViewMirrorAutoFoldMode} ; "
+                    0 -> "autoSwitch=${set.autoExternalRearMirrorFollowUpSwitch} ; rearViewMirrorFlip=${set.rearViewMirrorFlip} ; rearMirrorFlip=${set.rearMirrorFlip} ; flipAngle=${set.leftViewMirrorFlipAngle} ,${set.rightViewMirrorFlipAngle} ; rearViewMirrorAutoFoldMode=${set.rearViewMirrorAutoFoldMode} ; "
                     1 -> "getAcStartState=${ac.acStartState} ; acWindLevel =${ac.acWindLevel} ;  acCompressorMode =${ac.acCompressorMode} ; acVentilationState =${ac.acVentilationState} ; "
                     2 -> "backDoorOpenedHeight=${set.backDoorOpenedHeight} ; backDoorElectricMode=${set.backDoorElectricMode} ; backDoorElectricModeOnlineState=${set.backDoorElectricModeOnlineState}"
-                    3 -> "temperatureUnit=${ac.temperatureUnit} ; 车外温度=${ac.getTemprature(4)} ; 主驾温度=${ac.getTemprature(1)}; 副驾温度=${ac.getTemprature(2)}"
-                    4 -> "setRearViewMirrorFlip=${set.setRearViewMirrorFlip(1)} ; setRightViewMirrorFlipAngle=${set.setRightViewMirrorFlipAngle(10)} ;"
+                    3 -> "temperatureUnit=${ac.temperatureUnit} ; 车外温度=${ac.getTemprature(4)} ; 主驾温度=${ac.getTemprature(1)}; 副驾温度=${ac.getTemprature(2)}; 后排温度=${ac.getTemprature(3)}"
+                    4 -> "setRearViewMirrorFlip=${set.setRearViewMirrorFlip(1)} ;"
                     else -> ""
                 }.toString()
                 result.text = "${settins.getOrNull(i)} : $r"

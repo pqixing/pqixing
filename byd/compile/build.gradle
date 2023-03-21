@@ -8,3 +8,45 @@ android {
         versionName "1.0"
     }
 }
+
+task("refactorInterface"){
+    doLast {
+        File dir = new File(projectDir,"src/main/java/android/hardware")
+        refactor(dir)
+    }
+}
+public static void refactor(File file){
+    if(file.isDirectory()){
+        file.listFiles().each { refactor(it)}
+        return
+    }
+    if(!file.isFile()){
+        return
+    }
+    StringBuilder sb = new StringBuilder("//refactor")
+    for (str in file.readLines()) {
+        str = str.trim()
+        if("//refactor" == str){
+            return
+        }
+        if (str.startsWith("public interface")) {
+            return
+        }
+        if(str.contains("  class ")){
+            sb.append(str).append("\n")
+            continue
+        }
+        if(str.startsWith("public") && str.endsWith("{")){
+            sb.append(str).append(str.contains(" int ")?" return 0; }\n" : "return null; }\n")
+            continue
+        }
+
+        if (str.startsWith("package") || str.startsWith("import") || str.startsWith("public")) {
+            sb.append(str).append("\n")
+        }
+    }
+    sb.append(" }\n")
+    file.write(sb.toString())
+    println("refactor -> $file.absolutePath")
+
+}
