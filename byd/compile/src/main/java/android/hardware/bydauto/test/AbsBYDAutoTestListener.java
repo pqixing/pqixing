@@ -1,37 +1,9 @@
+//refactor
 package android.hardware.bydauto.test;
-
 import android.hardware.IBYDAutoEvent;
 import android.hardware.IBYDAutoListener;
 import android.util.Log;
-
-/* loaded from: classes.dex */
 public abstract class AbsBYDAutoTestListener implements IBYDAutoListener {
-    private static final boolean DEBUG = true;
-    protected static final String TAG = "AbsBYDAutoTestListener";
-
-    /* loaded from: classes.dex */
-    private class a {
-    }
-
-    private a parse(Object obj) {
-        return null;
-    }
-
-    @Override // android.hardware.IBYDAutoListener
-    public void onDataChanged(IBYDAutoEvent iBYDAutoEvent) {
-        a parse = parse(iBYDAutoEvent.getData());
-        int value = iBYDAutoEvent.getValue();
-        int eventType = iBYDAutoEvent.getEventType();
-        Log.d(TAG, "onDataChanged: type is " + eventType + " value is " + value);
-        if (parse != null) {
-            Log.d(TAG, "onDataChanged: data is " + parse);
-        }
-        if (eventType != 3) {
-            return;
-        }
-        onMcuStateChanged(value);
-    }
-
-    public void onMcuStateChanged(int i) {
-    }
-}
+public void onDataChanged(IBYDAutoEvent iBYDAutoEvent) { }
+public void onMcuStateChanged(int i) { }
+ }

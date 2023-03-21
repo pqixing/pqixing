@@ -9,35 +9,59 @@ android {
     }
 }
 
-task("refactorInterface"){
+task("refactorInterface") {
     doLast {
-        File dir = new File(projectDir,"src/main/java/android/hardware")
+        File dir = new File(projectDir, "src/main/java/android/hardware")
         refactor(dir)
     }
 }
-public static void refactor(File file){
-    if(file.isDirectory()){
-        file.listFiles().each { refactor(it)}
+
+public static void refactor(File file) {
+    if (file.isDirectory()) {
+        file.listFiles().each { refactor(it) }
         return
     }
-    if(!file.isFile()){
+    if (!file.isFile()) {
         return
     }
-    StringBuilder sb = new StringBuilder("//refactor")
+    StringBuilder sb = new StringBuilder("//refactor\n")
+    boolean hasClass = false
     for (str in file.readLines()) {
         str = str.trim()
-        if("//refactor" == str){
+        if ("//refactor" == str) {
             return
         }
         if (str.startsWith("public interface")) {
             return
         }
-        if(str.contains("  class ")){
+        if(str.startsWith("private")){
+            continue
+        }
+        if (str.contains(" class ")) {
+            if(hasClass) continue
+            hasClass = true
             sb.append(str).append("\n")
             continue
         }
-        if(str.startsWith("public") && str.endsWith("{")){
-            sb.append(str).append(str.contains(" int ")?" return 0; }\n" : "return null; }\n")
+        if (str.startsWith("public") && str.endsWith("{")) {
+            def i = str.indexOf("(")
+            if(i == -1){
+                println(str)
+                throw GradleException(str)
+            }
+            if (str.substring(0,i).split(" ").length < 3) {
+                continue
+            }
+            sb.append(str)
+            if (str.startsWith("public int ") || str.startsWith("public double ") || str.startsWith("public float ")) {
+                sb.append(" return 0; }\n")
+            } else if (str.startsWith("public boolean ")) {
+                sb.append(" return false; }\n")
+            } else if (str.startsWith("public void ")) {
+                sb.append(" }\n")
+            } else {
+                sb.append(" return null; }\n")
+            }
             continue
         }
 
