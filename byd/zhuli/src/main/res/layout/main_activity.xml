@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
+    android:defaultWidth="200dp"
+    android:defaultHeight="200dp"
+    android:minWidth="100dp"
+    android:minHeight="100dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center_vertical"
@@ -23,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="迪家"
+                android:text="小迪助手"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="20sp" />
 

@@ -30,15 +30,16 @@
     <application
         android:name="com.pqixing.android.App"
         android:allowBackup="true"
-        android:icon="@android:drawable/ic_menu_compass"
-        android:label="迪家">
+        android:icon="@android:drawable/ic_menu_manage"
+        android:label="小迪助手">
 
         <activity
             android:name="com.pqixing.android.MainActivity"
             android:excludeFromRecents="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:launchMode="standard"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
