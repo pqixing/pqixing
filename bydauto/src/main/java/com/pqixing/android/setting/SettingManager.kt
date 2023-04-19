@@ -1,6 +1,6 @@
 package com.pqixing.android.setting
 
-import com.pqixing.android.DebugSetting
+import com.pqixing.android.debug.DebugSetting
 import com.pqixing.android.boot.BootSetting
 import com.pqixing.android.byd.ChargeSetting
 import com.pqixing.android.music.MusicSetting

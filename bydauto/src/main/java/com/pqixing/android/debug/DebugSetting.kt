@@ -1,4 +1,4 @@
-package com.pqixing.android
+package com.pqixing.android.debug
 
 import android.app.Activity
 import android.app.ActivityOptions
@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import com.pqixing.android.App
+import com.pqixing.android.R
 import com.pqixing.android.byd.BYDAutoUtils
 import com.pqixing.android.setting.DSetting
 

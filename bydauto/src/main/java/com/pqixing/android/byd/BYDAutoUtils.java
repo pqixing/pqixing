@@ -1,7 +1,6 @@
 package com.pqixing.android.byd;
 
 import android.app.Application;
-import android.content.Context;
 import android.hardware.bydauto.ac.BYDAutoAcDevice;
 import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice;
 import android.hardware.bydauto.radar.BYDAutoRadarDevice;
@@ -33,6 +32,7 @@ public class BYDAutoUtils {
     public static BYDAutoSettingDevice getSetting() {
         return BYDAutoSettingDevice.getInstance(mContext);
     }
+
     public static BYDAutoAcDevice getAcControl() {
         return BYDAutoAcDevice.getInstance(mContext);
     }

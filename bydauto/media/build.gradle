@@ -4,7 +4,7 @@ plugins {
 apply from: "$rootDir/script/android.gradle"
 android {
     defaultConfig {
-        applicationId "com.kuwo.radio"
+        applicationId "com.ting.mp3.android"
         versionCode 1
         versionName "1.0"
     }

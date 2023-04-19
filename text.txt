@@ -14,3 +14,11 @@
 2022-11-16 20:23:55.343  1219-2694  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.avc.AutoVideoActivity
 2022-11-16 20:23:55.445  1219-1347  ActivityTaskManager     system_server                        I  Displayed com.byd.avd/.AutoVideoActivity: +510ms
 
+
+
+//private val launchReg = Regex(".*ActivityTaskManager.*(START|activityResumedForAcBar).*")
+//val str =
+//    "2022-11-16 20:23:54.917  1219-2695  ActivityTaskManager     system_server                        I  START u0 {flg=0x10000000 cmp=com.byd.avc/.AutoVideoActivity (has extras)} from uid 1000"
+//
+//println("test match ${str.matches(launchReg)}")
+//include(":code",":service")
