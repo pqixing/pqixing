@@ -1,10 +1,9 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 32
-    namespace 'bydauto'
+    namespace 'com.cgutman.androidremotedebugger'
     defaultConfig {
-        applicationId "com.cgutman.androidremotedebugger"
         minSdkVersion 14
         targetSdkVersion 32
     }

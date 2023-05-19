@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pqixing.android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:versionCode="1"
     android:versionName="1.0.0">
 
@@ -28,13 +28,14 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name="com.pqixing.android.App"
+        android:name="com.pqixing.bydauto.App"
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_manage"
+        tools:replace="android:name"
         android:label="小迪助手">
 
         <activity
-            android:name="com.pqixing.android.MainActivity"
+            android:name="com.pqixing.bydauto.MainActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -43,7 +44,7 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
         </activity>
         <activity
-            android:name="com.pqixing.android.EnterActivity"
+            android:name="com.pqixing.bydauto.EnterActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask"
@@ -55,11 +56,11 @@
         </activity>
 
         <service
-            android:name="com.pqixing.android.MainService"
+            android:name="com.pqixing.bydauto.MainService"
             android:exported="false" />
 
         <receiver
-            android:name="com.pqixing.android.boot.BootReceiver"
+            android:name="com.pqixing.bydauto.boot.BootReceiver"
             android:exported="true"
             android:permission="android.intent.action.BOOT_COMPLETED">
             <intent-filter>
@@ -69,7 +70,7 @@
         </receiver>
 
         <receiver
-            android:name="com.pqixing.android.music.BYDMediaReceiver"
+            android:name="com.pqixing.bydauto.music.BYDMediaReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="pqx.intent.action.MEDIA" />

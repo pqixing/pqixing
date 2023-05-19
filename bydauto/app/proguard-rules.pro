@@ -1,1 +1,1 @@
--keep public class com.pqixing.android.byd.BYDAutoUtils{*;}
+-keep public class com.pqixing.bydauto.byd.BYDAutoUtils{*;}

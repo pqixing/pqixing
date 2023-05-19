@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 //include ':app'
 include(":bydauto:app",":bydauto:hardware",":bydauto:media",)
 //include(":lcode")
-include(":utils:gnet",":utils:adb")
+include(":utils:gnet",":utils:adb",":utils:floatwindow")

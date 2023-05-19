@@ -181,7 +181,7 @@ public class ShellService extends Service implements DeviceConnectionListener {
 
 	private Notification createForegroundPlaceholderNotification() {
 		return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-				.setSmallIcon(R.drawable.notificationicon)
+				.setSmallIcon(android.R.drawable.ic_notification_overlay)
 				.setOngoing(true)
 				.setSilent(true)
 				.setContentTitle("Remote ADB Shell")
@@ -206,7 +206,7 @@ public class ShellService extends Service implements DeviceConnectionListener {
 
 		return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
 				.setTicker("Remote ADB Shell - "+ticker)
-				.setSmallIcon(R.drawable.notificationicon)
+				.setSmallIcon(android.R.drawable.ic_notification_overlay)
 				.setOnlyAlertOnce(true)
 				.setOngoing(connected)
 				.setAutoCancel(!connected)
