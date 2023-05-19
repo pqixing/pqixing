@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.application'
 }
-apply from: "$rootDir/script/android.gradle"
+apply from: "$rootDir/asessts/script/android.gradle"
 android {
+    namespace 'bydauto'
+
     defaultConfig {
         applicationId "com.ting.mp3.android"
         versionCode 1

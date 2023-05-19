@@ -1,0 +1,23 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 32
+    namespace 'bydauto'
+    defaultConfig {
+        applicationId "com.cgutman.androidremotedebugger"
+        minSdkVersion 14
+        targetSdkVersion 32
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    implementation files('libs/AdbLib.jar')
+    implementation 'androidx.core:core:1.7.0'
+}

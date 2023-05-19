@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.library'
 }
-apply from: "$rootDir/script/android.gradle"
+apply from: "$rootDir/asessts/script/android.gradle"
 android {
+    namespace 'bydauto'
+
     defaultConfig {
         versionCode 1
         versionName "1.0"
