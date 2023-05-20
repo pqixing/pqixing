@@ -6,8 +6,7 @@ buildscript {
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.library' version '8.0.1' apply true
-    id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply true
 }
 
