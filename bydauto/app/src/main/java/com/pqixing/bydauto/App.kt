@@ -8,7 +8,11 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RestrictTo.Scope
 import com.pqixing.bydauto.byd.BYDAutoUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import java.io.File
 
 class App : Application() {
@@ -43,6 +47,8 @@ class App : Application() {
             get() = get().mHandle
         val mThread: Handler
             get() = get().mThread
+        val uiScope: CoroutineScope
+            get() = get().uiScope
     }
 
     val mHandle: Handler by lazy { Handler(Looper.getMainLooper()) }
@@ -50,7 +56,7 @@ class App : Application() {
 
     val sp: SharedPreferences by lazy { getSharedPreferences("default", 0) }
 
-
+    val uiScope = MainScope()
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         app = this

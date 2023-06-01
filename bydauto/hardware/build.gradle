@@ -5,10 +5,6 @@ apply from: "$rootDir/asessts/script/android.gradle"
 android {
     namespace 'bydauto'
 
-    defaultConfig {
-        versionCode 1
-        versionName "1.0"
-    }
 }
 
 task("refactorInterface") {

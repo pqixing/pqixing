@@ -1,4 +1,4 @@
-import javax.swing.tree.TreeNode
+import java.util.*
 
 //给你一个正整数数组 price ，其中 price[i] 表示第 i 类糖果的价格，另给你一个正整数 k 。
 //
@@ -52,6 +52,31 @@ import javax.swing.tree.TreeNode
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     fun maximumTastiness(price: IntArray, k: Int): Int {
+        Arrays.sort(price)
+        var left = 0
+        var right = price.last() - price.first()
+
+        while (left < right) {
+            val mid = (left + right + 1) / 2
+            if (check(price, k, mid)) {
+                left = mid
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left
+    }
+
+    private fun check(price: IntArray, k: Int, mid: Int): Boolean {
+        var prev = -1
+        var cnt = 0
+        for (i in price) {
+            if (prev == -1 || i - prev >= mid) {
+                prev = i
+                if (++cnt >= k) return true
+            }
+        }
+        return false
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -10,13 +10,21 @@ import com.pqixing.bydauto.setting.ISetting
 object Const {
 
     val settings = arrayOf<ISetting>(BootSetting(), ChargeSetting(), RotateSetting(), MusicSetting(), RadarSetting())
+
     var lastMediaReceiver: Long = -1L
 
     /**
      * 延迟进入页面
      */
-    var enterDelay: Boolean
-        get() = App.sp.getBoolean("delay_enter", false)
-        set(value) = App.sp.edit().putBoolean("delay_enter", value).apply()
+    var SP_ENTER_DELAY: Boolean
+        get() = App.sp.getBoolean("SP_ENTER_DELAY", false)
+        set(value) = App.sp.edit().putBoolean("SP_ENTER_DELAY", value).apply()
+
+    var SP_MUSIC_PKG: String
+        get() = App.sp.getString("SP_MUSIC_PKG", "")!!
+        set(value) = App.sp.edit().putString("SP_MUSIC_PKG", value).apply()
+
+
+    val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
 
 }

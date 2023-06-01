@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.SViewHolder
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class SettingActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +53,11 @@ class SettingActivity : Activity() {
     override fun enforceCallingPermission(permission: String, message: String?) {
         Log.w("SettingActivity", "enforceCallingPermission: ")
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        App.uiScope.cancel()
+    }
 }
 
 
@@ -67,6 +74,7 @@ class SettingAdapter(val datas: Array<ISetting>) : RecyclerView.Adapter<SViewHol
 
     override fun onBindViewHolder(holder: SViewHolder, position: Int) {
         val setting = datas.getOrNull(position) ?: return
-        setting.onBindViewHolder(holder)
+        App.uiScope.launch {  setting.onBindViewHolder(holder) }
+
     }
 }
