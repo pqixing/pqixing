@@ -11,15 +11,15 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 
-class MusicSetting : DSetting("音乐助手") {
+class MusicSetting : SettingImpl("音乐助手") {
     companion object {
         const val MUSIC_PKG = "MUSIC_PKG"
         const val DEFAULT_PKG = "com.music.auto_select"
     }
 
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onBind(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.setting_music, container, false)
         val radio = view.findViewById<RadioGroup>(R.id.group)
         val pm = activity.packageManager

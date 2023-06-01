@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 
-class BootSetting : DSetting("启动") {
+class BootSetting : SettingImpl("启动") {
     companion object {
         const val IS_BOOT: String = "IS_BOOT"
         const val AUTO_FINISH: String = "AUTO_FINISH"
     }
 
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onBind(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
         val content = LinearLayout(activity)
         content.orientation = LinearLayout.HORIZONTAL
         content.gravity = Gravity.CENTER_VERTICAL

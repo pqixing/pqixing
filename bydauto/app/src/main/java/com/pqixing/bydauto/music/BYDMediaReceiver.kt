@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.SystemClock
 import com.pqixing.bydauto.App
+import com.pqixing.bydauto.Const
 import com.pqixing.bydauto.byd.BYDAutoUtils
 
 
@@ -16,6 +17,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         val aciton = intent?.action ?: return
+        Const.lastMediaReceiver = System.currentTimeMillis()
         val resend = { pkg: String, bg: Boolean ->
             val newIntent = Intent(aciton)
             newIntent.flags = intent.flags

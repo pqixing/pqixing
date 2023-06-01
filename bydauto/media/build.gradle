@@ -3,7 +3,7 @@ plugins {
 }
 apply from: "$rootDir/asessts/script/android.gradle"
 android {
-    namespace 'bydauto'
+    namespace 'com.ting.mp3.android'
 
     defaultConfig {
         applicationId "com.ting.mp3.android"

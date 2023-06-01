@@ -112,7 +112,7 @@ class MainActivity : Activity() {
                 setTextColor(Color.GRAY)
                 setCompoundDrawables(null, null, drawable, null)
             }
-            val child = item.onUiCreate(this, inflater, llContainer)
+            val child = item.onBindViewHolder(this, inflater, llContainer)
             llContainer.addView(title,
                 LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -129,14 +129,6 @@ class MainActivity : Activity() {
                 App.sp.edit().putStringSet("exclude", exclude).apply()
                 true
             }
-        }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (realLaunch) {
-            SettingManager.settings.forEach { it.onUiDestroy(this) }
         }
     }
 

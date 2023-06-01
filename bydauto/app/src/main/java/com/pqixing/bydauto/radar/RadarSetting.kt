@@ -21,10 +21,10 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 import kotlin.concurrent.thread
 
-class RadarSetting : DSetting("雷达测距") {
+class RadarSetting : SettingImpl("雷达测距") {
     companion object {
         const val OPEN_RADAR = "OPEN_RADAR"
     }
@@ -38,7 +38,7 @@ class RadarSetting : DSetting("雷达测距") {
     private var floatView: RadarFloatView? = null
     private val reg = Regex(".*ActivityTaskManager.*(START|activityResumedForAcBar|Displayed|topComponentName).*")
     private val vReg = Regex(".*com\\.byd\\.avc.*AutoVideoActivity.*")
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onBind(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
         val content = LinearLayout(activity)
         content.orientation = LinearLayout.HORIZONTAL
         content.gravity = Gravity.CENTER_VERTICAL

@@ -1,16 +1,13 @@
-
-buildscript {
-    ext {
-        compose_version = '1.1.0-beta01'
-        kotlin_version = '1.7.22'
-    }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply true
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
 }

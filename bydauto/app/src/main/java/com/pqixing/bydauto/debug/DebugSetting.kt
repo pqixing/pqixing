@@ -15,11 +15,11 @@ import android.widget.TextView
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.byd.BYDAutoUtils
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 
-class DebugSetting : DSetting("调试开关") {
+class DebugSetting : SettingImpl("调试开关") {
 
-    override fun onUiCreate(
+    override fun onBind(
         activity: Activity,
         inflater: LayoutInflater,
         container: ViewGroup

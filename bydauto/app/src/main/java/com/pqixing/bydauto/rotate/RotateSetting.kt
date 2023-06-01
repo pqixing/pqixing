@@ -12,9 +12,9 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 
-class RotateSetting : DSetting("强制旋转") {
+class RotateSetting : SettingImpl("强制旋转") {
     private var mView: View? = null
 
     override fun onServiceCreate(context: Context) {
@@ -71,7 +71,7 @@ class RotateSetting : DSetting("强制旋转") {
         }
     }
 
-    override fun onUiCreate(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onBind(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
         val rotate: RadioGroup = inflater.inflate(R.layout.rotate_charge, container, false) as RadioGroup
         val lastCheckedId = findRadioId(App.sp.getInt("orientation", ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED))
         rotate.findViewById<RadioButton>(lastCheckedId)?.isChecked = true

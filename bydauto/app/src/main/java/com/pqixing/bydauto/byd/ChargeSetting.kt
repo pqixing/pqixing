@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.DSetting
+import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.R
 
-class ChargeSetting : DSetting("无线充电") {
+class ChargeSetting : SettingImpl("无线充电") {
     companion object {
         const val CHARGE_TYPE: String = "CHARGE_TYPE"
     }
@@ -22,7 +22,7 @@ class ChargeSetting : DSetting("无线充电") {
         "CLOSE" to R.id.rbChargeClose
     )
 
-    override fun onUiCreate(
+    override fun onBind(
         activity: Activity,
         inflater: LayoutInflater,
         container: ViewGroup

@@ -33,7 +33,7 @@ class App : Application() {
             Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
         }
 
-        private fun get(): App {
+        fun get(): App {
             return app
         }
 
