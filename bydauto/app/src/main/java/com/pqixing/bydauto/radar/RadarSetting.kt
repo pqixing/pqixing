@@ -81,7 +81,7 @@ class RadarSetting : SettingImpl(R.layout.setting_radar) {
 
         viewHolder.findViewById<Button>(R.id.cb_radar_debug).setOnClickListener {
             closeFloatView(viewHolder.context)
-            openFloatView(viewHolder.context, true, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            openFloatView(viewHolder.context, true)
             floatView?.resetBounds()
         }
     }
