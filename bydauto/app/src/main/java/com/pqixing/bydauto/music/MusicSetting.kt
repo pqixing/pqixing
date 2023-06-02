@@ -2,13 +2,15 @@ package com.pqixing.bydauto.music
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
+import com.pqixing.bydauto.App
 import com.pqixing.bydauto.Const
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
+import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
 
 class MusicSetting : SettingImpl(R.layout.setting_music) {
@@ -16,34 +18,41 @@ class MusicSetting : SettingImpl(R.layout.setting_music) {
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val radio: RadioGroup = viewHolder.findViewById(R.id.group)
-        val childs = with(Dispatchers.IO) {
+        val lastPkg = Const.SP_MUSIC_PKG
+        val appInfos = with(Dispatchers.IO) {
             val pm = viewHolder.context.packageManager
-            pm.queryBroadcastReceivers(
+            UiUtils.loadAppInfos(viewHolder.context, pm.queryBroadcastReceivers(
                 Intent(Const.ACTION_AUTOVOICE_SEARCH_PLUS),
                 PackageManager.GET_META_DATA
-            ).map { it.activityInfo.packageName }.minus(viewHolder.context.packageName).map {
-                it to pm.getApplicationLabel(pm.getApplicationInfo(it, PackageManager.GET_META_DATA)).toString()
-            }.mapIndexed { index, item ->
-                val auto = RadioButton(viewHolder.context)
-                auto.id = index
-                auto.text = item.second
-                auto.isChecked = item.first == "lastPkg"
-                auto.setOnLongClickListener {
-                    Toast.makeText(it.context, item.first, Toast.LENGTH_SHORT).show()
-                    true
-                }
-                auto
+            ).map { it.activityInfo.packageName })
+        }
+        appInfos.forEachIndexed { index, appInfo ->
+            val auto = RadioButton(viewHolder.context)
+            auto.id = index
+            auto.text = appInfo.name
+            auto.isChecked = appInfo.pkg == lastPkg
+            radio.addView(auto)
+        }
+        radio.setOnCheckedChangeListener { _, id ->
+            val item = appInfos[id]
+            Const.SP_MUSIC_PKG = item.pkg
+            App.toast("${item.name} : ${item.pkg}")
+        }
+
+        val musicBackGround = viewHolder.findViewById<CheckBox>(R.id.cb_music_background)
+        musicBackGround.isChecked = Const.SP_MUSIC_BACKGROUND
+        musicBackGround.setOnCheckedChangeListener { _, isChecked -> Const.SP_MUSIC_BACKGROUND = isChecked }
+
+        val autoSwitch = viewHolder.findViewById<CheckBox>(R.id.cb_auto_switch)
+        autoSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Const.SP_MUSIC_PKG = ""
+                radio.isEnabled = false
+            } else {
+                radio.isEnabled = true
+                Const.SP_MUSIC_PKG = appInfos.getOrNull(radio.checkedRadioButtonId)?.pkg ?: ""
             }
         }
-        childs.forEach { child -> radio.addView(child) }
-
-        radio.setOnCheckedChangeListener { _, id ->
-//            val item = items[id]
-//            App.sp.edit().putString(MUSIC_PKG, item.first).apply()
-//            App.toast("${item.second} : ${item.first}")
-        }
-
+        autoSwitch.isChecked = lastPkg.isEmpty()
     }
-
-
 }

@@ -1,7 +1,6 @@
 package com.pqixing.bydauto.radar
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -13,18 +12,17 @@ import android.graphics.PixelFormat
 import android.net.Uri
 import android.provider.Settings
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.CheckBox
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.pqixing.bydauto.App
+import com.pqixing.bydauto.Const
+import com.pqixing.bydauto.R
+import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import kotlin.concurrent.thread
 
-class RadarSetting : SettingImpl("雷达测距") {
+class RadarSetting : SettingImpl(R.layout.setting_radar) {
     companion object {
         const val OPEN_RADAR = "OPEN_RADAR"
     }
@@ -38,56 +36,8 @@ class RadarSetting : SettingImpl("雷达测距") {
     private var floatView: RadarFloatView? = null
     private val reg = Regex(".*ActivityTaskManager.*(START|activityResumedForAcBar|Displayed|topComponentName).*")
     private val vReg = Regex(".*com\\.byd\\.avc.*AutoVideoActivity.*")
-    override fun onBind(activity: Activity, inflater: LayoutInflater, container: ViewGroup): View {
-        val content = LinearLayout(activity)
-        content.orientation = LinearLayout.HORIZONTAL
-        content.gravity = Gravity.CENTER_VERTICAL
 
-
-        val radar = CheckBox(activity)
-        radar.gravity = Gravity.CENTER_VERTICAL
-        radar.text = "开启"
-        radar.isChecked = App.sp.getBoolean(OPEN_RADAR, false)
-        radar.setPadding(20, 0, 0, 0)
-        radar.setOnCheckedChangeListener { _, check ->
-            if (check && activity.checkSelfPermission(Manifest.permission.READ_LOGS) != PackageManager.PERMISSION_GRANTED) {
-                showPermissionDialog(activity)
-                radar.isChecked = false
-            } else {
-                App.sp.edit().putBoolean(OPEN_RADAR, check).apply()
-                onRadarWatch(activity.applicationContext, check)
-            }
-        }
-
-        content.addView(radar)
-        content.addView(View(activity), LinearLayout.LayoutParams(60, 1))
-
-        val land = TextView(activity)
-        land.text = "横屏调试"
-        land.textSize = 18f
-        land.setOnClickListener {
-            closeFloatView(activity)
-            openFloatView(activity, true, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            floatView?.resetBounds()
-        }
-
-        content.addView(land)
-        content.addView(View(activity), LinearLayout.LayoutParams(60, 1))
-
-        val portrait = TextView(activity)
-        portrait.text = "竖屏调试"
-        portrait.textSize = 18f
-        portrait.setOnClickListener {
-            closeFloatView(activity)
-            openFloatView(activity, true, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            floatView?.resetBounds()
-        }
-        content.addView(portrait)
-        return content
-    }
-
-
-    private fun showPermissionDialog(activity: Activity) {
+    private fun showPermissionDialog(activity: Context) {
         val cmd = "pm grant ${activity.packageName} ${Manifest.permission.READ_LOGS}"
         AlertDialog.Builder(activity)
             .setTitle("申请权限")
@@ -115,6 +65,27 @@ class RadarSetting : SettingImpl("雷达测距") {
         onRadarWatch(context, false)
     }
 
+    override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
+
+        val radar = viewHolder.findViewById<CheckBox>(R.id.cb_radar_open)
+        radar.isChecked = Const.SP_OPEN_RADAR
+        radar.setOnCheckedChangeListener { _, check ->
+            if (check && viewHolder.context.checkSelfPermission(Manifest.permission.READ_LOGS) != PackageManager.PERMISSION_GRANTED) {
+                showPermissionDialog(viewHolder.context)
+                radar.isChecked = false
+            } else {
+                App.sp.edit().putBoolean(OPEN_RADAR, check).apply()
+                onRadarWatch(viewHolder.context.applicationContext, check)
+            }
+        }
+
+        viewHolder.findViewById<Button>(R.id.cb_radar_debug).setOnClickListener {
+            closeFloatView(viewHolder.context)
+            openFloatView(viewHolder.context, true, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            floatView?.resetBounds()
+        }
+    }
+
     fun openFloatView(context: Context, edit: Boolean = false, orientation: Int = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) {
         if (floatView?.isAttachedToWindow == true) return
         closeFloatView(context)
@@ -131,7 +102,7 @@ class RadarSetting : SettingImpl("雷达测距") {
             val floatView = RadarFloatView(context.applicationContext)
             wm.addView(floatView, layoutParams(edit, orientation))
             this.floatView = floatView
-        }.onFailure { App.log(null,it) }
+        }.onFailure { App.log(null, it) }
     }
 
     fun closeFloatView(context: Context) {
@@ -141,7 +112,7 @@ class RadarSetting : SettingImpl("雷达测距") {
             floatView = null
             val wm = context.getSystemService(WindowManager::class.java)
             wm.removeView(f)
-        }.onFailure { App.log(null,it) }
+        }.onFailure { App.log(null, it) }
     }
 
 
@@ -172,7 +143,7 @@ class RadarSetting : SettingImpl("雷达测距") {
                 pro = null
             }
         }.onFailure {
-            App.log(null,it)
+            App.log(null, it)
         }
     }
 
@@ -194,7 +165,7 @@ class RadarSetting : SettingImpl("雷达测距") {
                 this.pro = null
             }
         }.onFailure {
-            App.log(null,it)
+            App.log(null, it)
         }
     }
 

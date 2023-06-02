@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.SViewHolder
 import kotlinx.coroutines.cancel
@@ -35,16 +36,23 @@ class SettingActivity : Activity() {
         setContentView(R.layout.activity_settings)
 
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
-
-        val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            rvData.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
-        } else {
-            rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        }
+        updaLayoutManager(rvData)
         rvData.adapter = SettingAdapter(Const.settings)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updaLayoutManager(findViewById<RecyclerView>(R.id.rv_data))
+    }
+
+    private fun updaLayoutManager(rvData: RecyclerView) {
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            rvData.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
+        } else {
+            rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        }
+    }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
         Log.w("SettingActivity", "enforceCallingOrSelfPermission: $permission")
@@ -74,7 +82,10 @@ class SettingAdapter(val datas: Array<ISetting>) : RecyclerView.Adapter<SViewHol
 
     override fun onBindViewHolder(holder: SViewHolder, position: Int) {
         val setting = datas.getOrNull(position) ?: return
-        App.uiScope.launch {  setting.onBindViewHolder(holder) }
+
+        Thread.currentThread().stackTrace
+
+        App.uiScope.launch { setting.onBindViewHolder(holder) }
 
     }
 }

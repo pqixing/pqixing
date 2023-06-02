@@ -35,18 +35,10 @@
         android:label="迪迪畏">
 
         <activity
-            android:name="com.pqixing.bydauto.MainActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|layoutDirection|fontScale"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:resizeableActivity="true"
-            android:theme="@style/AppMainTheme">
-        </activity>
-        <activity
             android:name="com.pqixing.bydauto.SettingActivity"
             android:theme="@style/AppMainTheme"
             android:excludeFromRecents="true"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true">

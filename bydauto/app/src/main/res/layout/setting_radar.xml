@@ -7,28 +7,16 @@
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="音乐助手"/>
+              android:text="雷达助手"/>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="40dp">
         <CheckBox
-            android:id="@+id/cb_auto_switch"
+            android:id="@+id/cb_radar_open"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="自动切换"/>
-        <CheckBox
-            android:id="@+id/cb_music_background"
+            android:text="距离显示"/>
+        <Button
+            android:id="@+id/cb_radar_debug"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:text="后台搜索"/>
+                  android:text="悬浮调试"/>
     </LinearLayout>
-
-
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="可选音乐软件"/>
-    <RadioGroup
-        android:id="@+id/group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
-
-
 </LinearLayout>

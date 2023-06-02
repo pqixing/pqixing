@@ -1,55 +1,48 @@
 package com.pqixing.bydauto.byd
 
-import android.app.Activity
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.SettingImpl
+import com.pqixing.bydauto.Const
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.setting.SViewHolder
+import com.pqixing.bydauto.setting.SettingImpl
 
-class ChargeSetting : SettingImpl("无线充电") {
+class ChargeSetting : SettingImpl(R.layout.setting_charge) {
     companion object {
-        const val CHARGE_TYPE: String = "CHARGE_TYPE"
+        const val CHARGE_TYPE_NONE: String = "CHARGE_TYPE_NONE"
+        const val CHARGE_TYPE_OPEN: String = "CHARGE_TYPE_OPEN"
+        const val CHARGE_TYPE_CLOSE: String = "CHARGE_TYPE_CLOSE"
     }
 
     val ids = mapOf(
-        "NONE" to R.id.rbChargeNone,
-        "OPEN" to R.id.rbChargeOpen,
-        "CLOSE" to R.id.rbChargeClose
+        CHARGE_TYPE_NONE to R.id.rbChargeNone,
+        CHARGE_TYPE_OPEN to R.id.rbChargeOpen,
+        CHARGE_TYPE_CLOSE to R.id.rbChargeClose
     )
-
-    override fun onBind(
-        activity: Activity,
-        inflater: LayoutInflater,
-        container: ViewGroup
-    ): View {
-        val charge = inflater.inflate(R.layout.setting_charge, container, false) as RadioGroup
-        val lastId = ids[App.sp.getString(CHARGE_TYPE, "NONE")] ?: R.id.rbChargeNone
-        onChargeSet(activity, lastId)
-        charge.findViewById<RadioButton>(lastId)?.isChecked = true
-        charge.setOnCheckedChangeListener { _, checkedId ->
-            App.sp.edit()
-                .putString(CHARGE_TYPE, ids.entries.find { it.value == checkedId }?.key ?: "NONE")
-                .apply()
-            onChargeSet(activity, checkedId)
-        }
-        return charge
-    }
 
     override fun onServiceCreate(context: Context) {
         super.onServiceCreate(context)
-        val lastId = ids[App.sp.getString(CHARGE_TYPE, "NONE")] ?: R.id.rbChargeNone
-        onChargeSet(context, lastId)
+        setChargeState()
     }
 
-    private fun onChargeSet(context: Context, id: Int) {
-        when (id) {
-            R.id.rbChargeOpen -> BYDAutoUtils.setWirelessCharging(true)
-            R.id.rbChargeClose -> BYDAutoUtils.setWirelessCharging(false)
+    override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
+        val charge = viewHolder.findViewById<RadioGroup>(R.id.group)
+
+        val lastId = ids[Const.SP_CHARGE_TYPE] ?: R.id.rbChargeNone
+
+        setChargeState()
+        charge.findViewById<RadioButton>(lastId)?.isChecked = true
+        charge.setOnCheckedChangeListener { _, checkedId ->
+            Const.SP_CHARGE_TYPE = ids.entries.find { it.value == checkedId }?.key ?: CHARGE_TYPE_NONE
+            setChargeState()
+        }
+    }
+
+    private fun setChargeState() {
+        when (Const.SP_CHARGE_TYPE) {
+            CHARGE_TYPE_OPEN -> BYDAutoUtils.setWirelessCharging(true)
+            CHARGE_TYPE_CLOSE -> BYDAutoUtils.setWirelessCharging(false)
         }
     }
 }

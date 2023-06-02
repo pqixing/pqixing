@@ -49,7 +49,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
 
         val pm = context.packageManager
 
-        val modePkg = App.sp.getString(MusicSetting.MUSIC_PKG, MusicSetting.DEFAULT_PKG)!!
+        val modePkg = Const.SP_MUSIC_PKG
 
         //获取当前正在播放的软件
         val currentPlayPkg = BYDAutoUtils.getCurrentAudioFocusPackage()
@@ -64,15 +64,14 @@ class BYDMediaReceiver : BroadcastReceiver() {
             return
         }
 
-        if (modePkg != MusicSetting.DEFAULT_PKG && matchPkgs.contains(modePkg)) {
+        if (modePkg != "" && matchPkgs.contains(modePkg)) {
             App.sp.edit().putString(LAST_SELECT_MUSIC, modePkg).apply()
             if (currentPlayPkg != modePkg) {
                 tryLaunch(context, modePkg)
             }
             return invoke(modePkg, true)
         }
-
-        App.sp.edit().putString(MusicSetting.MUSIC_PKG, MusicSetting.DEFAULT_PKG).apply()
+        Const.SP_MUSIC_PKG = ""
         if (currentPlayPkg?.isNotEmpty() == true && matchPkgs.contains(currentPlayPkg)) {
             App.sp.edit().putString(LAST_SELECT_MUSIC, currentPlayPkg).apply()
             return invoke(currentPlayPkg, true)

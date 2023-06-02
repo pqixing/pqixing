@@ -18,9 +18,9 @@ class SViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 }
 
-abstract class SettingImpl(val layoutId: Int) : ISetting {
+abstract class SettingImpl(val _layoutId: Int) : ISetting {
     override fun getLayoutId(): Int {
-        return layoutId
+        return _layoutId
     }
 
     override fun onServiceCreate(context: Context) {
