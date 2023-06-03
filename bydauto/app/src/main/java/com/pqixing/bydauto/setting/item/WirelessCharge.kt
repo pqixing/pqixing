@@ -1,14 +1,15 @@
-package com.pqixing.bydauto.byd
+package com.pqixing.bydauto.setting.item
 
 import android.content.Context
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.pqixing.bydauto.Const
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 
-class ChargeSetting : SettingImpl(R.layout.setting_charge) {
+class WirelessCharge : SettingImpl(R.layout.setting_charge) {
     companion object {
         const val CHARGE_TYPE_NONE: String = "CHARGE_TYPE_NONE"
         const val CHARGE_TYPE_OPEN: String = "CHARGE_TYPE_OPEN"
@@ -25,6 +26,8 @@ class ChargeSetting : SettingImpl(R.layout.setting_charge) {
         super.onServiceCreate(context)
         setChargeState()
     }
+
+    override fun getNameId(): Int= R.string.setting_name_charge
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val charge = viewHolder.findViewById<RadioGroup>(R.id.group)

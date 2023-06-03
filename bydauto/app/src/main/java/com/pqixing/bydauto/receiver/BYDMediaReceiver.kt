@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.music
+package com.pqixing.bydauto.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.SystemClock
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.Const
-import com.pqixing.bydauto.byd.BYDAutoUtils
+import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.utils.BYDAutoUtils
 
 
 class BYDMediaReceiver : BroadcastReceiver() {

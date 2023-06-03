@@ -1,24 +1,25 @@
-package com.pqixing.bydauto
+package com.pqixing.bydauto.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.pqixing.bydauto.setting.ISetting
-import com.pqixing.bydauto.setting.SViewHolder
+import com.pqixing.bydauto.App
+import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.R
+import com.pqixing.bydauto.service.MainService
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 class SettingActivity : Activity() {
+    var splitWidth = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!Settings.canDrawOverlays(this)) kotlin.runCatching {
@@ -46,8 +47,15 @@ class SettingActivity : Activity() {
     }
 
     private fun updaLayoutManager(rvData: RecyclerView) {
+
         val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && splitWidth <= 0) {
+            val point = Point()
+            windowManager.defaultDisplay.getRealSize(point)
+            splitWidth = (point.x * 0.75).toInt()
+        }
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && resources.displayMetrics.widthPixels >= splitWidth) {
             rvData.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         } else {
             rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -69,23 +77,3 @@ class SettingActivity : Activity() {
 }
 
 
-class SettingAdapter(val datas: Array<ISetting>) : RecyclerView.Adapter<SViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SViewHolder {
-        return SViewHolder(LayoutInflater.from(parent.context).inflate(viewType, parent, false))
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return datas[position].getLayoutId()
-    }
-
-    override fun getItemCount(): Int = datas.size
-
-    override fun onBindViewHolder(holder: SViewHolder, position: Int) {
-        val setting = datas.getOrNull(position) ?: return
-
-        Thread.currentThread().stackTrace
-
-        App.uiScope.launch { setting.onBindViewHolder(holder) }
-
-    }
-}

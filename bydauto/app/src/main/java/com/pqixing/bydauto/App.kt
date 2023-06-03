@@ -8,10 +8,8 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RestrictTo.Scope
-import com.pqixing.bydauto.byd.BYDAutoUtils
+import com.pqixing.bydauto.utils.BYDAutoUtils
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import java.io.File
 

@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.music
+package com.pqixing.bydauto.setting.item
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -6,15 +6,15 @@ import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.Const
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
 
-class MusicSetting : SettingImpl(R.layout.setting_music) {
-    override fun getLayoutId(): Int = R.layout.setting_music
+class MusicForward : SettingImpl(R.layout.setting_music) {
+    override fun getNameId(): Int = R.string.setting_name_music
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val radio: RadioGroup = viewHolder.findViewById(R.id.group)

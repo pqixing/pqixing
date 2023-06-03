@@ -14,7 +14,7 @@
 //import android.widget.TextView
 //import com.pqixing.bydauto.App
 //import com.pqixing.bydauto.R
-//import com.pqixing.bydauto.byd.BYDAutoUtils
+//import com.pqixing.bydauto.utils.BYDAutoUtils
 //import com.pqixing.bydauto.setting.SettingImpl
 //
 //class DebugSetting : SettingImpl("调试开关") {

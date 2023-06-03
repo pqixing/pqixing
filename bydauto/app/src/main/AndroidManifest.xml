@@ -32,13 +32,13 @@
         android:allowBackup="true"
         android:icon="@drawable/app_logo"
         tools:replace="android:name"
-        android:label="迪迪畏">
+        android:label="@string/app_main_name">
 
         <activity
-            android:name="com.pqixing.bydauto.SettingActivity"
+            android:name="com.pqixing.bydauto.ui.SettingActivity"
             android:theme="@style/AppMainTheme"
             android:excludeFromRecents="true"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|layoutDirection|fontScale"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true">
@@ -49,11 +49,11 @@
         </activity>
 
         <service
-            android:name="com.pqixing.bydauto.MainService"
+            android:name="com.pqixing.bydauto.service.MainService"
             android:exported="false"/>
 
         <receiver
-            android:name="com.pqixing.bydauto.boot.BootReceiver"
+            android:name="com.pqixing.bydauto.receiver.BootReceiver"
             android:exported="true"
             android:permission="android.intent.action.BOOT_COMPLETED">
             <intent-filter>
@@ -63,7 +63,7 @@
         </receiver>
 
         <receiver
-            android:name="com.pqixing.bydauto.music.BYDMediaReceiver"
+            android:name="com.pqixing.bydauto.receiver.BYDMediaReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="pqx.intent.action.MEDIA"/>

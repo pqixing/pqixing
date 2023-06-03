@@ -1,14 +1,15 @@
-package com.pqixing.bydauto
+package com.pqixing.bydauto.model
 
-import com.pqixing.bydauto.byd.ChargeSetting
-import com.pqixing.bydauto.music.MusicSetting
-import com.pqixing.bydauto.radar.RadarSetting
-import com.pqixing.bydauto.rotate.RotateSetting
+import com.pqixing.bydauto.App
+import com.pqixing.bydauto.setting.item.WirelessCharge
+import com.pqixing.bydauto.setting.item.MusicForward
+import com.pqixing.bydauto.setting.item.RadarDistance
+import com.pqixing.bydauto.setting.item.ForceRotation
 import com.pqixing.bydauto.setting.ISetting
 
 object Const {
 
-    val settings = arrayOf<ISetting>(ChargeSetting(), RotateSetting(), MusicSetting(), RadarSetting())
+    val settings = arrayOf<ISetting>(WirelessCharge(), ForceRotation(), MusicForward(), RadarDistance())
 
     var lastMediaReceiver: Long = -1L
 

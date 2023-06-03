@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_main_name">手链</string>
+    <string name="setting_name_charge">无线充电</string>
+    <string name="setting_name_music">音乐助手</string>
+    <string name="setting_name_radar">倒车雷达</string>
+    <string name="setting_name_rotate">强制旋转</string>
+    <string name="close">关闭</string>
+    <string name="open">开启</string>
+    <string name="none">忽略</string>
+    <string name="rotate_sensor">重力</string>
+    <string name="rotate_portrait">竖屏</string>
+    <string name="rotate_landscape">横屏</string>
+</resources>

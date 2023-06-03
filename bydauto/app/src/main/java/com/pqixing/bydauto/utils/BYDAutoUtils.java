@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.byd;
+package com.pqixing.bydauto.utils;
 
 import android.app.Application;
 import android.hardware.bydauto.ac.BYDAutoAcDevice;

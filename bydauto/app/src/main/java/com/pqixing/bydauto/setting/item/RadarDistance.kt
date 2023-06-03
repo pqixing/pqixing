@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.radar
+package com.pqixing.bydauto.setting.item
 
 import android.Manifest
 import android.app.AlertDialog
@@ -16,13 +16,14 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.CheckBox
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.Const
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.widget.RadarFloatView
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import kotlin.concurrent.thread
 
-class RadarSetting : SettingImpl(R.layout.setting_radar) {
+class RadarDistance : SettingImpl(R.layout.setting_radar) {
     companion object {
         const val OPEN_RADAR = "OPEN_RADAR"
     }
@@ -64,6 +65,8 @@ class RadarSetting : SettingImpl(R.layout.setting_radar) {
         serviceLive = false
         onRadarWatch(context, false)
     }
+
+    override fun getNameId(): Int = R.string.setting_name_radar
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
 

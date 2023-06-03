@@ -1,10 +1,11 @@
-package com.pqixing.bydauto
+package com.pqixing.bydauto.service
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import com.pqixing.bydauto.model.Const
 
 class MainService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null

@@ -1,10 +1,10 @@
-package com.pqixing.bydauto.boot
+package com.pqixing.bydauto.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.SettingActivity
+import com.pqixing.bydauto.ui.SettingActivity
 import java.text.DateFormat
 import java.util.*
 

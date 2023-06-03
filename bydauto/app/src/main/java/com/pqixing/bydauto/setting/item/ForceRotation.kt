@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.rotate
+package com.pqixing.bydauto.setting.item
 
 import android.content.Context
 import android.content.Intent
@@ -11,12 +11,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.pqixing.bydauto.Const
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 
-class RotateSetting : SettingImpl(R.layout.setting_rotate) {
+class ForceRotation : SettingImpl(R.layout.setting_rotate) {
     private var mView: View? = null
 
     override fun onServiceCreate(context: Context) {
@@ -49,6 +49,8 @@ class RotateSetting : SettingImpl(R.layout.setting_rotate) {
         super.onServiceDestroy(context)
         removeFloatView(context)
     }
+
+    override fun getNameId(): Int = R.string.setting_name_rotate
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val rotate: RadioGroup = viewHolder.findViewById(R.id.group)
