@@ -39,6 +39,7 @@ class SettingActivity : Activity() {
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
         updaLayoutManager(rvData)
         rvData.adapter = SettingAdapter(Const.settings)
+        rvData.isNestedScrollingEnabled = true
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

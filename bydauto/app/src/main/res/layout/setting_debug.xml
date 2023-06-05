@@ -4,18 +4,6 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#66CCCCCC">
-
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="left"/>
-    </ScrollView>
 
     <GridLayout
         android:id="@+id/gd_group"
@@ -71,5 +59,13 @@
             android:text="温度"
             android:textSize="12sp"/>
     </GridLayout>
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#66CCCCCC"
+        android:minHeight="80dp"
+        android:padding="10dp"
+        android:layout_gravity="left"/>
 
 </LinearLayout>
