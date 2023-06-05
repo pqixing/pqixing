@@ -16,7 +16,9 @@
             <action android:name="com.byd.action.AUTOVOICE_SEARCH_PLUS"/>
         </intent>
         <intent>
-            <action android:name="pqx.intent.action.MEDIA"/>
+            <action android:name="transform.intent.action.MEDIA"/>
+
+
         </intent>
     </queries>
 
@@ -37,7 +39,6 @@
         <activity
             android:name="com.pqixing.bydauto.ui.SettingActivity"
             android:theme="@style/AppMainTheme"
-            android:excludeFromRecents="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:exported="true"
             android:launchMode="singleTask"
@@ -66,7 +67,7 @@
             android:name="com.pqixing.bydauto.receiver.BYDMediaReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="pqx.intent.action.MEDIA"/>
+                <action android:name="host.intent.action.MEDIA"/>
 
                 <action android:name="byd.intent.action.MEDIA_MODE"/>
                 <action android:name="byd.intent.action.MEDIA_BUTTON"/>

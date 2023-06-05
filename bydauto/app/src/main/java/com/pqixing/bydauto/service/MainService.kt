@@ -6,17 +6,20 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.utils.LogcatManager
 
 class MainService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
+        LogcatManager.start()
         Const.settings.forEach { it.onServiceCreate(this) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        LogcatManager.close()
         Const.settings.forEach { it.onServiceDestroy(this) }
     }
 

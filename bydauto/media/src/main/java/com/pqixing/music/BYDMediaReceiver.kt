@@ -1,10 +1,9 @@
-package com.pqixing.android.music
+package com.pqixing.music
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.widget.Toast
 
 
 class BYDMediaReceiver : BroadcastReceiver() {
@@ -17,7 +16,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
         if (pkg.isEmpty()) {
             //支持小迪语音的软件
             pkg = context.packageManager.queryBroadcastReceivers(
-                Intent("pqx.intent.action.MEDIA"), PackageManager.GET_META_DATA
+                Intent("host.intent.action.MEDIA"), PackageManager.GET_META_DATA
             ).map { it.activityInfo.packageName }.firstOrNull() ?: return
         }
 
@@ -28,7 +27,6 @@ class BYDMediaReceiver : BroadcastReceiver() {
         newIntent.putExtra("pkgName", pkg)
         newIntent.putExtra("HAD_BEEN_RESEND_TO", context.packageName)
         context.sendBroadcast(newIntent)
-        Toast.makeText(context, "send $aciton to $pkg", Toast.LENGTH_SHORT).show()
     }
 
 }

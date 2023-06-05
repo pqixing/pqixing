@@ -10,8 +10,9 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.utils.LogcatManager
 
-class RadarFloatView(context: Context) : FrameLayout(context) {
+class RadarFloatView(context: Context) : FrameLayout(context), LogcatManager.LogCatCallBack {
 
     val maps = listOf(
         R.id.left_front to "左前方",
@@ -48,6 +49,16 @@ class RadarFloatView(context: Context) : FrameLayout(context) {
         resizeView(newConfig?.orientation != Configuration.ORIENTATION_PORTRAIT)
         App.toast("onConfigurationChanged : orientation=${newConfig?.orientation} ; context=${context.resources.configuration.orientation}")
 
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        LogcatManager.addCallBack(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        LogcatManager.removeCallBack(this)
     }
 
     private fun resizeView(landscape: Boolean) {
@@ -108,10 +119,15 @@ class RadarFloatView(context: Context) : FrameLayout(context) {
         }
     }
 
+
+    override fun getFilterRex(): String {
+        return ".*getAllRadarDistance.*"
+    }
+
     /**
      * left front is 150, right front is 150, left rear is 150, right rear is 150, left is 150, right is 150, front left is 150, front right is 150, middle rear radar is 150
      */
-    fun parseLog(log: String?) {
+    override fun onReceiveLog(log: String) {
         if (setBound || log == null) return
         kotlin.runCatching {
             val distanceStr = log.split("getAllRadarDistance").lastOrNull() ?: return@runCatching

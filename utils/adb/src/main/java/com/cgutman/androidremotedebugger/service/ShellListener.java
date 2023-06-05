@@ -138,6 +138,9 @@ public class ShellListener implements DeviceConnectionListener {
 				LinkedList<DeviceConnectionListener> listeners = listenerMap.get(devConn);
 				if (listeners != null) {
 					for (DeviceConnectionListener listener : listeners) {
+						if(listener.canReceiveData()){
+							listener.receivedData(devConn,data,offset,length);
+						}
 						if (listener.isConsole()) {
 							listener.consoleUpdated(devConn, console);
 						}

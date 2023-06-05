@@ -11,13 +11,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 
 class ForceRotation : SettingImpl(R.layout.setting_rotate) {
     private var mView: View? = null
+
+    companion object {
+        const val FLOAT_TAG_ROTATION = "FLOAT_TAG_ROTATION"
+    }
 
     override fun onServiceCreate(context: Context) {
         super.onServiceCreate(context)
@@ -26,6 +30,7 @@ class ForceRotation : SettingImpl(R.layout.setting_rotate) {
 
     private fun updateFloatView(context: Context) {
         val orientation: Int = Const.SP_ORIENTATION
+
         if (!Settings.canDrawOverlays(context)) kotlin.runCatching {
             val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

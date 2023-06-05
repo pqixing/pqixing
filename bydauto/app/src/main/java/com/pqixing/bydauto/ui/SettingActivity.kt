@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.pqixing.bydauto.App
-import com.pqixing.bydauto.model.Const
+import com.cgutman.androidremotedebugger.service.ShellService
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.MainService
-import kotlinx.coroutines.cancel
 
 class SettingActivity : Activity() {
     var splitWidth = -1
@@ -34,6 +33,7 @@ class SettingActivity : Activity() {
             return
         }
         startService(Intent(this, MainService::class.java))
+        startService(Intent(this, ShellService::class.java))
         setContentView(R.layout.activity_settings)
 
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
@@ -72,7 +72,6 @@ class SettingActivity : Activity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        App.uiScope.cancel()
     }
 }
 

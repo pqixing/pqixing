@@ -3,7 +3,6 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -16,7 +15,6 @@
             android:padding="10dp"
             android:layout_gravity="left"/>
     </ScrollView>
-
     <GridLayout
         android:id="@+id/gd_group"
         android:layout_width="match_parent"
@@ -24,52 +22,37 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/tv_send_name"
+            android:id="@+id/tv_connection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="连接adb"
             android:padding="4dp"
-            android:text="发送名称"
             android:textSize="12sp"/>
-
         <Button
-            android:id="@+id/tv_radar"
+            android:id="@+id/tv_connection_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:text="测试"
             android:padding="4dp"
-            android:text="雷达"
             android:textSize="12sp"/>
 
 
         <Button
-            android:id="@+id/tv_wirless_charging"
+            android:id="@+id/tv_read_log"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="无线充电"/>
-        <Button
-            android:id="@+id/tv_split"
-            android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="分屏"
+            android:text="日志权限"
             android:textSize="12sp"/>
         <Button
-            android:id="@+id/tv_air"
+            android:id="@+id/tv_shell_ui"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="空调"
+            android:text="Shell页面"
             android:textSize="12sp"/>
-        <Button
-            android:id="@+id/tv_temprature"
-            android:layout_width="wrap_content"
 
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="温度"
-            android:textSize="12sp"/>
+
     </GridLayout>
 
 </LinearLayout>

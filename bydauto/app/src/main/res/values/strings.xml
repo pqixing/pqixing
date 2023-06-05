@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_main_name">手链</string>
+    <string name="app_main_name">工具箱</string>
     <string name="setting_name_charge">无线充电</string>
     <string name="setting_name_music">音乐助手</string>
     <string name="setting_name_radar">倒车雷达</string>
@@ -11,4 +11,6 @@
     <string name="rotate_sensor">重力</string>
     <string name="rotate_portrait">竖屏</string>
     <string name="rotate_landscape">横屏</string>
+    <string name="setting_name_debug">调试车机</string>
+    <string name="setting_name_adb">adb调试</string>
 </resources>
