@@ -49,10 +49,11 @@ object UiUtils {
 
     fun closeFloatView(tag: String) {
         runCatching {
-            val view = floatViews.remove(tag) ?: return
+            val view = floatViews.get(tag) ?: return
             val context = App.get()
             val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             wm.removeView(view)
+            floatViews.remove(tag)
         }
     }
 

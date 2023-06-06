@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.setting.item
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager

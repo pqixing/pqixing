@@ -36,7 +36,7 @@ class AdbSetting : SettingImpl(R.layout.setting_adb) {
             result.text = runCatching {
                 when (id) {
                     R.id.tv_shell_ui -> result.context.startActivity(Intent(result.context, ConnectActivity::class.java))
-                    R.id.tv_connection -> LocalHostAdb.tryToConnection()
+                    R.id.tv_connection -> LocalHostAdb.connection()
                     R.id.tv_connection_test -> LocalHostAdb.runCmd("ls")
                     R.id.tv_read_log -> LocalHostAdb.runCmd("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
                     else -> null

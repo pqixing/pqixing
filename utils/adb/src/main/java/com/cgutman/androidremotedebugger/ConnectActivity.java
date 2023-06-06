@@ -79,7 +79,7 @@ public class ConnectActivity extends Activity implements OnClickListener {
 	
 	private void loadPreferences() {
 		SharedPreferences prefs = getSharedPreferences(PREFS_FILE, 0);
-		ipField.setText(prefs.getString("IP", ""));
+		ipField.setText(prefs.getString("IP", "127.0.0.1"));
 		portField.setText(prefs.getString("Port", "5555"));
 	}
 	

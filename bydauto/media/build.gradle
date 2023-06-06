@@ -6,7 +6,7 @@ android {
     namespace 'com.ting.mp3.android'
 
     defaultConfig {
-        applicationId "com.ting.mp3.android22"
+        applicationId "com.ting.mp3.android"
         versionCode 1
         versionName "1.0"
     }

@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.view.View
-import android.widget.CheckBox
-import android.widget.HorizontalScrollView
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
@@ -81,7 +78,10 @@ class MusicForward : SettingImpl(R.layout.setting_music) {
     }
 
     suspend fun resend(context: Context, intent: Intent) {
-        val pkg = findResendPkg(context) ?: return
+        val pkg = findResendPkg(context) ?: return run {
+            Toast.makeText(context, "没有可播放的音乐App", Toast.LENGTH_SHORT).show()
+        }
+        Const.SP_MUSIC_PKG = pkg
 
         context.packageManager.getLaunchIntentForPackage(pkg)?.runCatching {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -107,21 +107,19 @@ class MusicForward : SettingImpl(R.layout.setting_music) {
     suspend fun findResendPkg(context: Context): String? {
         //获取当前正在播放的软件
         val currentPlayPkg = BYDAutoUtils.getCurrentAudioFocusPackage()
+        val lastPkg = Const.SP_MUSIC_PKG
         if (currentPlayPkg.isNotEmpty() && Const.SP_MUSIC_PKG == currentPlayPkg) {
             return currentPlayPkg
         }
 
         val matchs = withContext(Dispatchers.IO) { matchPkgs(context) }
         if (Const.SP_MUSIC_SWITCH) {
-            return if (matchs.contains(currentPlayPkg)) {
-                Const.SP_MUSIC_PKG = currentPlayPkg
-                currentPlayPkg
-            } else null
+            return when {
+                matchs.contains(currentPlayPkg) -> currentPlayPkg
+                matchs.contains(lastPkg) -> lastPkg
+                else -> matchs.firstOrNull()
+            }
         }
-        val lastSelect = Const.SP_MUSIC_PKG.takeIf { matchs.contains(it) } ?: matchs.firstOrNull()
-        if (!lastSelect.isNullOrBlank()) {
-            Const.SP_MUSIC_PKG = lastSelect
-        }
-        return lastSelect
+        return if (matchs.contains(lastPkg)) lastPkg else matchs.firstOrNull()
     }
 }

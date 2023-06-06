@@ -1,45 +1,66 @@
 package com.pqixing.bydauto.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
 import com.cgutman.androidremotedebugger.devconn.DeviceConnection
-import com.cgutman.androidremotedebugger.service.ShellService
 import com.cgutman.androidremotedebugger.service.SimpleLister
 import com.pqixing.bydauto.App
 import kotlinx.coroutines.delay
 
-object LocalHostAdb : SimpleLister(App.get()) {
+@SuppressLint("StaticFieldLeak")
+object LocalHostAdb : SimpleLister() {
+
+    private val LOCALHOST = "127.0.0.1"
+    private var conn: DeviceConnection? = null
 
     private val buffer: StringBuilder = StringBuilder()
 
     fun isConnect(): Boolean {
-        return ShellService.getBinder(App.get())?.findConnection("127.0.0.1", 5555) != null
+        return conn != null
     }
 
-    override fun setText(log: String?) {
+    override fun notifyConnectionEstablished(devConn: DeviceConnection?) {
+        super.notifyConnectionEstablished(devConn)
+        if (devConn?.host == LOCALHOST) {
+            conn = devConn
+        }
+    }
+
+    override fun onClose(devConn: DeviceConnection?, e: Exception?) {
+        super.onClose(devConn, e)
+        conn = null
+    }
+
+    fun close() {
+        conn?.close()
+    }
+
+    override fun onResponse(log: String?) {
         buffer.append(log).append("\n")
     }
 
     suspend fun runCmd(cmd: String): String {
         buffer.clear()
-        val conn = tryToConnection() ?: return "连接失败"
+        val conn = connection() ?: return "连接失败"
         conn.queueCommand("$cmd \n")
         delay(500)
         return buffer.toString()
     }
 
-    suspend fun tryToConnection(): DeviceConnection? {
-        val context = App.get()
-        var binder = ShellService.getBinder(context) ?: run {
-            delay(500)
-            ShellService.getBinder(context)
-        } ?: return null
-
-
-        return binder.findConnection("127.0.0.1", 5555) ?: run {
-            binder.createConnection("127.0.0.1", 5555).also {
-                binder.addListener(it, this@LocalHostAdb)
+    suspend fun connection(): DeviceConnection? {
+        if (conn == null) {
+            DeviceConnection(this, "127.0.0.1", 5555).also {
                 it.startConnect()
-                delay(500)
+            }
+            val start = System.currentTimeMillis()
+            while (conn == null && System.currentTimeMillis() - start <= 15000) {
+                delay(50)
             }
         }
+        return conn
+    }
+
+    override fun getContext(): Context {
+        return App.get()
     }
 }

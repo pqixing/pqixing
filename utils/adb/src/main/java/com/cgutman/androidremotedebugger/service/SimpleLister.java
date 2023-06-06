@@ -1,53 +1,52 @@
 package com.cgutman.androidremotedebugger.service;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
 import com.cgutman.adblib.AdbCrypto;
 import com.cgutman.androidremotedebugger.AdbUtils;
 import com.cgutman.androidremotedebugger.console.ConsoleBuffer;
 import com.cgutman.androidremotedebugger.devconn.DeviceConnection;
 import com.cgutman.androidremotedebugger.devconn.DeviceConnectionListener;
 
-public class SimpleLister implements DeviceConnectionListener {
-    private Context context;
-    private Handler handler = new Handler(Looper.getMainLooper());
+public abstract class SimpleLister implements DeviceConnectionListener {
 
-    public SimpleLister(Context context) {
-        this.context = context;
-    }
-
-    public void setText(String log) {
-        handler.post(() -> Toast.makeText(context, log, Toast.LENGTH_SHORT).show());
-    }
+    public abstract Context getContext();
 
     @Override
     public void notifyConnectionEstablished(DeviceConnection devConn) {
-        setText("连接成功:" + devConn.getHost());
+        onResponse("连接成功:" + devConn.getHost());
+    }
+
+    public void onResponse(String s) {
+
+    }
+
+    public void onClose(DeviceConnection devConn, Exception e) {
+
     }
 
     @Override
     public void notifyConnectionFailed(DeviceConnection devConn, Exception e) {
-        setText("连接失败:" + devConn.getHost() + " -> " + e.getMessage());
-
+        onResponse("连接失败:" + devConn.getHost() + " -> " + e.getMessage());
+        onClose(devConn, e);
     }
 
     @Override
     public void notifyStreamFailed(DeviceConnection devConn, Exception e) {
-        setText("连接失败:" + devConn.getHost() + " -> " + e.getMessage());
+        onResponse("连接失败:" + devConn.getHost() + " -> " + e.getMessage());
+        onClose(devConn, e);
 
     }
 
     @Override
     public void notifyStreamClosed(DeviceConnection devConn) {
-        setText("连接关闭:" + devConn.getHost());
+        onResponse("连接关闭:" + devConn.getHost());
+        onClose(devConn, null);
 
     }
 
     @Override
     public AdbCrypto loadAdbCrypto(DeviceConnection devConn) {
-        return AdbUtils.readCryptoConfig(context.getDataDir());
+        return AdbUtils.readCryptoConfig(getContext().getFilesDir());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SimpleLister implements DeviceConnectionListener {
 
     @Override
     public void receivedData(DeviceConnection devConn, byte[] data, int offset, int length) {
-        setText(new String(data, offset, length));
+        onResponse(new String(data, offset, length));
     }
 
     @Override
@@ -67,6 +66,6 @@ public class SimpleLister implements DeviceConnectionListener {
 
     @Override
     public void consoleUpdated(DeviceConnection devConn, ConsoleBuffer console) {
-        setText(console.getString());
+        onResponse(console.getString());
     }
 }
