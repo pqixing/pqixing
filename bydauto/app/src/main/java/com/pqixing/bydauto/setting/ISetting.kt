@@ -10,8 +10,8 @@ interface ISetting {
     fun getNameId(): Int
     fun getLayoutId(): Int
     suspend fun onBindViewHolder(viewHolder: SViewHolder)
-    fun onServiceCreate(context: Context)
-    fun onServiceDestroy(context: Context)
+    fun onCreate(context: Context)
+    fun onDestroy(context: Context)
 }
 
 class SViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,11 +26,10 @@ abstract class SettingImpl(val _layoutId: Int) : ISetting {
     override fun getLayoutId(): Int {
         return _layoutId
     }
-
-    override fun onServiceCreate(context: Context) {
+    override fun onCreate(context: Context) {
     }
 
-    override fun onServiceDestroy(context: Context) {
+    override fun onDestroy(context: Context) {
     }
 
 }

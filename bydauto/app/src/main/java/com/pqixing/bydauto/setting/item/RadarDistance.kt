@@ -1,7 +1,6 @@
 package com.pqixing.bydauto.setting.item
 
 import android.Manifest
-import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -36,15 +35,15 @@ class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatC
         }.show()
     }
 
-    override fun onServiceCreate(context: Context) {
-        super.onServiceCreate(context)
+    override fun onCreate(context: Context) {
+        super.onCreate(context)
         if (Const.SP_OPEN_RADAR) {
             LogcatManager.addCallBack(this)
         }
     }
 
-    override fun onServiceDestroy(context: Context) {
-        super.onServiceDestroy(context)
+    override fun onDestroy(context: Context) {
+        super.onDestroy(context)
         LogcatManager.removeCallBack(this)
     }
 

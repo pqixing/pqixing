@@ -8,9 +8,15 @@ import com.pqixing.bydauto.App
 import kotlinx.coroutines.delay
 
 @SuppressLint("StaticFieldLeak")
-object LocalHostAdb : SimpleLister() {
+class AdbClient private constructor(val host: String = "127.0.0.1", val port: Int = 5555) : SimpleLister() {
+    companion object {
+        private val clients = hashMapOf<String, AdbClient>()
 
-    private val LOCALHOST = "127.0.0.1"
+        fun getClient(host: String = "127.0.0.1", port: Int = 5555): AdbClient {
+            return clients.getOrElse(host) { AdbClient(host, port).also { clients[host] = it } }
+        }
+    }
+
     private var conn: DeviceConnection? = null
 
     private val buffer: StringBuilder = StringBuilder()
@@ -21,14 +27,17 @@ object LocalHostAdb : SimpleLister() {
 
     override fun notifyConnectionEstablished(devConn: DeviceConnection?) {
         super.notifyConnectionEstablished(devConn)
-        if (devConn?.host == LOCALHOST) {
+        if (devConn?.host == host) {
             conn = devConn
         }
     }
 
     override fun onClose(devConn: DeviceConnection?, e: Exception?) {
         super.onClose(devConn, e)
-        conn = null
+        if (devConn?.host == host) {
+            conn = null
+            clients.remove(host)
+        }
     }
 
     fun close() {
@@ -39,9 +48,9 @@ object LocalHostAdb : SimpleLister() {
         buffer.append(log).append("\n")
     }
 
-    suspend fun runCmd(cmd: String): String {
+    suspend fun runCmd(cmd: String): String? {
         buffer.clear()
-        val conn = connection() ?: return "连接失败"
+        val conn = connection() ?: return null
         conn.queueCommand("$cmd \n")
         delay(500)
         return buffer.toString()
@@ -49,7 +58,7 @@ object LocalHostAdb : SimpleLister() {
 
     suspend fun connection(): DeviceConnection? {
         if (conn == null) {
-            DeviceConnection(this, "127.0.0.1", 5555).also {
+            DeviceConnection(this, host, port).also {
                 it.startConnect()
             }
             val start = System.currentTimeMillis()

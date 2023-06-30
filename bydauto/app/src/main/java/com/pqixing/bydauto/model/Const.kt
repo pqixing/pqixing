@@ -2,14 +2,28 @@ package com.pqixing.bydauto.model
 
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.setting.ISetting
-import com.pqixing.bydauto.setting.item.*
+import com.pqixing.bydauto.setting.item.AdbSetting
+import com.pqixing.bydauto.setting.item.DebugSetting
+import com.pqixing.bydauto.setting.item.ForceRotation
+import com.pqixing.bydauto.setting.item.FullScreen
+import com.pqixing.bydauto.setting.item.MusicForward
+import com.pqixing.bydauto.setting.item.RadarDistance
+import com.pqixing.bydauto.setting.item.WirelessCharge
 
 object Const {
 
-    val settings = arrayOf<ISetting>(WirelessCharge(), ForceRotation(), RadarDistance(), MusicForward(), DebugSetting(), AdbSetting())
+    val settings = arrayOf<ISetting>(
+        WirelessCharge(),
+        ForceRotation(),
+        RadarDistance(),
+        MusicForward(),
+        DebugSetting(),
+        AdbSetting(),
+        FullScreen()
+    )
 
     var lastMediaReceiver: Long = -1L
-
+    var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"
 
     var SP_OPEN_RADAR: Boolean
         get() = App.sp.getBoolean("SP_OPEN_RADAR", false)
@@ -34,6 +48,10 @@ object Const {
         get() = App.sp.getInt("SP_ORIENTATION", -1)
         set(value) = App.sp.edit().putInt("SP_ORIENTATION", value).apply()
 
+
+    var SP_FULL_SCREEN: Boolean
+        get() = App.sp.getBoolean("SP_FULL_SCREEN", true)
+        set(value) = App.sp.edit().putBoolean("SP_FULL_SCREEN", value).apply()
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
     const val MEDIA_HOST = "host.intent.action.MEDIA"

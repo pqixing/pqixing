@@ -22,8 +22,8 @@ class WirelessCharge : SettingImpl(R.layout.setting_charge) {
         CHARGE_TYPE_CLOSE to R.id.rbChargeClose
     )
 
-    override fun onServiceCreate(context: Context) {
-        super.onServiceCreate(context)
+    override fun onCreate(context: Context) {
+        super.onCreate(context)
         setChargeState()
     }
 

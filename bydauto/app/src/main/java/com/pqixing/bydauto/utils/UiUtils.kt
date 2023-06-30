@@ -1,5 +1,6 @@
 package com.pqixing.bydauto.utils
 
+import android.Manifest
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -11,6 +12,8 @@ import android.view.View
 import android.view.WindowManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
+import com.pqixing.bydauto.service.CarAccessibilityService
+import com.pqixing.bydauto.ui.MainUI
 import kotlinx.coroutines.delay
 
 object UiUtils {
@@ -94,6 +97,23 @@ object UiUtils {
         }.onFailure {
             App.log(null, it)
         }.isSuccess
+    }
+
+    fun inSplitMode(mainUI: Context): Boolean {
+        return false
+    }
+
+    fun hadGrantAll(context: Context): Boolean {
+        return Settings.canDrawOverlays(context)
+                && context.checkSelfPermission(Manifest.permission.READ_LOGS) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun getStatusBarH(context: Context?): Int {
+        return 30
+    }
+
+    fun getNavigationBarH(context: Context?): Int {
+        return 100
     }
 
 }

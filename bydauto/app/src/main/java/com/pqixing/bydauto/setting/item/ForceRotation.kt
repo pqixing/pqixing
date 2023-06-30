@@ -23,8 +23,8 @@ class ForceRotation : SettingImpl(R.layout.setting_rotate) {
         const val FLOAT_TAG_ROTATION = "FLOAT_TAG_ROTATION"
     }
 
-    override fun onServiceCreate(context: Context) {
-        super.onServiceCreate(context)
+    override fun onCreate(context: Context) {
+        super.onCreate(context)
         updateFloatView(context)
     }
 
@@ -50,8 +50,8 @@ class ForceRotation : SettingImpl(R.layout.setting_rotate) {
         mView?.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_FULLSCREEN;
     }
 
-    override fun onServiceDestroy(context: Context) {
-        super.onServiceDestroy(context)
+    override fun onDestroy(context: Context) {
+        super.onDestroy(context)
         removeFloatView(context)
     }
 
