@@ -12,8 +12,6 @@ import android.view.View
 import android.view.WindowManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
-import com.pqixing.bydauto.service.CarAccessibilityService
-import com.pqixing.bydauto.ui.MainUI
 import kotlinx.coroutines.delay
 
 object UiUtils {
@@ -108,12 +106,23 @@ object UiUtils {
                 && context.checkSelfPermission(Manifest.permission.READ_LOGS) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun getStatusBarH(context: Context?): Int {
-        return 30
+    fun getStatusBarH(context: Context): Int {
+        val resources = context.resources
+        val dimenId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return (if (dimenId > 0) {
+            resources.getDimensionPixelSize(dimenId)
+        } else {
+            (resources.displayMetrics.density * 24).toInt()
+        }) - 1
     }
 
-    fun getNavigationBarH(context: Context?): Int {
-        return 100
+    fun getNavigationBarH(context: Context): Int {
+        val resources = context.resources
+        val dimenId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return (if (dimenId > 0) {
+            resources.getDimensionPixelSize(dimenId)
+        } else {
+            (resources.displayMetrics.density * 48).toInt()
+        }) - 1
     }
-
 }

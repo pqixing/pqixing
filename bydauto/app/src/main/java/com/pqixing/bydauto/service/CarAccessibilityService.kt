@@ -20,6 +20,7 @@ class CarAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        connect = true
         Log.i("CarAccessibilityService", "onAccessibilityEvent: ${event.eventType} ${event.packageName}")
     }
 

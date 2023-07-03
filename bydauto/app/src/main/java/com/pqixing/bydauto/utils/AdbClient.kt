@@ -5,6 +5,8 @@ import android.content.Context
 import com.cgutman.androidremotedebugger.devconn.DeviceConnection
 import com.cgutman.androidremotedebugger.service.SimpleLister
 import com.pqixing.bydauto.App
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 
 @SuppressLint("StaticFieldLeak")
@@ -48,12 +50,16 @@ class AdbClient private constructor(val host: String = "127.0.0.1", val port: In
         buffer.append(log).append("\n")
     }
 
-    suspend fun runCmd(cmd: String): String? {
+    fun runAsync(cmd: String): Deferred<Result<String>> {
+        return App.uiScope.async { runSync(cmd) }
+    }
+
+    suspend fun runSync(cmd: String): Result<String> {
         buffer.clear()
-        val conn = connection() ?: return null
+        val conn = connection() ?: return Result.failure(Exception("not connect"))
         conn.queueCommand("$cmd \n")
         delay(500)
-        return buffer.toString()
+        return Result.success(buffer.toString())
     }
 
     suspend fun connection(): DeviceConnection? {

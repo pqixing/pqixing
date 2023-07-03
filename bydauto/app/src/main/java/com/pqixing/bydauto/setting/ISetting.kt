@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.PermType
 
 interface ISetting {
     fun getNameId(): Int
@@ -12,6 +13,7 @@ interface ISetting {
     suspend fun onBindViewHolder(viewHolder: SViewHolder)
     fun onCreate(context: Context)
     fun onDestroy(context: Context)
+    fun isShow(context: Context): Boolean
 }
 
 class SViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,10 +28,14 @@ abstract class SettingImpl(val _layoutId: Int) : ISetting {
     override fun getLayoutId(): Int {
         return _layoutId
     }
+
     override fun onCreate(context: Context) {
     }
 
     override fun onDestroy(context: Context) {
     }
 
+    override fun isShow(context: Context): Boolean {
+        return PermType.hasPermission(PermType.Float)
+    }
 }

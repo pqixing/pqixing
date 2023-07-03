@@ -13,7 +13,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         intent ?: return
         Const.lastMediaReceiver = System.currentTimeMillis()
-        App.uiScope.launch { runCatching { (Const.settings.find { it is MusicForward } as? MusicForward)?.resend(context, intent) } }
+        App.uiScope.launch { runCatching { (Const.getSettings(context).find { it is MusicForward } as? MusicForward)?.resend(context, intent) } }
     }
 
 }

@@ -1,26 +1,29 @@
 package com.pqixing.bydauto.model
 
+import android.content.Context
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.AdbSetting
-import com.pqixing.bydauto.setting.item.DebugSetting
 import com.pqixing.bydauto.setting.item.ForceRotation
 import com.pqixing.bydauto.setting.item.FullScreen
 import com.pqixing.bydauto.setting.item.MusicForward
+import com.pqixing.bydauto.setting.item.PermSet
 import com.pqixing.bydauto.setting.item.RadarDistance
 import com.pqixing.bydauto.setting.item.WirelessCharge
 
 object Const {
 
-    val settings = arrayOf<ISetting>(
+    private val settings = arrayOf<ISetting>(
+        PermSet(),
         WirelessCharge(),
         ForceRotation(),
         RadarDistance(),
         MusicForward(),
-        DebugSetting(),
+        FullScreen(),
         AdbSetting(),
-        FullScreen()
     )
+
+    fun getSettings(context: Context) = settings.filter { it.isShow(context) }
 
     var lastMediaReceiver: Long = -1L
     var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"

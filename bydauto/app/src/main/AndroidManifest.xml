@@ -49,12 +49,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pqixing.bydauto.ui.PermissionUI"
+            android:name="com.pqixing.bydauto.ui.BootUI"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:theme="@style/AppMainTheme" />
+            android:theme="@style/AppBootTheme" />
 
         <service
             android:name="com.pqixing.bydauto.service.MainService"

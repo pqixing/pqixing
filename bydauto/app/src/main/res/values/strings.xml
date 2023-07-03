@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_main_name">工具箱</string>
-    <string name="app_main_permission">权限设置</string>
+    <string name="setting_name_permission">权限设置</string>
     <string name="setting_name_charge">无线充电</string>
     <string name="setting_name_music">音乐助手</string>
     <string name="setting_name_radar">倒车雷达</string>
@@ -14,7 +14,7 @@
     <string name="rotate_landscape">横屏</string>
     <string name="setting_name_debug">调试车机</string>
     <string name="setting_name_adb">adb调试</string>
-    <string name="permission_float">悬浮窗\n</string>
+    <string name="permission_float">悬浮窗</string>
     <string name="permission_read_logs">日志读取</string>
     <string name="permission_accessibility">无障碍</string>
     <string name="cb_full_screen">全屏</string>

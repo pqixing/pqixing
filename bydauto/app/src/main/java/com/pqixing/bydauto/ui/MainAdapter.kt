@@ -9,7 +9,7 @@ import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.SViewHolder
 import kotlinx.coroutines.launch
 
-class MainAdapter(val datas: Array<ISetting>) : RecyclerView.Adapter<SViewHolder>() {
+class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val baseRoot = inflater.inflate(R.layout.setting_base, parent, false) as ViewGroup

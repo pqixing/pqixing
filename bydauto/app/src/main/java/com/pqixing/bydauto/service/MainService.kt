@@ -13,13 +13,13 @@ class MainService : Service() {
     override fun onCreate() {
         super.onCreate()
         LogcatManager.start()
-        Const.settings.forEach { it.onCreate(this) }
+        Const.getSettings(this).forEach { it.onCreate(this) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         LogcatManager.close()
-        Const.settings.forEach { it.onDestroy(this) }
+        Const.getSettings(this).forEach { it.onDestroy(this) }
     }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {

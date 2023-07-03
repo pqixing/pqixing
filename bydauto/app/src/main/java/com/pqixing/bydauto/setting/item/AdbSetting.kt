@@ -37,8 +37,8 @@ class AdbSetting : SettingImpl(R.layout.setting_adb) {
                 when (id) {
                     R.id.tv_shell_ui -> result.context.startActivity(Intent(result.context, ConnectActivity::class.java))
                     R.id.tv_connection -> AdbClient.getClient().connection()
-                    R.id.tv_connection_test -> AdbClient.getClient().runCmd("ls")
-                    R.id.tv_read_log -> AdbClient.getClient().runCmd("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
+                    R.id.tv_connection_test -> AdbClient.getClient().runSync("ls")
+                    R.id.tv_read_log -> AdbClient.getClient().runSync("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
                     else -> null
                 }.toString()
             }.getOrElse { it.message }

@@ -3,4 +3,6 @@
     <style name="AppMainTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
     </style>
+    <style name="AppBootTheme" parent="android:Theme.Translucent.NoTitleBar">
+    </style>
 </resources>
