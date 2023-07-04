@@ -4,19 +4,19 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.pqixing.bydauto.setting.SettingHelper
+import com.pqixing.bydauto.utils.SettingManager
 
 class MainService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
-        SettingHelper.updateCurSettings(this)
+        SettingManager.updateCurSettings(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        SettingHelper.getSettings(this).forEach { it.onDestroy(this) }
+        SettingManager.getSettings(this).forEach { it.onDestroy(this) }
     }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {

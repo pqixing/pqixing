@@ -10,12 +10,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 
 @SuppressLint("StaticFieldLeak")
-class AdbClient private constructor(val host: String = "127.0.0.1", val port: Int = 5555) : SimpleLister() {
+class AdbManager private constructor(val host: String = "127.0.0.1", val port: Int = 5555) : SimpleLister() {
     companion object {
-        private val clients = hashMapOf<String, AdbClient>()
+        private val clients = hashMapOf<String, AdbManager>()
 
-        fun getClient(host: String = "127.0.0.1", port: Int = 5555): AdbClient {
-            return clients.getOrElse(host) { AdbClient(host, port).also { clients[host] = it } }
+        fun getClient(host: String = "127.0.0.1", port: Int = 5555): AdbManager {
+            return clients.getOrElse(host) { AdbManager(host, port).also { clients[host] = it } }
         }
     }
 

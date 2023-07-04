@@ -1,10 +1,6 @@
 package com.pqixing.bydauto.model
 
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.item.MusicForward
-import com.pqixing.bydauto.setting.item.PermSet
-import com.pqixing.bydauto.setting.item.RadarDistance
-import com.pqixing.bydauto.setting.item.WirelessCharge
 
 object Const {
 

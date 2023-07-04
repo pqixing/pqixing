@@ -37,11 +37,12 @@ class RadarFloatView(context: Context) : FrameLayout(context), LogcatManager.Log
     private val C_FFFFE905 = Color.parseColor("#FFE905")
     private val POS_LANDSCAPE: String = "220:260,220:660,700:260,700:680,820:360,820:580,140:400,140:560,860:480"
     private val POS_PORTRAIT: String = "900:40,900:420,1300:40,1300:420,1380:120,1380:320,820:160,820:320,1420:240"
-
+    private val logcatManager = LogcatManager(listOf("BYDAutoRadarDevice:D"))
     init {
         View.inflate(context, R.layout.radar_float, this)
         views = maps.map { findViewById(it.first) }
         resizeView(context.resources.configuration.orientation != Configuration.ORIENTATION_PORTRAIT)
+        logcatManager.addCallBack(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -53,12 +54,12 @@ class RadarFloatView(context: Context) : FrameLayout(context), LogcatManager.Log
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        LogcatManager.addCallBack(this)
+        logcatManager.start()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        LogcatManager.removeCallBack(this)
+        logcatManager.stop()
     }
 
     private fun resizeView(landscape: Boolean) {

@@ -16,11 +16,11 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.LogcatManager
+import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.widget.RadarFloatView
 
-class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatCallBack {
+class RadarNumber : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
     companion object {
         const val FLOAT_TAG_RADAR = "FLOAT_TAG_RADAR"
     }
@@ -29,22 +29,24 @@ class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatC
 
     private fun showPermissionDialog(activity: Context) {
         val cmd = "pm grant ${activity.packageName} ${Manifest.permission.READ_LOGS}"
-        AlertDialog.Builder(activity).setTitle("申请权限").setMessage("请先通过adb命令授权日志权限: \n $cmd").setPositiveButton("确定") { d, i ->
-            activity.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("Label", cmd))
-            App.toast("命令已复制到粘贴板")
-        }.show()
+        AlertDialog.Builder(activity).setTitle("申请权限").setMessage("请先通过adb命令授权日志权限: \n $cmd")
+            .setPositiveButton("确定") { d, i ->
+                activity.getSystemService(ClipboardManager::class.java)
+                    .setPrimaryClip(ClipData.newPlainText("Label", cmd))
+                App.toast("命令已复制到粘贴板")
+            }.show()
     }
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
         if (Const.SP_OPEN_RADAR) {
-            LogcatManager.addCallBack(this)
+            UiManager.addCallBack(this)
         }
     }
 
     override fun onDestroy(context: Context) {
         super.onDestroy(context)
-        LogcatManager.removeCallBack(this)
+        UiManager.removeCallBack(this)
     }
 
     override fun getNameId(): Int = R.string.setting_name_radar
@@ -54,24 +56,18 @@ class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatC
         val radar = viewHolder.findViewById<CheckBox>(R.id.cb_radar_open)
         radar.isChecked = Const.SP_OPEN_RADAR
         radar.setOnCheckedChangeListener { _, check ->
-            if (check && !UiUtils.checkSelfPermission(viewHolder.context, Manifest.permission.READ_LOGS)) {
-                showPermissionDialog(viewHolder.context)
-                radar.isChecked = false
-            } else {
-                Const.SP_OPEN_RADAR = check
-                LogcatManager.removeCallBack(this)
-
-                if (check) {
-                    LogcatManager.addCallBack(this)
-                    LogcatManager.close()
-                    LogcatManager.start()
-                }
+            Const.SP_OPEN_RADAR = check
+            UiManager.removeCallBack(this)
+            if (check) {
+                UiManager.addCallBack(this)
             }
         }
 
         viewHolder.findViewById<Button>(R.id.cb_radar_debug).setOnClickListener {
             UiUtils.showFloatView(
-                FLOAT_TAG_RADAR, RadarFloatView(viewHolder.context.applicationContext).also { it.resetBounds() }, layoutParams(true)
+                FLOAT_TAG_RADAR,
+                RadarFloatView(viewHolder.context.applicationContext).also { it.resetBounds() },
+                layoutParams(true)
             )
         }
     }
@@ -83,7 +79,8 @@ class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatC
             it.format = PixelFormat.RGBA_8888
             it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             if (!edit) {
-                it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                it.flags =
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             }
             it.gravity = Gravity.START or Gravity.TOP
             it.screenOrientation = orientation
@@ -91,17 +88,16 @@ class RadarDistance : SettingImpl(R.layout.setting_radar), LogcatManager.LogCatC
         }
     }
 
-    override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(START|activityResumedForAcBar|Displayed|topComponentName).*"
-    }
-
-    override fun onReceiveLog(line: String) {
-        val isAutoVideo = regAutoVideo.matches(line)
+    override fun onActivityResume(activity: String, pkg: String) {
+        val isAutoVideo = regAutoVideo.matches(activity)
         if (isAutoVideo && UiUtils.getFloatView(FLOAT_TAG_RADAR)?.isAttachedToWindow != true) {
             UiUtils.showFloatView(FLOAT_TAG_RADAR, RadarFloatView(App.get()), layoutParams())
         }
         if (!isAutoVideo) {
             UiUtils.closeFloatView(FLOAT_TAG_RADAR)
         }
+    }
+
+    override fun onActivityPause(activity: String, pkg: String) {
     }
 }

@@ -1,20 +1,9 @@
 package com.pqixing.bydauto.ui
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.widget.CheckBox
-import com.pqixing.bydauto.App
-import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.PermType
-import com.pqixing.bydauto.service.CarAccessibilityService
 import com.pqixing.bydauto.service.MainService
-import com.pqixing.bydauto.utils.AdbClient
-import com.pqixing.bydauto.utils.UiUtils
-import kotlinx.coroutines.launch
 
 class BootUI : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

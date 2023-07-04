@@ -5,9 +5,8 @@ import android.content.Context
 import android.content.Intent
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.setting.SettingHelper
+import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.setting.item.MusicForward
-import kotlinx.coroutines.handleCoroutineException
 import kotlinx.coroutines.launch
 
 
@@ -17,7 +16,7 @@ class BYDMediaReceiver : BroadcastReceiver() {
         Const.lastMediaReceiver = System.currentTimeMillis()
         App.uiScope.launch {
             runCatching {
-                SettingHelper.findSetting(MusicForward::class.java)?.resend(context, intent)
+                SettingManager.findSetting(MusicForward::class.java)?.resend(context, intent)
             }
         }
     }

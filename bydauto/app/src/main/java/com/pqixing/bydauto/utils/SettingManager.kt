@@ -1,21 +1,22 @@
-package com.pqixing.bydauto.setting
+package com.pqixing.bydauto.utils
 
 import android.content.Context
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.AdbSetting
 import com.pqixing.bydauto.setting.item.ForceRotation
 import com.pqixing.bydauto.setting.item.FullScreen
 import com.pqixing.bydauto.setting.item.MusicForward
 import com.pqixing.bydauto.setting.item.PermSet
-import com.pqixing.bydauto.setting.item.RadarDistance
+import com.pqixing.bydauto.setting.item.RadarNumber
 import com.pqixing.bydauto.setting.item.WirelessCharge
 
-object SettingHelper {
+object SettingManager {
     private val settings = arrayOf<ISetting>(
         PermSet(),
         WirelessCharge(),
         ForceRotation(),
-        RadarDistance(),
+        RadarNumber(),
         MusicForward(),
         FullScreen(),
         AdbSetting(),

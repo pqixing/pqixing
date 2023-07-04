@@ -7,7 +7,7 @@ import android.net.Uri
 import android.provider.Settings
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.service.CarAccessibilityService
-import com.pqixing.bydauto.utils.AdbClient
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 
 sealed class PermType {
@@ -60,7 +60,7 @@ sealed class PermType {
         }
 
         override fun tryToSetPerm(context: Context) {
-            AdbClient.getClient().runAsync("pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}")
+            AdbManager.getClient().runAsync("pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}")
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.pqixing.bydauto.utils
 
-import android.Manifest
 import com.pqixing.bydauto.App
-import java.util.*
+import java.util.LinkedList
 import java.util.regex.Pattern
 import kotlin.concurrent.thread
 
-object LogcatManager {
+class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", "BYDAutoRadarDevice:D")) {
 
     private var startProTs: Long = -1L
 
@@ -18,7 +17,8 @@ object LogcatManager {
     fun addCallBack(callBack: LogCatCallBack) {
         sCallBack.add(callBack)
         patterns.add(Pattern.compile(callBack.getFilterRex()))
-        allPatterns = if (patterns.isEmpty()) null else Pattern.compile(sCallBack.joinToString("") { "(${it.getFilterRex()})" })
+        allPatterns =
+            if (patterns.isEmpty()) null else Pattern.compile(sCallBack.joinToString("") { "(${it.getFilterRex()})" })
     }
 
     fun removeCallBack(callBack: LogCatCallBack) {
@@ -27,10 +27,11 @@ object LogcatManager {
         sCallBack.removeAt(indexOf)
         patterns.removeAt(indexOf)
 
-        allPatterns = if (patterns.isEmpty()) null else Pattern.compile(sCallBack.joinToString("") { "(${it.getFilterRex()})" })
+        allPatterns =
+            if (patterns.isEmpty()) null else Pattern.compile(sCallBack.joinToString("") { "(${it.getFilterRex()})" })
     }
 
-    fun close() {
+    fun stop() {
         startProTs = -1
     }
 
@@ -42,7 +43,7 @@ object LogcatManager {
             while (curTs == startProTs) {
                 //监听雷达距离和页面切换启动
                 val pro =
-                    Runtime.getRuntime().exec("logcat -T 0 -s ActivityTaskManager:I BYDAutoRadarDevice:D *:S")
+                    Runtime.getRuntime().exec("logcat -T 0 -s ${catTags.joinToString(" ")} *:S")
 //                    Runtime.getRuntime().exec("logcat -T 0")
                 pro.inputStream.bufferedReader().use {
                     while (curTs == startProTs) {

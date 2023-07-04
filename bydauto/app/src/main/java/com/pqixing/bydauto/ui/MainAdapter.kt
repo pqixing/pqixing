@@ -8,7 +8,7 @@ import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.SViewHolder
-import com.pqixing.bydauto.setting.SettingHelper
+import com.pqixing.bydauto.utils.SettingManager
 import kotlinx.coroutines.launch
 
 class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>() {
@@ -29,8 +29,8 @@ class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>
         val setting = datas.getOrNull(position) ?: return
         holder.title?.setText(setting.getNameId())
         holder.title?.setOnLongClickListener {
-            SettingHelper.hideSetting(holder.context, setting, true)
-            setDiffData(SettingHelper.updateCurSettings(holder.context))
+            SettingManager.hideSetting(holder.context, setting, true)
+            setDiffData(SettingManager.updateCurSettings(holder.context))
             true
         }
         App.uiScope.launch { setting.onBindViewHolder(holder) }

@@ -11,7 +11,7 @@ import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.AdbClient
+import com.pqixing.bydauto.utils.AdbManager
 import kotlinx.coroutines.launch
 
 class AdbSetting : SettingImpl(R.layout.setting_adb) {
@@ -36,9 +36,9 @@ class AdbSetting : SettingImpl(R.layout.setting_adb) {
             result.text = runCatching {
                 when (id) {
                     R.id.tv_shell_ui -> result.context.startActivity(Intent(result.context, ConnectActivity::class.java))
-                    R.id.tv_connection -> AdbClient.getClient().connection()
-                    R.id.tv_connection_test -> AdbClient.getClient().runSync("ls")
-                    R.id.tv_read_log -> AdbClient.getClient().runSync("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
+                    R.id.tv_connection -> AdbManager.getClient().connection()
+                    R.id.tv_connection_test -> AdbManager.getClient().runSync("ls")
+                    R.id.tv_read_log -> AdbManager.getClient().runSync("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
                     else -> null
                 }.toString()
             }.getOrElse { it.message }

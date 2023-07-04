@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
-import com.pqixing.bydauto.setting.SettingHelper
+import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.utils.UiUtils
 
 class MainUI : BaseActivity() {
@@ -31,15 +31,15 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideSetting() {
-        val hides = SettingHelper.getHides(this)
+        val hides = SettingManager.getHides(this)
         val names = Array<CharSequence>(hides.size) { getString(hides[it].first.getNameId()) }
         val checks = BooleanArray(hides.size) { !hides[it].second }
 
         AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
             .setMultiChoiceItems(names, checks) { d, w, c ->
-                SettingHelper.hideSetting(this, hides[w].first, !c)
+                SettingManager.hideSetting(this, hides[w].first, !c)
             }.setOnDismissListener {
-                mainAdapter.setDiffData(SettingHelper.updateCurSettings(this))
+                mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
             }.show()
     }
 
@@ -52,7 +52,7 @@ class MainUI : BaseActivity() {
     override fun onStart() {
         super.onStart()
         PermType.clearCache()
-        mainAdapter.setDiffData(SettingHelper.updateCurSettings(this))
+        mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
     }
 
     private fun updaLayoutManager(rvData: RecyclerView?) {
