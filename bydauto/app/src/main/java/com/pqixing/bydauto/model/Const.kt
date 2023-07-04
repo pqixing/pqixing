@@ -1,11 +1,6 @@
 package com.pqixing.bydauto.model
 
-import android.content.Context
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.setting.ISetting
-import com.pqixing.bydauto.setting.item.AdbSetting
-import com.pqixing.bydauto.setting.item.ForceRotation
-import com.pqixing.bydauto.setting.item.FullScreen
 import com.pqixing.bydauto.setting.item.MusicForward
 import com.pqixing.bydauto.setting.item.PermSet
 import com.pqixing.bydauto.setting.item.RadarDistance
@@ -13,17 +8,7 @@ import com.pqixing.bydauto.setting.item.WirelessCharge
 
 object Const {
 
-    private val settings = arrayOf<ISetting>(
-        PermSet(),
-        WirelessCharge(),
-        ForceRotation(),
-        RadarDistance(),
-        MusicForward(),
-        FullScreen(),
-        AdbSetting(),
-    )
 
-    fun getSettings(context: Context) = settings.filter { it.isShow(context) }
 
     var lastMediaReceiver: Long = -1L
     var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"
@@ -55,6 +40,10 @@ object Const {
     var SP_FULL_SCREEN: Boolean
         get() = App.sp.getBoolean("SP_FULL_SCREEN", true)
         set(value) = App.sp.edit().putBoolean("SP_FULL_SCREEN", value).apply()
+
+    var SP_SETTING_HIDE: String
+        get() = App.sp.getString("SP_SETTING_HIDE", "")!!
+        set(value) = App.sp.edit().putString("SP_SETTING_HIDE", value).apply()
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
     const val MEDIA_HOST = "host.intent.action.MEDIA"

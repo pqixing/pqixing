@@ -4,22 +4,19 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.utils.LogcatManager
+import com.pqixing.bydauto.setting.SettingHelper
 
 class MainService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
-        LogcatManager.start()
-        Const.getSettings(this).forEach { it.onCreate(this) }
+        SettingHelper.updateCurSettings(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        LogcatManager.close()
-        Const.getSettings(this).forEach { it.onDestroy(this) }
+        SettingHelper.getSettings(this).forEach { it.onDestroy(this) }
     }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
