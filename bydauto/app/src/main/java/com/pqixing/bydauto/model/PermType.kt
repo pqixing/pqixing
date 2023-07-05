@@ -21,7 +21,8 @@ sealed class PermType {
         fun hasPermission(type: PermType): Boolean {
             return permissions[type] ?: type.checkPerm(App.get()).also { permissions[type] = it }
         }
-        fun clearCache(){
+
+        fun clearCache() {
             permissions.clear()
         }
     }
@@ -44,7 +45,7 @@ sealed class PermType {
 
     object Accessibility : PermType() {
         override fun checkPerm(context: Context): Boolean {
-            return CarAccessibilityService.connect
+            return UiUtils.isAccessibilitySettingsOn(context, CarAccessibilityService::class.java)
         }
 
         override fun tryToSetPerm(context: Context) {

@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.utils
 
 import android.Manifest
+import android.accessibilityservice.AccessibilityService
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -8,11 +9,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.text.TextUtils
 import android.view.View
 import android.view.WindowManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
 import kotlinx.coroutines.delay
+
 
 object UiUtils {
     private val floatViews: HashMap<String, View> = hashMapOf()
@@ -124,5 +127,35 @@ object UiUtils {
         } else {
             (resources.displayMetrics.density * 48).toInt()
         }) - 1
+    }
+
+    fun isAccessibilitySettingsOn(mContext: Context, clazz: Class<out AccessibilityService?>): Boolean {
+        var accessibilityEnabled = 0
+        val service = mContext.packageName + "/" + clazz.canonicalName
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(
+                mContext.applicationContext.contentResolver,
+                Settings.Secure.ACCESSIBILITY_ENABLED
+            )
+        } catch (e: Settings.SettingNotFoundException) {
+            e.printStackTrace()
+        }
+        val mStringColonSplitter = TextUtils.SimpleStringSplitter(':')
+        if (accessibilityEnabled == 1) {
+            val settingValue = Settings.Secure.getString(
+                mContext.applicationContext.contentResolver,
+                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+            )
+            if (settingValue != null) {
+                mStringColonSplitter.setString(settingValue)
+                while (mStringColonSplitter.hasNext()) {
+                    val accessibilityService = mStringColonSplitter.next()
+                    if (accessibilityService.equals(service, ignoreCase = true)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 }
