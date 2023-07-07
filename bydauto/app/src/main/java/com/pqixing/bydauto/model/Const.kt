@@ -4,8 +4,6 @@ import com.pqixing.bydauto.App
 
 object Const {
 
-
-
     var lastMediaReceiver: Long = -1L
     var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"
 
@@ -40,6 +38,10 @@ object Const {
     var SP_SETTING_HIDE: String
         get() = App.sp.getString("SP_SETTING_HIDE", "")!!
         set(value) = App.sp.edit().putString("SP_SETTING_HIDE", value).apply()
+
+    var SP_PERM_ADB_CONNECT: Boolean
+        get() = App.sp.getBoolean("SP_PERM_ADB_CONNECT", false)!!
+        set(value) = App.sp.edit().putBoolean("SP_PERM_ADB_CONNECT", value).apply()
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
     const val MEDIA_HOST = "host.intent.action.MEDIA"

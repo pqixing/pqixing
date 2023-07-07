@@ -8,10 +8,10 @@ import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 
-class FullScreen : SettingImpl(R.layout.setting_full_screen) {
+class BarItem : SettingImpl(R.layout.setting_item_bar) {
 
 
-    override fun getNameId(): Int = R.string.setting_name_full_screen
+    override fun getNameId(): Int = R.string.setting_name_item_bar
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val full = viewHolder.findViewById<CheckBox>(R.id.cb_full)

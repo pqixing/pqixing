@@ -7,7 +7,7 @@ import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 
-class PermSet : SettingImpl(R.layout.setting_permission) {
+class PermItem : SettingImpl(R.layout.setting_permission) {
 
 
     override fun getNameId(): Int = R.string.setting_name_permission
@@ -17,18 +17,20 @@ class PermSet : SettingImpl(R.layout.setting_permission) {
             val cbFloat = findViewById<CheckBox>(R.id.cb_float)
             val cbAccessibility = findViewById<CheckBox>(R.id.cb_accessibility)
             val cbReadLogs = findViewById<CheckBox>(R.id.cb_read_logs)
+            val cbAdb = findViewById<CheckBox>(R.id.cb_adb)
 
-            cbFloat.isChecked = PermType.hasPermission(PermType.Float)
-            cbAccessibility.isChecked = PermType.hasPermission(PermType.Accessibility)
-            cbReadLogs.isChecked = PermType.hasPermission(PermType.ReadLogs)
+            cbFloat.isChecked = PermType.Float.enable()
+            cbAccessibility.isChecked = PermType.Accessibility.enable()
+            cbReadLogs.isChecked = PermType.ReadLogs.enable()
+            cbAdb.isChecked = PermType.Adb.enable()
 
-            cbFloat.setOnClickListener { PermType.Float.tryToSetPerm(viewHolder.context) }
-            cbAccessibility.setOnClickListener { PermType.Accessibility.tryToSetPerm(viewHolder.context) }
-            cbReadLogs.setOnClickListener { PermType.ReadLogs.tryToSetPerm(viewHolder.context) }
+            cbFloat.setOnClickListener { PermType.Float.tryToSet(viewHolder.context) }
+            cbAccessibility.setOnClickListener { PermType.Accessibility.tryToSet(viewHolder.context) }
+            cbAdb.setOnClickListener { PermType.Adb.tryToSet(viewHolder.context) }
         }
     }
 
     override fun isShow(context: Context): Boolean {
-        return !PermType.hasAllPermission()
+        return true
     }
 }

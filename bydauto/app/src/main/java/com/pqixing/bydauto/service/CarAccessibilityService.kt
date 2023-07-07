@@ -5,26 +5,36 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
 class CarAccessibilityService : AccessibilityService() {
-    companion object{
-        var connect = false
+    companion object {
+        private var mInstance: CarAccessibilityService? = null
+        fun get(): CarAccessibilityService? {
+            return mInstance
+        }
     }
-    override fun onServiceConnected() {
-        super.onServiceConnected()
-        Log.i("CarAccessibilityService", "onServiceConnected ---- ")
-        connect = true
+
+    override fun onCreate() {
+        super.onCreate()
+        mInstance = this
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        connect = false
+        mInstance = null
     }
 
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.i("CarAccessibilityService", "onServiceConnected ---- ")
+        mInstance = this
+    }
+
+
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        connect = true
         getRootInActiveWindow()
         Log.i("CarAccessibilityService", "onAccessibilityEvent: ${event.eventType} ${event.packageName}")
     }
 
     override fun onInterrupt() {
+        mInstance = null
     }
 }

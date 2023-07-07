@@ -9,7 +9,7 @@ class BootUI : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startService(Intent(this, MainService::class.java))
-        if (!PermType.hasAllPermission()) {
+        if (!PermType.enableAll()) {
             startActivity(Intent(this, MainUI::class.java))
         }
         finish()

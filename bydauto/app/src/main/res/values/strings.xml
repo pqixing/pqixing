@@ -17,7 +17,8 @@
     <string name="permission_float">悬浮窗</string>
     <string name="permission_read_logs">日志读取</string>
     <string name="permission_accessibility">无障碍</string>
+    <string name="permission_adb">无线调试</string>
     <string name="cb_full_screen">全屏</string>
-    <string name="setting_name_full_screen">全屏显示</string>
+    <string name="setting_name_item_bar">侧边栏</string>
     <string name="main_title_add_setting">添加设置</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.setting.item
 
 import android.Manifest
+import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import com.cgutman.androidremotedebugger.AdbUtils
 import com.cgutman.androidremotedebugger.ConnectActivity
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.PermType
+import com.pqixing.bydauto.service.CarAccessibilityService
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.AdbManager
@@ -31,6 +34,10 @@ class AdbSetting : SettingImpl(R.layout.setting_adb) {
         AdbUtils.updateCryptoIfNeed(context.filesDir)
     }
 
+    override fun isShow(context: Context): Boolean {
+        return PermType.Accessibility.enable()
+    }
+
     private fun onChildCick(id: Int, result: TextView) {
         App.uiScope.launch {
             result.text = runCatching {
@@ -39,6 +46,8 @@ class AdbSetting : SettingImpl(R.layout.setting_adb) {
                     R.id.tv_connection -> AdbManager.getClient().connection()
                     R.id.tv_connection_test -> AdbManager.getClient().runSync("ls")
                     R.id.tv_read_log -> AdbManager.getClient().runSync("pm grant ${result.context.packageName} ${Manifest.permission.READ_LOGS} \n")
+                    R.id.tv_pull_setting -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
+                    R.id.tv_pull_notify ->CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS)
                     else -> null
                 }.toString()
             }.getOrElse { it.message }

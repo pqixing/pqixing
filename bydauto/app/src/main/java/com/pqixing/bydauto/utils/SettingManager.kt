@@ -5,20 +5,20 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.AdbSetting
 import com.pqixing.bydauto.setting.item.ForceRotation
-import com.pqixing.bydauto.setting.item.FullScreen
+import com.pqixing.bydauto.setting.item.BarItem
 import com.pqixing.bydauto.setting.item.MusicForward
-import com.pqixing.bydauto.setting.item.PermSet
+import com.pqixing.bydauto.setting.item.PermItem
 import com.pqixing.bydauto.setting.item.RadarNumber
 import com.pqixing.bydauto.setting.item.WirelessCharge
 
 object SettingManager {
     private val settings = arrayOf<ISetting>(
-        PermSet(),
+        PermItem(),
         WirelessCharge(),
         ForceRotation(),
         RadarNumber(),
         MusicForward(),
-        FullScreen(),
+        BarItem(),
         AdbSetting(),
     )
     private var curs: List<ISetting> = emptyList()

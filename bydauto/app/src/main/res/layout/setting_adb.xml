@@ -39,6 +39,20 @@
             android:padding="4dp"
             android:text="Shell页面"
             android:textSize="12sp"/>
+        <Button
+            android:id="@+id/tv_pull_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="下拉设置"
+            android:textSize="12sp"/>
+        <Button
+            android:id="@+id/tv_pull_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="下拉通知栏"
+            android:textSize="12sp"/>
 
 
     </GridLayout>
