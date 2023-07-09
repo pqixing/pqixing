@@ -57,7 +57,7 @@ class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
         }
 
         viewHolder.findViewById<Button>(R.id.cb_radar_debug).setOnClickListener {
-            UiUtils.showFloatView(
+            UiUtils.reShowFloatView(
                 FLOAT_TAG_RADAR,
                 RadarFloatView(viewHolder.context.applicationContext).also { it.resetBounds() },
                 layoutParams(true)
@@ -83,8 +83,8 @@ class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
 
     override fun onActivityResume(activity: String, pkg: String) {
         val isAutoVideo = RADAR_ACTIVITY == activity && RADAR_PKG == pkg
-        if (isAutoVideo && UiUtils.getFloatView(FLOAT_TAG_RADAR)?.isAttachedToWindow != true) {
-            UiUtils.showFloatView(FLOAT_TAG_RADAR, RadarFloatView(App.get()), layoutParams())
+        if (isAutoVideo && !UiUtils.isShow(FLOAT_TAG_RADAR)) {
+            UiUtils.reShowFloatView(FLOAT_TAG_RADAR, RadarFloatView(App.get()), layoutParams())
         }
         if (!isAutoVideo) {
             UiUtils.closeFloatView(FLOAT_TAG_RADAR)

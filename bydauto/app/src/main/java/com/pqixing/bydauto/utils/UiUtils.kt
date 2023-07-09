@@ -15,15 +15,15 @@ import android.view.View
 import android.view.WindowManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
-import kotlin.math.acos
 
 
 object UiUtils {
+
     private val floatViews: HashMap<String, View> = hashMapOf()
 
     fun getFloatView(tag: String): View? = floatViews[tag]
 
-    fun showFloatView(tag: String, view: View, params: WindowManager.LayoutParams, force: Boolean = true) {
+    fun reShowFloatView(tag: String, view: View, params: WindowManager.LayoutParams) {
         runCatching {
             closeFloatView(tag)
             val context = App.get()
@@ -43,12 +43,19 @@ object UiUtils {
         }
     }
 
-    fun updateFloatView(tag: String, params: WindowManager.LayoutParams) {
+    fun isShow(tag: String): Boolean {
+        return floatViews[tag]?.isAttachedToWindow == true
+    }
+
+    fun showOrUpdateFloatView(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
         runCatching {
-            val view = floatViews.get(tag) ?: return
-            val context = App.get()
-            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            wm.updateViewLayout(view, params)
+            if (isShow(tag)) {
+                val context = App.get()
+                val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                wm.updateViewLayout(floatViews[tag], params)
+            } else {
+                reShowFloatView(tag, getView(), params)
+            }
         }
     }
 
