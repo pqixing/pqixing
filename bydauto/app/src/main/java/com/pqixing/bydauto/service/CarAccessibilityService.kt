@@ -31,7 +31,7 @@ class CarAccessibilityService : AccessibilityService() {
 
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        App.log("onAccessibilityEvent: ${event.eventType} ${event.packageName}")
+//        App.log("onAccessibilityEvent: ${event.eventType} ${event.packageName}")
         when (event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleWindowChange(event)
         }
