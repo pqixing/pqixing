@@ -1,10 +1,16 @@
 package com.pqixing.bydauto.utils
 
+import com.pqixing.bydauto.App
+
 object UiManager : LogcatManager.LogCatCallBack {
     private var sCallBack = arrayListOf<IActivityLife>()
-        private val logcat = LogcatManager(listOf("ActivityTaskManager:I"))
+    private val logcat = LogcatManager(listOf("ActivityTaskManager:I"))
+    private var lastPkg = ""
+    private var lastActivity = ""
+
     init {
         logcat.addCallBack(this)
+        logcat.start()
     }
 
     fun addCallBack(callBack: IActivityLife) {
@@ -15,8 +21,19 @@ object UiManager : LogcatManager.LogCatCallBack {
         sCallBack.remove(callBack)
     }
 
+    fun curActivity() = lastActivity
+    fun curPkg() = lastPkg
 
     fun onActivityResume(activity: String, pkg: String) {
+        if (lastPkg == pkg && lastActivity == activity) {
+            return
+        }
+        App.log("onActivityResume $pkg/$activity")
+        if (lastPkg.isNotEmpty()) {
+            onActivityPause(activity, pkg)
+        }
+        lastActivity = activity
+        lastPkg = pkg
         sCallBack.forEach { it.onActivityResume(activity, pkg) }
     }
 
@@ -30,10 +47,15 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(START|activityResumed|Displayed|topComponentName).*"
+        return ".*ActivityTaskManager.*(START|topComponentName).*"
     }
 
     override fun onReceiveLog(line: String) {
-        TODO("Not yet implemented")
+        //类似 com.miui.home/.launcher.Launcher格式
+        val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") } ?: return
+
+        val pkg = name.substringBefore("/").replace("cmp=", "")
+        val clazz = name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
+        onActivityResume(clazz, pkg)
     }
 }

@@ -9,24 +9,23 @@ import com.pqixing.bydauto.setting.SettingImpl
 
 class PermItem : SettingImpl(R.layout.setting_permission) {
 
-
     override fun getNameId(): Int = R.string.setting_name_permission
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
-        with(viewHolder.itemView) {
-            val cbFloat = findViewById<CheckBox>(R.id.cb_float)
-            val cbAccessibility = findViewById<CheckBox>(R.id.cb_accessibility)
-            val cbReadLogs = findViewById<CheckBox>(R.id.cb_read_logs)
-            val cbAdb = findViewById<CheckBox>(R.id.cb_adb)
+        val view = viewHolder.itemView
 
-            cbFloat.isChecked = PermType.Float.enable()
-            cbAccessibility.isChecked = PermType.Accessibility.enable()
-            cbReadLogs.isChecked = PermType.ReadLogs.enable()
-            cbAdb.isChecked = PermType.Adb.enable()
-
-            cbFloat.setOnClickListener { PermType.Float.tryToSet(viewHolder.context) }
-            cbAccessibility.setOnClickListener { PermType.Accessibility.tryToSet(viewHolder.context) }
-            cbAdb.setOnClickListener { PermType.Adb.tryToSet(viewHolder.context) }
+        val permMap = mapOf(
+            PermType.Float to view.findViewById(R.id.cb_float),
+            PermType.ReadLogs to view.findViewById(R.id.cb_read_logs),
+            PermType.Accessibility to view.findViewById(R.id.cb_accessibility),
+            PermType.Adb to view.findViewById<CheckBox>(R.id.cb_adb),
+        )
+        permMap.forEach { item ->
+            item.value.isChecked = item.key.enable()
+            item.value.setOnClickListener {
+                item.key.tryToSet(view.context) { check -> item.value.isChecked = check }
+                item.value.isChecked = item.key.enable()
+            }
         }
     }
 

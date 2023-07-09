@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:columnCount="4"
+            android:orientation="horizontal">
 
 
     <CheckBox
         android:id="@+id/cb_float"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/permission_float" />
+        android:text="@string/permission_float"/>
 
     <CheckBox
         android:id="@+id/cb_read_logs"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/permission_read_logs" />
+        android:text="@string/permission_read_logs"/>
 
     <CheckBox
         android:id="@+id/cb_accessibility"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/permission_accessibility" />
+        android:text="@string/permission_accessibility"/>
     <CheckBox
         android:id="@+id/cb_adb"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/permission_adb" />
-</LinearLayout>
+        android:text="@string/permission_adb"/>
+
+</GridLayout>

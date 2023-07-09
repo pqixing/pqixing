@@ -2,6 +2,7 @@ package com.pqixing.bydauto.utils
 
 import android.Manifest
 import android.accessibilityservice.AccessibilityService
+import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -14,7 +15,7 @@ import android.view.View
 import android.view.WindowManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
-import kotlinx.coroutines.delay
+import kotlin.math.acos
 
 
 object UiUtils {
@@ -94,13 +95,12 @@ object UiUtils {
             start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(start)
             App.log("checkLastPkg : start launch $pkg")
-            delay(1000)
         }.onFailure {
             App.log(null, it)
         }.isSuccess
     }
 
-    fun inSplitMode(mainUI: Context): Boolean {
+    fun inSplitMode(context: Activity): Boolean {
         return false
     }
 

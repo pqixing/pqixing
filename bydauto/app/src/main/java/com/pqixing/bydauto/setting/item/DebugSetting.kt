@@ -58,7 +58,7 @@ class DebugSetting : SettingImpl(R.layout.setting_debug) {
     }
 
     override fun getNameId(): Int {
-        return R.string.setting_name_debug
+        return R.string.setting_name_adb
     }
 
 }

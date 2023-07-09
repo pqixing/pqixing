@@ -1,8 +1,9 @@
 package com.pqixing.bydauto.service
 
 import android.accessibilityservice.AccessibilityService
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.pqixing.bydauto.App
+import com.pqixing.bydauto.utils.UiManager
 
 class CarAccessibilityService : AccessibilityService() {
     companion object {
@@ -24,14 +25,23 @@ class CarAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
-        Log.i("CarAccessibilityService", "onServiceConnected ---- ")
+        App.log("onServiceConnected ---- ")
         mInstance = this
     }
 
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        getRootInActiveWindow()
-        Log.i("CarAccessibilityService", "onAccessibilityEvent: ${event.eventType} ${event.packageName}")
+        App.log("onAccessibilityEvent: ${event.eventType} ${event.packageName}")
+        when (event.eventType) {
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleWindowChange(event)
+        }
+    }
+
+    private fun handleWindowChange(event: AccessibilityEvent) {
+        val pkg = event.packageName?.toString() ?: ""
+        val clazz = event.className?.toString() ?: ""
+        App.log("handleWindowChange ->${event.eventType} $pkg $clazz")
+        UiManager.onActivityResume(clazz, pkg)
     }
 
     override fun onInterrupt() {

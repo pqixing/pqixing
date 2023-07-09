@@ -42,8 +42,9 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
         val watch = { curTs: Long ->
             while (curTs == startProTs) {
                 //监听雷达距离和页面切换启动
-                val pro =
-                    Runtime.getRuntime().exec("logcat -T 0 -s ${catTags.joinToString(" ")} *:S")
+                val cmd = "logcat -T 0 -s ${catTags.joinToString(" ")} *:S"
+                val pro = Runtime.getRuntime().exec(cmd)
+                App.log("start $cmd")
 //                    Runtime.getRuntime().exec("logcat -T 0")
                 pro.inputStream.bufferedReader().use {
                     while (curTs == startProTs) {

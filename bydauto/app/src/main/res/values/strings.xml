@@ -12,12 +12,11 @@
     <string name="rotate_sensor">重力</string>
     <string name="rotate_portrait">竖屏</string>
     <string name="rotate_landscape">横屏</string>
-    <string name="setting_name_debug">调试车机</string>
-    <string name="setting_name_adb">adb调试</string>
+    <string name="setting_name_adb">ADB调试</string>
     <string name="permission_float">悬浮窗</string>
-    <string name="permission_read_logs">日志读取</string>
-    <string name="permission_accessibility">无障碍</string>
-    <string name="permission_adb">无线调试</string>
+    <string name="permission_read_logs">日志</string>
+    <string name="permission_accessibility">辅助</string>
+    <string name="permission_adb">ADB</string>
     <string name="cb_full_screen">全屏</string>
     <string name="setting_name_item_bar">侧边栏</string>
     <string name="main_title_add_setting">添加设置</string>

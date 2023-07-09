@@ -17,7 +17,7 @@ class App : Application() {
 
     companion object {
         private lateinit var app: App
-        const val TAG = "DIJIA"
+        const val TAG = "car_tool"
 
         fun log(msg: String?, thow: Throwable? = null, index: Int = 4) {
             val stactTrace = Thread.currentThread().stackTrace.getOrNull(index)

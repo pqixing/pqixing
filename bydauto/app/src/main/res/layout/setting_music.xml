@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_vertical"
+              android:layout_height="wrap_content">
 
     <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="40dp">
+                  android:layout_height="wrap_content">
         <CheckBox
             android:id="@+id/cb_auto_switch"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="自动切换"/>
-        <CheckBox
-            android:id="@+id/cb_music_background"
-            android:layout_marginStart="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="后台搜索"/>
+            android:text="自动切换"/>
+
+        <RadioGroup
+            android:id="@+id/group_search_type"
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/cb_music_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="后台"/>
+            <RadioButton
+                android:id="@+id/cb_music_fore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="前台"/>
+            <RadioButton
+                android:id="@+id/cb_music_auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自动"/>
+        </RadioGroup>
 
     </LinearLayout>
 
     <HorizontalScrollView
         android:id="@+id/hsv_group"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:visibility="gone"
@@ -31,4 +54,4 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"/>
     </HorizontalScrollView>
-</merge>
+</LinearLayout>

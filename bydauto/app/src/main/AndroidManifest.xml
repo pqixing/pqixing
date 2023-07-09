@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="1"
-    android:versionName="1.0.0">
+          xmlns:tools="http://schemas.android.com/tools"
+          android:versionCode="1"
+          android:versionName="1.0.0">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.BYDAUTO_RADAR_GET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <uses-permission android:name="android.permission.BYDAUTO_RADAR_GET"/>
 
     <queries>
         <intent>
-            <action android:name="com.byd.action.AUTOVOICE_SEARCH_PLUS" />
+            <action android:name="com.byd.action.AUTOVOICE_SEARCH_PLUS"/>
         </intent>
         <intent>
-            <action android:name="transform.intent.action.MEDIA" />
+            <action android:name="transform.intent.action.MEDIA"/>
 
 
         </intent>
@@ -28,7 +29,7 @@
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true"/>
 
     <application
         android:name="com.pqixing.bydauto.App"
@@ -43,10 +44,11 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
+            android:excludeFromRecents="true"
             android:theme="@style/AppMainTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -55,22 +57,22 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:theme="@style/AppBootTheme" />
+            android:theme="@style/AppBootTheme"/>
 
         <service
             android:name="com.pqixing.bydauto.service.MainService"
-            android:exported="false" />
+            android:exported="false"/>
         <service
             android:name=".service.CarAccessibilityService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility" />
+                android:resource="@xml/accessibility"/>
         </service>
 
         <receiver
@@ -78,8 +80,8 @@
             android:exported="true"
             android:permission="android.intent.action.BOOT_COMPLETED">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
 
@@ -87,56 +89,56 @@
             android:name="com.pqixing.bydauto.receiver.BYDMediaReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="host.intent.action.MEDIA" />
+                <action android:name="host.intent.action.MEDIA"/>
 
-                <action android:name="byd.intent.action.MEDIA_MODE" />
-                <action android:name="byd.intent.action.MEDIA_BUTTON" />
-                <action android:name="kg.intent.action.MEDIA_BUTTON" />
-                <action android:name="byd.intent.action.KILL_KUGOU" />
-                <action android:name="com.byd.action.FUNCTION_UPDATE_RESULT" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_MODE" />
-                <action android:name="com.byd.action.AUTOVOICE_SEARCH_PLUS" />
-                <action android:name="com.kg.action.AUTOVOICE_SEARCH_PLUS" />
-                <action android:name="com.byd.action.AUTOVOICE_RECOMMEND" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_RANDOM" />
-                <action android:name="com.byd.action.AUTOVOICE_BOOK" />
-                <action android:name="com.byd.action.AUTOVOICE_UNBOOK" />
-                <action android:name="com.byd.action.AUTOVOICE_OPEN_LYRIC" />
-                <action android:name="com.byd.action.AUTOVOICE_CLOSE_LYRIC" />
-                <action android:name="com.byd.action.AUTOVOICE_REVERSE" />
-                <action android:name="com.byd.action.AUTOVOICE_ORDER" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_MODE" />
-                <action android:name="com.byd.action.AUTOVOICE_JUMP_TO" />
-                <action android:name="com.byd.action.AUTOVOICE_FORWARD" />
-                <action android:name="com.byd.action.AUTOVOICE_REWIND" />
-                <action android:name="com.byd.action.AUTOVOICE_FULL_SCREEN" />
-                <action android:name="com.byd.action.AUTOVOICE_UNFULL_SCREEN" />
-                <action android:name="com.byd.action.AUTOVOICE_SPEED_ADJUST" />
-                <action android:name="com.byd.action.AUTOVOICE_SKIP_TITLE" />
-                <action android:name="com.byd.action.AUTOVOICE_SKIP_END" />
-                <action android:name="com.byd.action.AUTOVOICE_DOWNLOAD" />
-                <action android:name="com.byd.action.AUTOVOICE_UNDOWNLOAD" />
-                <action android:name="com.byd.action.AUTOVOICE_QUIT" />
-                <action android:name="com.byd.action.AUTOVOICE_DEFINITION_SET" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_FAVORITE" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_LIKE" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_BOOK" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_DOWNLOAD" />
-                <action android:name="com.byd.action.AUTOVOICE_COLLECT" />
-                <action android:name="com.byd.action.AUTOVOICE_UNCOLLECT" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_LATELY" />
-                <action android:name="com.byd.action.AUTOVOICE_PLAY_SONG_SHEET" />
-                <action android:name="com.byd.action.AUTOVOICE_OPEN_LIST" />
-                <action android:name="com.byd.action.AUTOVOICE_CLOSE_LIST" />
-                <action android:name="kugou.intent.action.update.byd.metadata" />
-                <action android:name="kugou.intent.action.update.byd.playback.progress" />
-                <action android:name="com.byd.action.query_tri_part_account_state" />
-                <action android:name="com.byd.action.byd_account_state_change" />
-                <action android:name="com.byd.action.byd_account_go_tripart_login_page" />
-                <action android:name="byd.intent.action.AUTO_PLAY" />
-                <action android:name="com.byd.action.AUTOVOICE_ACTIVECARE" />
-                <action android:name="com.byd.action.AUTOVOICE_BOOK" />
-                <action android:name="com.byd.action.AUTOVOICE_QUALITY" />
+                <action android:name="byd.intent.action.MEDIA_MODE"/>
+                <action android:name="byd.intent.action.MEDIA_BUTTON"/>
+                <action android:name="kg.intent.action.MEDIA_BUTTON"/>
+                <action android:name="byd.intent.action.KILL_KUGOU"/>
+                <action android:name="com.byd.action.FUNCTION_UPDATE_RESULT"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_MODE"/>
+                <action android:name="com.byd.action.AUTOVOICE_SEARCH_PLUS"/>
+                <action android:name="com.kg.action.AUTOVOICE_SEARCH_PLUS"/>
+                <action android:name="com.byd.action.AUTOVOICE_RECOMMEND"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_RANDOM"/>
+                <action android:name="com.byd.action.AUTOVOICE_BOOK"/>
+                <action android:name="com.byd.action.AUTOVOICE_UNBOOK"/>
+                <action android:name="com.byd.action.AUTOVOICE_OPEN_LYRIC"/>
+                <action android:name="com.byd.action.AUTOVOICE_CLOSE_LYRIC"/>
+                <action android:name="com.byd.action.AUTOVOICE_REVERSE"/>
+                <action android:name="com.byd.action.AUTOVOICE_ORDER"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_MODE"/>
+                <action android:name="com.byd.action.AUTOVOICE_JUMP_TO"/>
+                <action android:name="com.byd.action.AUTOVOICE_FORWARD"/>
+                <action android:name="com.byd.action.AUTOVOICE_REWIND"/>
+                <action android:name="com.byd.action.AUTOVOICE_FULL_SCREEN"/>
+                <action android:name="com.byd.action.AUTOVOICE_UNFULL_SCREEN"/>
+                <action android:name="com.byd.action.AUTOVOICE_SPEED_ADJUST"/>
+                <action android:name="com.byd.action.AUTOVOICE_SKIP_TITLE"/>
+                <action android:name="com.byd.action.AUTOVOICE_SKIP_END"/>
+                <action android:name="com.byd.action.AUTOVOICE_DOWNLOAD"/>
+                <action android:name="com.byd.action.AUTOVOICE_UNDOWNLOAD"/>
+                <action android:name="com.byd.action.AUTOVOICE_QUIT"/>
+                <action android:name="com.byd.action.AUTOVOICE_DEFINITION_SET"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_FAVORITE"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_LIKE"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_BOOK"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_DOWNLOAD"/>
+                <action android:name="com.byd.action.AUTOVOICE_COLLECT"/>
+                <action android:name="com.byd.action.AUTOVOICE_UNCOLLECT"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_LATELY"/>
+                <action android:name="com.byd.action.AUTOVOICE_PLAY_SONG_SHEET"/>
+                <action android:name="com.byd.action.AUTOVOICE_OPEN_LIST"/>
+                <action android:name="com.byd.action.AUTOVOICE_CLOSE_LIST"/>
+                <action android:name="kugou.intent.action.update.byd.metadata"/>
+                <action android:name="kugou.intent.action.update.byd.playback.progress"/>
+                <action android:name="com.byd.action.query_tri_part_account_state"/>
+                <action android:name="com.byd.action.byd_account_state_change"/>
+                <action android:name="com.byd.action.byd_account_go_tripart_login_page"/>
+                <action android:name="byd.intent.action.AUTO_PLAY"/>
+                <action android:name="com.byd.action.AUTOVOICE_ACTIVECARE"/>
+                <action android:name="com.byd.action.AUTOVOICE_BOOK"/>
+                <action android:name="com.byd.action.AUTOVOICE_QUALITY"/>
             </intent-filter>
         </receiver>
 

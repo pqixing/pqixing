@@ -1,9 +1,5 @@
 package com.pqixing.bydauto.setting.item
 
-import android.Manifest
-import android.app.AlertDialog
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.PixelFormat
@@ -14,28 +10,25 @@ import android.widget.CheckBox
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.widget.RadarFloatView
 
-class RadarNumber : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
+class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
     companion object {
         const val FLOAT_TAG_RADAR = "FLOAT_TAG_RADAR"
     }
 
-    private val regAutoVideo = Regex(".*com\\.byd\\.avc.*AutoVideoActivity.*")
-
-    private fun showPermissionDialog(activity: Context) {
-        val cmd = "pm grant ${activity.packageName} ${Manifest.permission.READ_LOGS}"
-        AlertDialog.Builder(activity).setTitle("申请权限").setMessage("请先通过adb命令授权日志权限: \n $cmd")
-            .setPositiveButton("确定") { d, i ->
-                activity.getSystemService(ClipboardManager::class.java)
-                    .setPrimaryClip(ClipData.newPlainText("Label", cmd))
-                App.toast("命令已复制到粘贴板")
-            }.show()
+    override fun isShow(context: Context): Boolean {
+        return PermType.ReadLogs.enable()
     }
+
+    private val RADAR_ACTIVITY = "com.byd.avc.AutoVideoActivity"
+    private val RADAR_PKG = "com.byd.avc"
+
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
@@ -89,7 +82,7 @@ class RadarNumber : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife
     }
 
     override fun onActivityResume(activity: String, pkg: String) {
-        val isAutoVideo = regAutoVideo.matches(activity)
+        val isAutoVideo = RADAR_ACTIVITY == activity && RADAR_PKG == pkg
         if (isAutoVideo && UiUtils.getFloatView(FLOAT_TAG_RADAR)?.isAttachedToWindow != true) {
             UiUtils.showFloatView(FLOAT_TAG_RADAR, RadarFloatView(App.get()), layoutParams())
         }

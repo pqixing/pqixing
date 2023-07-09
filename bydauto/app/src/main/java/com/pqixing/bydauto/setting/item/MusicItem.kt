@@ -11,20 +11,39 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.BYDAutoUtils
+import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-class MusicForward : SettingImpl(R.layout.setting_music) {
+class MusicItem : SettingImpl(R.layout.setting_music) {
+    companion object {
+        const val SEARCH_TYPE_AUTO = 0
+        const val SEARCH_TYPE_BACK = 1
+        const val SEARCH_TYPE_FORE = 2
+    }
+
     override fun getNameId(): Int = R.string.setting_name_music
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val radio: RadioGroup = viewHolder.findViewById(R.id.group)
 
-        val musicBackGround = viewHolder.findViewById<CheckBox>(R.id.cb_music_background)
-        musicBackGround.isChecked = Const.SP_MUSIC_BACKGROUND
-        musicBackGround.setOnCheckedChangeListener { _, isChecked -> Const.SP_MUSIC_BACKGROUND = isChecked }
+        val searchType = viewHolder.findViewById<RadioGroup>(R.id.group_search_type)
+        searchType.check(
+            when (Const.SP_MUSIC_SEARCH_TYPE) {
+                SEARCH_TYPE_BACK -> R.id.cb_music_back
+                SEARCH_TYPE_FORE -> R.id.cb_music_fore
+                else -> R.id.cb_music_auto
+            }
+        )
+        searchType.setOnCheckedChangeListener { group, checkedId ->
+            Const.SP_MUSIC_SEARCH_TYPE = when (checkedId) {
+                R.id.cb_music_back -> SEARCH_TYPE_BACK
+                R.id.cb_music_fore -> SEARCH_TYPE_FORE
+                else -> SEARCH_TYPE_AUTO
+            }
+        }
 
         val autoSwitch = viewHolder.findViewById<CheckBox>(R.id.cb_auto_switch)
         val groupContent = viewHolder.findViewById<HorizontalScrollView>(R.id.hsv_group)
@@ -34,7 +53,7 @@ class MusicForward : SettingImpl(R.layout.setting_music) {
             viewHolder.bindingAdapter?.notifyItemChanged(viewHolder.bindingAdapterPosition)
         }
         autoSwitch.isChecked = Const.SP_MUSIC_SWITCH
-        if (groupContent.visibility != View.VISIBLE) {
+        if (autoSwitch.isChecked) {
             return
         }
 
@@ -62,17 +81,14 @@ class MusicForward : SettingImpl(R.layout.setting_music) {
     fun matchPkgs(context: Context): List<String> {
         val pm = context.packageManager
         return pm.queryBroadcastReceivers(
-            Intent(Const.ACTION_AUTOVOICE_SEARCH_PLUS),
-            PackageManager.GET_META_DATA
+            Intent(Const.ACTION_AUTOVOICE_SEARCH_PLUS), PackageManager.GET_META_DATA
         ).map { it.activityInfo.packageName }.minus(
             pm.queryBroadcastReceivers(
-                Intent(Const.MEDIA_TRANSFORM),
-                PackageManager.GET_META_DATA
+                Intent(Const.MEDIA_TRANSFORM), PackageManager.GET_META_DATA
             ).map { it.activityInfo.packageName }.toSet()
         ).minus(
             pm.queryBroadcastReceivers(
-                Intent(Const.MEDIA_HOST),
-                PackageManager.GET_META_DATA
+                Intent(Const.MEDIA_HOST), PackageManager.GET_META_DATA
             ).map { it.activityInfo.packageName }.toSet()
         )
     }
@@ -83,14 +99,22 @@ class MusicForward : SettingImpl(R.layout.setting_music) {
         }
         Const.SP_MUSIC_PKG = pkg
 
-        context.packageManager.getLaunchIntentForPackage(pkg)?.runCatching {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(this)
-            delay(500)
-        }
-        UiUtils.tryLaunch(context, pkg)
+        val type = Const.SP_MUSIC_SEARCH_TYPE
 
-        val bg = Const.SP_MUSIC_BACKGROUND
+        //当前应用不是正在播放的应用
+        if (type == SEARCH_TYPE_FORE || pkg != BYDAutoUtils.getCurrentAudioFocusPackage()) {
+            UiUtils.tryLaunch(context, pkg)
+            delay(1000)
+        }
+
+
+        val bg = when (type) {
+            SEARCH_TYPE_BACK -> true
+            SEARCH_TYPE_FORE -> false
+            else -> UiManager.curPkg() != BYDAutoUtils.getCurrentAudioFocusPackage()
+        }
+
+
         val newIntent = Intent(intent.action)
         newIntent.flags = intent.flags
         newIntent.putExtras(intent)

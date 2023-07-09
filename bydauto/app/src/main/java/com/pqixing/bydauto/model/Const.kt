@@ -23,16 +23,16 @@ object Const {
     var SP_SWITCH_BACKGROUND: Boolean
         get() = App.sp.getBoolean("SP_SWITCH_BACKGROUND", true)
         set(value) = App.sp.edit().putBoolean("SP_SWITCH_BACKGROUND", value).apply()
-    var SP_MUSIC_BACKGROUND: Boolean
-        get() = App.sp.getBoolean("SP_MUSIC_BACKGROUND", true)
-        set(value) = App.sp.edit().putBoolean("SP_MUSIC_BACKGROUND", value).apply()
+    var SP_MUSIC_SEARCH_TYPE: Int
+        get() = App.sp.getInt("SP_MUSIC_SEARCH_TYPE", 0)
+        set(value) = App.sp.edit().putInt("SP_MUSIC_SEARCH_TYPE", value).apply()
     var SP_ORIENTATION: Int
         get() = App.sp.getInt("SP_ORIENTATION", -1)
         set(value) = App.sp.edit().putInt("SP_ORIENTATION", value).apply()
 
 
     var SP_FULL_SCREEN: Boolean
-        get() = App.sp.getBoolean("SP_FULL_SCREEN", true)
+        get() = App.sp.getBoolean("SP_FULL_SCREEN", false)
         set(value) = App.sp.edit().putBoolean("SP_FULL_SCREEN", value).apply()
 
     var SP_SETTING_HIDE: String

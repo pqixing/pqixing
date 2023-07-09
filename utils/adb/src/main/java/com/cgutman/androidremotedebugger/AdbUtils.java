@@ -44,9 +44,14 @@ public class AdbUtils {
         return crypto;
     }
 
-    public static void updateCryptoIfNeed(File dataDir) {
+    public static void updateCryptoIfNeed(File dataDir, Runnable call) {
         if (readCryptoConfig(dataDir) == null) {
-            new Thread(() -> writeNewCryptoConfig(dataDir)).start();
+            new Thread(() -> {
+                writeNewCryptoConfig(dataDir);
+                call.run();
+            }).start();
+        } else {
+            call.run();
         }
     }
 
