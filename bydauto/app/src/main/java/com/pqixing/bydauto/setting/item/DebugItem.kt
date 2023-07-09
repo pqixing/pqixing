@@ -12,7 +12,7 @@ import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.BYDAutoUtils
 
-class DebugSetting : SettingImpl(R.layout.setting_debug) {
+class DebugItem : SettingImpl(R.layout.setting_debug) {
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val view = viewHolder.itemView
         val result = view.findViewById<TextView>(R.id.tv_result)

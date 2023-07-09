@@ -39,6 +39,10 @@ object Const {
         get() = App.sp.getString("SP_SETTING_HIDE", "")!!
         set(value) = App.sp.edit().putString("SP_SETTING_HIDE", value).apply()
 
+    var SP_FLOAT_BAR: Boolean
+        get() = App.sp.getBoolean("SP_FLOAT_BAR", false)
+        set(value) = App.sp.edit().putBoolean("SP_FLOAT_BAR", value).apply()
+
     var SP_PERM_ADB_CONNECT: Boolean
         get() = App.sp.getBoolean("SP_PERM_ADB_CONNECT", false)!!
         set(value) = App.sp.edit().putBoolean("SP_PERM_ADB_CONNECT", value).apply()

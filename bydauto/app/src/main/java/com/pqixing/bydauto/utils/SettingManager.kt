@@ -8,11 +8,12 @@ import com.pqixing.bydauto.setting.item.*
 object SettingManager {
     private val settings = arrayOf<ISetting>(
         PermItem(),
-        AdbSetting(),
-        WirelessCharge(),
-        ForceRotation(),
+        AdbItem(),
+        FloatBarItem(),
+        WireChargeItem(),
         RadarItem(),
         MusicItem(),
+        RotationItem(),
     )
     private var curs: List<ISetting> = emptyList()
 

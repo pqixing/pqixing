@@ -9,7 +9,7 @@ import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 
-class WirelessCharge : SettingImpl(R.layout.setting_charge) {
+class WireChargeItem : SettingImpl(R.layout.setting_charge) {
     companion object {
         const val CHARGE_TYPE_NONE: String = "CHARGE_TYPE_NONE"
         const val CHARGE_TYPE_OPEN: String = "CHARGE_TYPE_OPEN"

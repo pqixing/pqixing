@@ -23,7 +23,7 @@ import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
-class AdbSetting : SettingImpl(R.layout.setting_adb) {
+class AdbItem : SettingImpl(R.layout.setting_adb) {
 
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val view = viewHolder.itemView
