@@ -31,7 +31,7 @@ class CarAccessibilityService : AccessibilityService() {
 
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-//        App.log("onAccessibilityEvent: ${event.eventType} ${event.packageName}")
+        App.log("onAccessibilityEvent: ${event.eventType} ${event.packageName} ${event.className}")
         when (event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleWindowChange(event)
         }
@@ -41,7 +41,7 @@ class CarAccessibilityService : AccessibilityService() {
         val pkg = event.packageName?.toString() ?: ""
         val clazz = event.className?.toString() ?: ""
         App.log("handleWindowChange ->${event.eventType} $pkg $clazz")
-        UiManager.onActivityResume(clazz, pkg)
+//        UiManager.onActivityResume(clazz, pkg)
     }
 
     override fun onInterrupt() {

@@ -15,6 +15,7 @@ import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.utils.UiUtils
+import kotlin.system.exitProcess
 
 class MainUI : BaseActivity() {
 
@@ -24,6 +25,7 @@ class MainUI : BaseActivity() {
         startService(Intent(this, MainService::class.java))
         setContentView(R.layout.activity_settings)
         findViewById<View>(R.id.tv_title).setOnClickListener { showHideSetting() }
+        findViewById<View>(R.id.tv_title).setOnLongClickListener { exitProcess(0) }
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
         rvData.adapter = mainAdapter
         rvData.isNestedScrollingEnabled = true

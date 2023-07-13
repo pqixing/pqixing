@@ -6,46 +6,8 @@
     <GridLayout
         android:id="@+id/gd_group"
         android:layout_width="match_parent"
-        android:columnCount="3"
+        android:columnCount="4"
         android:layout_height="wrap_content">
-        <CheckBox
-            android:id="@+id/cb_full"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:text="@string/cb_full_screen"/>
-
-        <Button
-            android:id="@+id/tv_connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="连接adb"
-            android:padding="4dp"
-            android:textSize="12sp"/>
-
-
-        <Button
-            android:id="@+id/tv_read_log"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="日志权限"
-            android:textSize="12sp"/>
-        <Button
-            android:id="@+id/btn_accessibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="辅助权限"
-            android:textSize="12sp"/>
-
-        <Button
-            android:id="@+id/tv_pull_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="下拉设置"
-            android:textSize="12sp"/>
 
         <Button
             android:id="@+id/tv_shell_ui"
@@ -56,12 +18,34 @@
             android:textSize="12sp"/>
 
         <Button
-            android:id="@+id/btn_stop"
+            android:id="@+id/tv_pull_setting"
             android:layout_width="wrap_content"
-            android:padding="4dp"
-            android:textSize="12sp"
             android:layout_height="wrap_content"
-            android:text="关闭应用"/>
+            android:padding="4dp"
+            android:text="下拉设置"
+            android:textSize="12sp"/>
+        <Button
+            android:id="@+id/tv_pull_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="下拉通知"
+            android:textSize="12sp"/>
+
+        <Button
+            android:id="@+id/tv_action_split"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="分屏模式"
+            android:textSize="12sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:text="@string/cb_full_screen"/>
 
     </GridLayout>
 </LinearLayout>

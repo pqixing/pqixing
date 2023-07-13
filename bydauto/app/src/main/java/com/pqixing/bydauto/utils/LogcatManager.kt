@@ -1,7 +1,7 @@
 package com.pqixing.bydauto.utils
 
 import com.pqixing.bydauto.App
-import java.util.LinkedList
+import java.util.*
 import java.util.regex.Pattern
 import kotlin.concurrent.thread
 
@@ -39,8 +39,9 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
         if (startProTs != -1L) return false
 
         startProTs = System.currentTimeMillis()
-        val watch = { curTs: Long ->
-            while (curTs == startProTs) {
+        val curTs = startProTs
+        val watch = {
+            while (curTs == startProTs) runCatching {
                 //监听雷达距离和页面切换启动
                 val cmd = "logcat -T 0 -s ${catTags.joinToString(" ")} *:S"
                 val pro = Runtime.getRuntime().exec(cmd)
@@ -64,13 +65,9 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
                     }
                     pro.destroy()
                 }
-            }
+            }.onFailure { it.printStackTrace() }
         }
-        thread {
-            kotlin.runCatching { watch(startProTs) }.onFailure {
-                App.log(null, it)
-            }
-        }
+        thread(block = watch)
         return true
     }
 

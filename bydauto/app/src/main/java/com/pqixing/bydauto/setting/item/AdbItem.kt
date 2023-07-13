@@ -1,11 +1,9 @@
 package com.pqixing.bydauto.setting.item
 
-import android.Manifest
 import android.accessibilityservice.AccessibilityService
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -21,7 +19,6 @@ import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
 
 class AdbItem : SettingImpl(R.layout.setting_adb) {
 
@@ -57,25 +54,14 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
             val text = runCatching {
                 when (view.id) {
                     R.id.tv_shell_ui -> view.context.startActivity(Intent(view.context, ConnectActivity::class.java))
-                    R.id.tv_connection -> AdbManager.getClient().connection()
-                    R.id.tv_read_log -> AdbManager.getClient().runSync("pm grant ${view.context.packageName} ${Manifest.permission.READ_LOGS} \n")
-                    R.id.tv_pull_setting -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
-                    R.id.btn_stop -> exitProcess(0)
-                    R.id.btn_accessibility -> {
-                        val context = view.context
-                        AdbManager.getClient().runSync("pm grant ${context.packageName} ${Manifest.permission.WRITE_SECURE_SETTINGS} \n")
-                        Settings.Secure.putString(
-                            context.contentResolver,
-                            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-                            "${context.packageName}/${CarAccessibilityService::class.java.canonicalName}"
-                        )
-                        Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, 1)
-                    }
-
+                    R.id.tv_pull_setting -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS)
+                    R.id.tv_pull_notify -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
+                    R.id.tv_action_split -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
                     else -> null
                 }.toString()
             }.getOrElse { it.message }
-            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
+            App.toast("result : $text")
+//            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
         }
     }
 

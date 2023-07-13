@@ -29,7 +29,7 @@ object UiManager : LogcatManager.LogCatCallBack {
             return
         }
         App.log("onActivityResume $pkg/$activity")
-        if (lastPkg.isNotEmpty()) {
+        if (lastActivity.isNotEmpty()) {
             onActivityPause(activity, pkg)
         }
         lastActivity = activity

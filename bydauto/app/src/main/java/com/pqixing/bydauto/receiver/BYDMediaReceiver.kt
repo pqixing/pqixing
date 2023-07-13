@@ -17,7 +17,6 @@ class BYDMediaReceiver : BroadcastReceiver() {
         App.uiScope.launch {
             runCatching {
                 SettingManager.findSetting(MusicItem::class.java)?.resend(context, intent)
-                SettingManager.updateCurSettings(context)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.utils
 
 import android.content.Context
+import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.*
@@ -23,8 +24,14 @@ object SettingManager {
         val sets = Const.SP_SETTING_HIDE.split(",").toSet()
         val filter = settings.filter { !sets.contains(it.javaClass.simpleName) && it.isShow(context) }
 
-        curs.minus(filter).forEach { it.onDestroy(context) }
-        filter.minus(curs).forEach { it.onCreate(context) }
+        curs.minus(filter).forEach {
+            it.onDestroy(context)
+            App.log("${it.javaClass.simpleName} onDestroy")
+        }
+        filter.minus(curs).forEach {
+            it.onCreate(context)
+            App.log("${it.javaClass.simpleName} onCreate")
+        }
         curs = filter
         return curs
     }
