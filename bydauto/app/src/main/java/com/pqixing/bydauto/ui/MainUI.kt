@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,7 +20,6 @@ import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.net.URL
 import kotlin.system.exitProcess
 
 
@@ -56,13 +54,18 @@ class MainUI : BaseActivity() {
     }
 
     private fun updateSelf() = App.uiScope.launch(Dispatchers.IO) {
-        val downloadApk = File(App.get().cacheDir, "temp.apk")
-        downloadApk.writeBytes(URL(Const.URL_DOWNLOAD).openStream().use { it.readBytes() })
+        if (!App.get().filesDir.exists()) {
+            App.get().filesDir.mkdirs()
+        }
 
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.setDataAndType(Uri.fromFile(downloadApk), "application/vnd.android.package-archive")
-        startActivity(intent)
+        val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")
+        UiUtils.downloadAPK(this@MainUI, Const.URL_DOWNLOAD, downloadApk, true) {
+            if (it) {
+                App.log("download file ${Const.URL_DOWNLOAD} -> ${downloadApk.absolutePath} ; ${downloadApk.length()}")
+                UiUtils.installApk(this@MainUI, downloadApk)
+            }
+
+        }
     }
 
     private fun showHideSetting() {

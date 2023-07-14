@@ -20,4 +20,5 @@
     <string name="cb_full_screen">全屏</string>
     <string name="setting_name_item_bar">侧边栏</string>
     <string name="main_title_add_setting">添加设置</string>
+    <string name="download_title">下载\n</string>
 </resources>
