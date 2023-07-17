@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
+import com.pqixing.bydauto.service.CarAccessibilityService
 import java.io.File
 
 
@@ -241,6 +242,7 @@ object UiUtils {
         intent.setDataAndType(data, "application/vnd.android.package-archive")
         context.startActivity(intent)
     }
+
     /**
      * 授权：授予下载的apk 777权限，因为读写cache目录下的文件需要此权限
      *
@@ -252,10 +254,18 @@ object UiUtils {
         runtime.exec(command)
     }
 
-    fun openUrl(context: Context,url: String){
+    fun openUrl(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setData(Uri.parse(url))
         context.startActivity(intent)
+    }
+
+    fun enableAccessibility(context: Context, enable: Boolean): Boolean {
+        val strValue =
+            if (enable) "${context.packageName}/${CarAccessibilityService::class.java.canonicalName}" else null
+        Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, strValue)
+        val intValue = if (enable) 1 else 0
+        return Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue)
     }
 }
 

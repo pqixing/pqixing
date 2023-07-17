@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <GridLayout
         android:id="@+id/gd_group"
         android:layout_width="match_parent"
-        android:columnCount="4"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:columnCount="4">
 
         <Button
             android:id="@+id/tv_shell_ui"
@@ -15,7 +16,7 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="Shell页面"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/tv_pull_setting"
@@ -23,14 +24,15 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="下拉设置"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
+
         <Button
             android:id="@+id/tv_pull_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="下拉通知"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/tv_action_split"
@@ -38,14 +40,6 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="分屏模式"
-            android:textSize="12sp"/>
-
-        <CheckBox
-            android:id="@+id/cb_full"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:text="@string/cb_full_screen"/>
-
+            android:textSize="12sp" />
     </GridLayout>
 </LinearLayout>

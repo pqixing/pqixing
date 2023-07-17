@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 
 sealed class PermType {
 
+
     companion object {
         private val permissions = hashMapOf<PermType, Boolean>()
 
@@ -61,13 +62,11 @@ sealed class PermType {
 
         override fun tryToSet(context: Context, call: (s: Boolean) -> Unit) {
             if (Adb.enable()) App.uiScope.launch {
-                AdbManager.getClient().runSync("pm grant ${context.packageName} ${Manifest.permission.WRITE_SECURE_SETTINGS} \n")
-                Settings.Secure.putString(
-                    context.contentResolver,
-                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-                    "${context.packageName}/${CarAccessibilityService::class.java.canonicalName}"
-                )
-                val result = Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, 1)
+                AdbManager.getClient()
+                    .runSync("pm grant ${context.packageName} ${Manifest.permission.WRITE_SECURE_SETTINGS} \n")
+
+                UiUtils.enableAccessibility(context, false)
+                val result = UiUtils.enableAccessibility(context, true)
                 permissions[this@Accessibility] = result
                 call(result)
             } else {
@@ -77,6 +76,7 @@ sealed class PermType {
                 call(enable())
             }
         }
+
     }
 
     object ReadLogs : PermType() {

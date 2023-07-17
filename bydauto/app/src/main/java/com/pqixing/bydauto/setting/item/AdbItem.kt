@@ -1,9 +1,11 @@
 package com.pqixing.bydauto.setting.item
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Path
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -29,15 +31,7 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
         for (i in 0 until group.childCount) {
             group.getChildAt(i).setOnClickListener { onChildCick(it) }
         }
-        val full = viewHolder.findViewById<CheckBox>(R.id.cb_full)
-        full.isChecked = Const.SP_FULL_SCREEN
-        full.setOnCheckedChangeListener { buttonView, isChecked ->
-            val cmd = "wm overscan 0,${if (isChecked) -UiUtils.getStatusBarH(viewHolder.context) else 0},0,${
-                if (isChecked) -UiUtils.getNavigationBarH(viewHolder.context) else 0
-            }"
-            AdbManager.getClient().runAsync(cmd)
-            Const.SP_FULL_SCREEN = isChecked
-        }
+
     }
 
     override fun onCreate(context: Context) {
@@ -54,7 +48,7 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
             val text = runCatching {
                 when (view.id) {
                     R.id.tv_shell_ui -> view.context.startActivity(Intent(view.context, ConnectActivity::class.java))
-                    R.id.tv_pull_setting -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS)
+                    R.id.tv_pull_setting ->  CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS)
                     R.id.tv_pull_notify -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
                     R.id.tv_action_split -> CarAccessibilityService.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
                     else -> null

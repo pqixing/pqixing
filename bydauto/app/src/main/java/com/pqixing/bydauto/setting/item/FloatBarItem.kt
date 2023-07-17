@@ -10,6 +10,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.ui.FloatBarView
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 
 class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
@@ -36,7 +37,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
         val layoutManager = { start: Boolean ->
             WindowManager.LayoutParams().also {
                 it.width = WindowManager.LayoutParams.WRAP_CONTENT
-                it.height = WindowManager.LayoutParams.WRAP_CONTENT
+                it.height = WindowManager.LayoutParams.MATCH_PARENT
                 it.format = PixelFormat.RGBA_8888
                 it.flags =
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -64,6 +65,16 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
                 UiUtils.closeFloatView(FLOAT_TAG_BAR_LEFT)
                 UiUtils.closeFloatView(FLOAT_TAG_BAR_RIGHT)
             }
+        }
+
+        val full = viewHolder.findViewById<CheckBox>(R.id.cb_full)
+        full.isChecked = Const.SP_FULL_SCREEN
+        full.setOnCheckedChangeListener { buttonView, isChecked ->
+            val cmd = "wm overscan 0,${if (isChecked) -UiUtils.getStatusBarH(viewHolder.context) else 0},0,${
+                if (isChecked) -UiUtils.getNavigationBarH(viewHolder.context) else 0
+            }"
+            AdbManager.getClient().runAsync(cmd)
+            Const.SP_FULL_SCREEN = isChecked
         }
     }
 }
