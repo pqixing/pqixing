@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.SettingManager
@@ -30,8 +29,8 @@ class MainUI : BaseActivity() {
         super.onCreate(savedInstanceState)
         startService(Intent(this, MainService::class.java))
         setContentView(R.layout.activity_settings)
-        findViewById<View>(R.id.tv_title).setOnClickListener { showHideSetting() }
-        findViewById<View>(R.id.tv_title).setOnLongClickListener { showHideMenu();true }
+        findViewById<View>(R.id.tv_title).setOnClickListener { showHideMenu() }
+        findViewById<View>(R.id.tv_title).setOnLongClickListener { showHideSetting();true }
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
         rvData.adapter = mainAdapter
         rvData.isNestedScrollingEnabled = true
@@ -39,33 +38,40 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideMenu() {
-        val names = arrayOf("更新", "关闭")
+        val names = arrayOf("重装", "崩溃日志", "关闭")
 
         AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
             .setSingleChoiceItems(names, -1) { d, w ->
                 d.dismiss()
                 when (w) {
                     0 -> updateSelf()
-                    1 -> exitProcess(0)
+                    1 -> showCrashLog()
+                    2 -> exitProcess(0)
                 }
             }.setOnDismissListener {
                 mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
             }.show()
     }
 
-    private fun updateSelf() = App.uiScope.launch(Dispatchers.IO) {
-        if (!App.get().filesDir.exists()) {
-            App.get().filesDir.mkdirs()
-        }
-
-        val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")
-        UiUtils.downloadAPK(this@MainUI, Const.URL_DOWNLOAD, downloadApk, true) {
-            if (it) {
-                App.log("download file ${Const.URL_DOWNLOAD} -> ${downloadApk.absolutePath} ; ${downloadApk.length()}")
-                UiUtils.installApk(this@MainUI, downloadApk)
+    private fun showCrashLog() {
+        val logFile = File(cacheDir, "crash.log")
+        if (!logFile.exists()) return App.toast("暂无崩溃日志")
+        AlertDialog.Builder(this).setMessage(logFile.readText())
+            .setNegativeButton("取消") { d, _ ->
+                d.dismiss()
             }
+            .setPositiveButton("清除") { d, w ->
+                d.dismiss()
+                logFile.delete()
+            }.show()
+    }
 
-        }
+    private fun updateSelf() = App.uiScope.launch(Dispatchers.IO) {
+        val dataDir = File(packageResourcePath)
+        val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")
+        downloadApk.writeBytes(dataDir.readBytes())
+
+        UiUtils.installApk(this@MainUI, dataDir)
     }
 
     private fun showHideSetting() {

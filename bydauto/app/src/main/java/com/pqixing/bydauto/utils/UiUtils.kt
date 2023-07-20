@@ -21,7 +21,7 @@ import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
-import com.pqixing.bydauto.service.CarAccessibilityService
+import com.pqixing.bydauto.service.CAService
 import java.io.File
 
 
@@ -262,7 +262,7 @@ object UiUtils {
 
     fun enableAccessibility(context: Context, enable: Boolean): Boolean {
         val strValue =
-            if (enable) "${context.packageName}/${CarAccessibilityService::class.java.canonicalName}" else null
+            if (enable) "${context.packageName}/${CAService::class.java.canonicalName}" else null
         Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, strValue)
         val intValue = if (enable) 1 else 0
         return Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue)

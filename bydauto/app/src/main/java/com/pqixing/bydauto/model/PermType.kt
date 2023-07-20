@@ -10,7 +10,7 @@ import android.net.Uri
 import android.provider.Settings
 import com.cgutman.androidremotedebugger.AdbUtils
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.service.CarAccessibilityService
+import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
@@ -57,7 +57,7 @@ sealed class PermType {
 
     object Accessibility : PermType() {
         override fun checkPerm(context: Context): Boolean {
-            return UiUtils.isAccessibilitySettingsOn(context, CarAccessibilityService::class.java)
+            return UiUtils.isAccessibilitySettingsOn(context, CAService::class.java)
         }
 
         override fun tryToSet(context: Context, call: (s: Boolean) -> Unit) {

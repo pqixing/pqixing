@@ -65,7 +65,7 @@
             android:name="com.pqixing.bydauto.service.MainService"
             android:exported="false"/>
         <service
-            android:name=".service.CarAccessibilityService"
+            android:name=".service.CAService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
