@@ -66,6 +66,11 @@ class MainUI : BaseActivity() {
             }.show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        UiUtils.enableAccessibility(this, false)
+    }
+
     private fun updateSelf() = App.uiScope.launch(Dispatchers.IO) {
         val dataDir = File(packageResourcePath)
         val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")

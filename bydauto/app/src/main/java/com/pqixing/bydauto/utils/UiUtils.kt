@@ -23,6 +23,7 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
 import com.pqixing.bydauto.service.CAService
 import java.io.File
+import kotlin.math.roundToInt
 
 
 object UiUtils {
@@ -104,7 +105,7 @@ object UiUtils {
     }
 
 
-    suspend fun tryLaunch(context: Context, pkg: String): Boolean {
+    fun tryLaunch(context: Context, pkg: String): Boolean {
         return kotlin.runCatching {
             val start: Intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
             start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -260,12 +261,16 @@ object UiUtils {
         context.startActivity(intent)
     }
 
-    fun enableAccessibility(context: Context, enable: Boolean): Boolean {
+    fun enableAccessibility(context: Context, enable: Boolean): Boolean = kotlin.runCatching {
         val strValue =
             if (enable) "${context.packageName}/${CAService::class.java.canonicalName}" else null
         Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, strValue)
         val intValue = if (enable) 1 else 0
-        return Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue)
+        Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue)
+    }.getOrDefault(false)
+
+    fun dp2dx(dp: Int): Int {
+        return (App.get().resources.displayMetrics.density * dp).roundToInt()
     }
 }
 

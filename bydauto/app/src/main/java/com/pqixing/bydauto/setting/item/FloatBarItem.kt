@@ -11,14 +11,15 @@ import android.widget.CheckBox
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
+import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.ui.FloatBarView
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiUtils
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
@@ -28,7 +29,12 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     val FLOAT_TAG_BAR_BOTTOM = "FLOAT_TAG_BAR_BOTTOM"
 
     override fun getNameId(): Int = R.string.setting_name_item_bar
-    val floatTypes = arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT, FLOAT_TAG_BAR_BOTTOM)
+    val floatTypes = mapOf(
+        FLOAT_TAG_BAR_LEFT to R.drawable.float_bar_bg_left,
+        FLOAT_TAG_BAR_RIGHT to R.drawable.float_bar_bg_right,
+        FLOAT_TAG_BAR_BOTTOM to R.drawable.float_bar_bg_bottom
+    )
+
     override fun onCreate(context: Context) {
         super.onCreate(context)
         if (Const.SP_FLOAT_BAR) {
@@ -38,7 +44,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
 
     override fun onDestroy(context: Context) {
         super.onDestroy(context)
-        floatTypes.forEach { UiUtils.closeFloatView(it) }
+        floatTypes.forEach { UiUtils.closeFloatView(it.key) }
     }
 
     private fun float(context: Context) {
@@ -62,31 +68,31 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
             }
         }
 
-        val LONG_PRESS_TIME = 600L
 
-        val onTouch = { type: String, gap: Long, e: MotionEvent, view: View ->
+        val onTouch = { type: String, short: Boolean, e: MotionEvent, view: View ->
             App.uiScope.launch {
 
                 when (type) {
-                    FLOAT_TAG_BAR_BOTTOM -> CAService.perform(if (gap < LONG_PRESS_TIME) AccessibilityService.GLOBAL_ACTION_HOME else AccessibilityService.GLOBAL_ACTION_RECENTS)
+                    FLOAT_TAG_BAR_BOTTOM -> CAService.perform(if (short) AccessibilityService.GLOBAL_ACTION_HOME else AccessibilityService.GLOBAL_ACTION_RECENTS)
                     FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT -> {
                         if (e.y <= view.height / 2) {
-                            App.toast("拖动了上边${e.y} $gap")
-                            if (gap <= LONG_PRESS_TIME) CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) else {
-                                CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
-                                delay(LONG_PRESS_TIME)
-                                UiUtils.tryLaunch(App.get(), "com.byd.automap")
-                                delay(LONG_PRESS_TIME)
-                                CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
-                                UiUtils.tryLaunch(App.get(),
-                                    BYDAutoUtils.getCurrentAudioFocusPackage()
-                                        ?: Const.SP_MUSIC_PKG.takeIf { it.isNotEmpty() } ?: "com.kuwo.tingshu")
+//                            App.toast("拖动了上边${e.y} $short")
+                            if (short) CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) else {
 
+                                CAService.performs(
+                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
+                                    LaunchCASExe("com.byd.automap") to 1000L,
+                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 2000L,
+                                    LaunchCASExe(
+                                        BYDAutoUtils.getCurrentAudioFocusPackage()
+                                            ?: Const.SP_MUSIC_PKG.takeIf { it.isNotEmpty() }
+                                            ?: "com.kuwo.tingshu") to 2000L,
+                                )
                             }
                         } else {
-                            App.toast("拖动了下边 ${e.y} $gap")
-                            if (gap <= LONG_PRESS_TIME) CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) else {
-                                switchFullScreen(context, !Const.SP_FULL_SCREEN)
+//                            App.toast("拖动了下边 ${e.y} $short")
+                            if (short) CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) else {
+                                showShortcut(e, view)
                             }
                         }
                     }
@@ -95,10 +101,20 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
             }
         }
         floatTypes.forEach {
-            UiUtils.showOrUpdateFloatView(it, layoutManager(it)) {
-                FloatBarView(context).also { view -> view.setOnTouchUp { gap, e -> onTouch(it, gap, e, view) } }
+            UiUtils.showOrUpdateFloatView(it.key, layoutManager(it.key)) {
+                FloatBarView(context).also { view ->
+                    view.setOnTouchUp(context.getDrawable(it.value)) { short, e -> onTouch(it.key, short, e, view) }
+                }
             }
         }
+    }
+
+    /**
+     * 显示快捷菜单悬浮窗
+     */
+    private fun showShortcut(event: MotionEvent, view: View) {
+//        App.toast("显示快捷菜单")
+        switchFullScreen(App.get(), !Const.SP_FULL_SCREEN)
     }
 
 

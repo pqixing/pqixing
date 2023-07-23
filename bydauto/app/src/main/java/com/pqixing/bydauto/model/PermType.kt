@@ -65,7 +65,6 @@ sealed class PermType {
                 AdbManager.getClient()
                     .runSync("pm grant ${context.packageName} ${Manifest.permission.WRITE_SECURE_SETTINGS} \n")
 
-                UiUtils.enableAccessibility(context, false)
                 val result = UiUtils.enableAccessibility(context, true)
                 permissions[this@Accessibility] = result
                 call(result)

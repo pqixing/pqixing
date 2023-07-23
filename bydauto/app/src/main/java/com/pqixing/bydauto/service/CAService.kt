@@ -3,27 +3,72 @@ package com.pqixing.bydauto.service
 import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityEvent
 import com.pqixing.bydauto.App
+import com.pqixing.bydauto.utils.UiUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class CAService : AccessibilityService() {
     companion object {
+
         private var mInstance: CAService? = null
-        fun perform(action: Int) {
-            kotlin.runCatching {
-                mInstance?.performGlobalAction(action)
-            }.onFailure { App.toast("performGlobalAction :$action ${it.message}") }
+        private val actions: MutableList<Pair<CASExe, Long>> = mutableListOf()
+
+        fun perform(action: Int, delay: Long = 0) {
+            performs(ActionCASExe(action) to delay)
+        }
+
+        fun performs(vararg actions: Pair<CASExe, Long>) {
+            if (mInstance != null) {
+                mInstance?.performs(actions.toList())
+            } else {
+                this.actions.addAll(actions)
+                UiUtils.enableAccessibility(App.get(), true)
+            }
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        App.log("CAService onCreate")
+        mInstance = this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        App.log("CAService onDestroy")
+        mInstance = null
+    }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        App.log("CAService onServiceConnected")
+        mInstance = this
+        performs(actions.toList())
+        actions.clear()
+    }
+
+    fun performs(actions: List<Pair<CASExe, Long>>) {
+        App.uiScope.launch {
+            actions.forEach { action ->
+                kotlin.runCatching {
+                    delay(action.second)
+                    action.first.execute(this@CAService)
+                    App.log("CAService perform[${action.first}]: ${action.second}")
+
+                }.onFailure { App.toast("performGlobalAction :${action.first} ${it.message}") }
+            }
+            UiUtils.enableAccessibility(App.get(), false)
         }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-//        App.log("onAccessibilityEvent[${event.packageName}]: ${event.eventType}  ${event.className}")
+        App.log("CAService onAccessibilityEvent[${event.packageName}]: ${event.eventType}  ${event.className}")
         mInstance = this
-//        when (event.eventType) {
-//            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> handleWindowChange(event)
-//        }
     }
 
     override fun onInterrupt() {
-
+        App.log("CAService onInterrupt")
+        mInstance = null
     }
 
     private fun handleWindowChange(event: AccessibilityEvent) {
