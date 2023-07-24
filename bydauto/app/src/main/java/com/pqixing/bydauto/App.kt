@@ -31,8 +31,10 @@ class App : Application() {
         }
 
         fun toast(msg: String) {
-            log(msg, null, 6)
-            Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                log(msg, null, 6)
+                Toast.makeText(app, msg, Toast.LENGTH_SHORT).show()
+            } else get().mHandle.post { toast(msg) }
         }
 
         fun get(): App {

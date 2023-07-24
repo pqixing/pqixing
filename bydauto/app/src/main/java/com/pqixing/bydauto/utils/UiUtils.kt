@@ -25,6 +25,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.ui.EmptyUI
 import java.io.File
+import java.net.URL
 import kotlin.math.roundToInt
 
 
@@ -58,7 +59,11 @@ object UiUtils {
         return floatViews[tag]?.isAttachedToWindow == true
     }
 
-    fun showOrUpdateFloatView(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
+    fun showOrUpdateFloatView(
+        tag: String,
+        params: WindowManager.LayoutParams,
+        getView: () -> View
+    ) {
         runCatching {
             if (isShow(tag)) {
                 val context = App.get()
@@ -111,7 +116,8 @@ object UiUtils {
 
     fun tryLaunch(context: Context, pkg: String): Boolean {
         return kotlin.runCatching {
-            val start: Intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
+            val start: Intent =
+                context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
             start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(start)
             App.log("checkLastPkg : start launch $pkg")
@@ -149,7 +155,10 @@ object UiUtils {
         })
     }
 
-    fun isAccessibilitySettingsOn(mContext: Context, clazz: Class<out AccessibilityService?>): Boolean {
+    fun isAccessibilitySettingsOn(
+        mContext: Context,
+        clazz: Class<out AccessibilityService?>
+    ): Boolean {
         var accessibilityEnabled = 0
         val service = mContext.packageName + "/" + clazz.canonicalName
         try {
@@ -181,6 +190,19 @@ object UiUtils {
 
 
     //下载apk
+    fun downloadAndInstallAPK(context: Context, url: String) = App.mThread.post {
+        kotlin.runCatching {
+            val file = File(context.getExternalFilesDir(null), "${url.hashCode()}.apk")
+            file.parentFile.mkdirs()
+            file.delete()
+            val data = URL(url).openConnection().getInputStream().use { it.readBytes() }
+            file.writeBytes(data)
+            installApk(context, file)
+        }.onFailure {
+            App.toast(it.message ?: "")
+        }
+    }
+
     fun downloadAPK(
         context: Context,
         url: String,
@@ -223,7 +245,12 @@ object UiUtils {
         EmptyUI.lastCall = call
         EmptyUI.lastIntent = intent
 
-        context.startActivity(Intent(context, EmptyUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        context.startActivity(
+            Intent(
+                context,
+                EmptyUI::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     /**
@@ -275,9 +302,17 @@ object UiUtils {
     fun enableAccessibility(context: Context, enable: Boolean): Boolean = kotlin.runCatching {
         val strValue =
             if (enable) "${context.packageName}/${CAService::class.java.canonicalName}" else null
-        Settings.Secure.putString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, strValue)
+        Settings.Secure.putString(
+            context.contentResolver,
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
+            strValue
+        )
         val intValue = if (enable) 1 else 0
-        Settings.Secure.putInt(context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue)
+        Settings.Secure.putInt(
+            context.contentResolver,
+            Settings.Secure.ACCESSIBILITY_ENABLED,
+            intValue
+        )
     }.getOrDefault(false)
 
     fun dp2dx(dp: Int): Int {

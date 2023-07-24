@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.SettingManager
@@ -38,15 +39,16 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideMenu() {
-        val names = arrayOf("重装", "崩溃日志", "关闭")
+        val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程")
 
         AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
             .setSingleChoiceItems(names, -1) { d, w ->
                 d.dismiss()
                 when (w) {
                     0 -> updateSelf()
-                    1 -> showCrashLog()
-                    2 -> exitProcess(0)
+                    1 -> UiUtils.downloadAndInstallAPK(this, Const.URL_DOWNLOAD)
+                    2 -> showCrashLog()
+                    3 -> exitProcess(0)
                 }
             }.setOnDismissListener {
                 mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
@@ -76,7 +78,7 @@ class MainUI : BaseActivity() {
         val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")
         downloadApk.writeBytes(dataDir.readBytes())
 
-        UiUtils.installApk(this@MainUI, dataDir)
+        UiUtils.installApk(this@MainUI, downloadApk)
     }
 
     private fun showHideSetting() {

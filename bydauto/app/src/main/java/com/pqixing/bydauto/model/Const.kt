@@ -4,7 +4,7 @@ import com.pqixing.bydauto.App
 
 object Const {
 
-    val URL_DOWNLOAD: String = "https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"
+    val URL_DOWNLOAD: String = "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"
     var lastMediaReceiver: Long = -1L
     var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"
 
