@@ -36,6 +36,6 @@ abstract class SettingImpl(val _layoutId: Int) : ISetting {
     }
 
     override fun isShow(context: Context): Boolean {
-        return PermType.enable(PermType.Float)
+        return PermType.Float.enable()
     }
 }

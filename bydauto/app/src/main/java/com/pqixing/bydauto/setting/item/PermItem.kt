@@ -17,13 +17,13 @@ class PermItem : SettingImpl(R.layout.setting_permission) {
         val permMap = mapOf(
             PermType.Float to view.findViewById(R.id.cb_float),
             PermType.ReadLogs to view.findViewById(R.id.cb_read_logs),
-            PermType.Accessibility to view.findViewById(R.id.cb_accessibility),
+            PermType.WriteSecure to view.findViewById(R.id.cb_write_system),
             PermType.Adb to view.findViewById<CheckBox>(R.id.cb_adb),
         )
         permMap.forEach { item ->
             item.value.isChecked = item.key.enable()
             item.value.setOnClickListener {
-                item.key.tryToSet(view.context) { check -> item.value.isChecked = check }
+                item.key.toSet(view.context) { check -> item.value.isChecked = check }
                 item.value.isChecked = item.key.enable()
             }
         }

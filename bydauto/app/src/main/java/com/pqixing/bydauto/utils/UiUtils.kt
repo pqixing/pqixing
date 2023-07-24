@@ -21,7 +21,9 @@ import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
+import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
+import com.pqixing.bydauto.ui.EmptyUI
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -95,12 +97,14 @@ object UiUtils {
         val pm = context.packageManager
         val curPkg = context.packageName
 
-        return pkgs.filter { it != curPkg }.map {
-            val info = pm.getApplicationInfo(it, PackageManager.GET_META_DATA)
-            val name = pm.getApplicationLabel(info).toString()
-            val icon = pm.getApplicationIcon(info)
-            val intent = pm.getLaunchIntentForPackage(it)
-            AppInfo(it, name, icon, intent)
+        return pkgs.filter { it != curPkg }.mapNotNull {
+            kotlin.runCatching {
+                val info = pm.getApplicationInfo(it, PackageManager.GET_META_DATA)
+                val name = pm.getApplicationLabel(info).toString()
+                val icon = pm.getApplicationIcon(info)
+                val intent = pm.getLaunchIntentForPackage(it)
+                AppInfo(it, name, icon, intent)
+            }.getOrNull()
         }
     }
 
@@ -132,7 +136,7 @@ object UiUtils {
             resources.getDimensionPixelSize(dimenId)
         } else {
             (resources.displayMetrics.density * 24).toInt()
-        }) - 1
+        })
     }
 
     fun getNavigationBarH(context: Context): Int {
@@ -142,7 +146,7 @@ object UiUtils {
             resources.getDimensionPixelSize(dimenId)
         } else {
             (resources.displayMetrics.density * 48).toInt()
-        }) - 1
+        })
     }
 
     fun isAccessibilitySettingsOn(mContext: Context, clazz: Class<out AccessibilityService?>): Boolean {
@@ -215,6 +219,13 @@ object UiUtils {
         context.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
+    fun startResult(context: Context, intent: Intent, call: (intent: Intent?) -> Unit) {
+        EmptyUI.lastCall = call
+        EmptyUI.lastIntent = intent
+
+        context.startActivity(Intent(context, EmptyUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
     /**
      * 安裝新版本升級包
      *
@@ -271,6 +282,14 @@ object UiUtils {
 
     fun dp2dx(dp: Int): Int {
         return (App.get().resources.displayMetrics.density * dp).roundToInt()
+    }
+
+    fun switchFullScreen(context: Context, full: Boolean) {
+        val cmd = "wm overscan 0,${if (full) -getStatusBarH(context) else 0},0,${
+            if (full) -getNavigationBarH(context) else 0
+        }"
+        AdbManager.getClient().runAsync(cmd)
+        Const.SP_FULL_SCREEN = full
     }
 }
 

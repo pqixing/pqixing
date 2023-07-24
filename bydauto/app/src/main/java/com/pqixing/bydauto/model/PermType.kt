@@ -10,7 +10,6 @@ import android.net.Uri
 import android.provider.Settings
 import com.cgutman.androidremotedebugger.AdbUtils
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
@@ -21,12 +20,8 @@ sealed class PermType {
     companion object {
         private val permissions = hashMapOf<PermType, Boolean>()
 
-        fun enableAll(vararg types: PermType = arrayOf(Float, Accessibility, ReadLogs)): Boolean {
+        fun enableAll(vararg types: PermType = arrayOf(Float, WriteSecure, ReadLogs)): Boolean {
             return types.all { it.enable() }
-        }
-
-        fun enable(type: PermType): Boolean {
-            return permissions[type] ?: type.checkPerm(App.get()).also { permissions[type] = it }
         }
 
         fun clearCache() {
@@ -35,11 +30,18 @@ sealed class PermType {
     }
 
     fun enable(): Boolean {
-        return Companion.enable(this)
+        return permissions.getOrPut(this) { checkPerm(App.get()) }
+    }
+
+    fun toSet(context: Context, call: (s: Boolean) -> Unit = {}) {
+        tryToSet(context) { result ->
+            permissions[this] = result
+            call(result)
+        }
     }
 
     protected abstract fun checkPerm(context: Context): Boolean
-    abstract fun tryToSet(context: Context, call: (s: Boolean) -> Unit = {})
+   protected abstract fun tryToSet(context: Context, call: (s: Boolean) -> Unit = {})
 
     object Float : PermType() {
         override fun checkPerm(context: Context): Boolean {
@@ -50,32 +52,26 @@ sealed class PermType {
             val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .setData(Uri.parse("package:${context.packageName}"))
-            context.startActivity(i)
-            call(enable())
+            UiUtils.startResult(context, i) { call(checkPerm(context)) }
         }
     }
 
-    object Accessibility : PermType() {
+    object WriteSecure : PermType() {
         override fun checkPerm(context: Context): Boolean {
-            return UiUtils.isAccessibilitySettingsOn(context, CAService::class.java)
+            return UiUtils.checkSelfPermission(context, Manifest.permission.WRITE_SECURE_SETTINGS)
         }
 
         override fun tryToSet(context: Context, call: (s: Boolean) -> Unit) {
             if (Adb.enable()) App.uiScope.launch {
                 AdbManager.getClient()
                     .runSync("pm grant ${context.packageName} ${Manifest.permission.WRITE_SECURE_SETTINGS} \n")
-
-                val result = UiUtils.enableAccessibility(context, true)
-                permissions[this@Accessibility] = result
-                call(result)
+                call(checkPerm(context))
             } else {
-                val i = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                val i = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(i)
-                call(enable())
+                UiUtils.startResult(context, i) { call(checkPerm(context)) }
             }
         }
-
     }
 
     object ReadLogs : PermType() {
@@ -85,10 +81,8 @@ sealed class PermType {
 
         override fun tryToSet(context: Context, call: (s: Boolean) -> Unit) {
             if (Adb.enable()) App.uiScope.launch {
-                val result =
-                    AdbManager.getClient().runSync("pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}")
-                permissions[this@ReadLogs] = result.isSuccess
-                call(result.isSuccess)
+                AdbManager.getClient().runSync("pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}")
+                call(checkPerm(context))
             } else {
                 val cmd = "pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}"
                 AlertDialog.Builder(context).setTitle("申请权限").setMessage("请先通过adb命令授权日志权限: \n $cmd")
@@ -97,7 +91,7 @@ sealed class PermType {
                             .setPrimaryClip(ClipData.newPlainText("Label", cmd))
                         App.toast("命令已复制到粘贴板")
                     }.show()
-                call(enable())
+                call(checkPerm(context))
             }
         }
     }
@@ -118,8 +112,7 @@ sealed class PermType {
                         App.toast("connect fail")
                     }
                     Const.SP_PERM_ADB_CONNECT = result.isSuccess
-                    permissions[this@Adb] = result.isSuccess
-                    call(result.isSuccess)
+                    call(checkPerm(context))
                 }
             }
         }

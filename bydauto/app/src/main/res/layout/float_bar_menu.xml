@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_rect_color"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:columnCount="4">
+
+
+        <TextView
+            android:id="@+id/cb_home"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_dialog_dialer"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/cb_home" />
+
+        <TextView
+            android:id="@+id/cb_recent"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_menu_recent_history"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/cb_recent_screen" />
+
+        <TextView
+            android:id="@+id/cb_back"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_menu_revert"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="返回" />
+
+        <TextView
+            android:id="@+id/cb_split"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_input_get"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/cb_split_screen" />
+
+
+        <TextView
+            android:id="@+id/cb_setting"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_menu_set_as"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="快捷设置" />
+
+        <TextView
+            android:id="@+id/cb_air_control"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="空调" />
+
+
+        <TextView
+            android:id="@+id/cb_lock"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/ic_lock_idle_lock"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/cb_lock_screen" />
+
+        <TextView
+            android:id="@+id/cb_notify"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:background="@drawable/bg_item_press"
+            android:drawableTop="@android:drawable/stat_notify_chat"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="通知" />
+
+
+    </GridLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#000" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_apps"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="#000" />
+
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_item_press"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+</LinearLayout>
