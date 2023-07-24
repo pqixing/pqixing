@@ -82,15 +82,15 @@
 
 
         <TextView
-            android:id="@+id/cb_lock"
+            android:id="@+id/cb_full"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
             android:background="@drawable/bg_item_press"
-            android:drawableTop="@android:drawable/ic_lock_idle_lock"
+            android:drawableTop="@android:drawable/ic_menu_zoom"
             android:gravity="center"
             android:orientation="horizontal"
-            android:text="@string/cb_lock_screen" />
+            android:text="@string/cb_full_screen" />
 
         <TextView
             android:id="@+id/cb_notify"

@@ -71,18 +71,26 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
 
         val onTouch = { type: String, short: Boolean, e: MotionEvent, view: View ->
             App.uiScope.launch {
-                val t = view.height / 3
+                val t = view.height / 2
                 when (type) {
                     FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT -> {
                         when {
                             short && e.y <= t -> CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
-                            !short && e.y <= t -> UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
+                            !short && e.y <= t -> {
+                                CAService.performs(
+                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
+                                    LaunchCASExe(getDefualtMusic()) to 1500L,
+                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
+                                    LaunchCASExe("com.byd.automap") to 500L,
+                                )
+                            }
+
                             !short && e.y <= t * 2 -> {
                                 CAService.performs(
                                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                                    LaunchCASExe("com.byd.automap") to 100L,
-                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 500L,
-                                    LaunchCASExe(getDefualtMusic()) to 500L,
+                                    LaunchCASExe("com.byd.automap") to 500L,
+                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
+                                    LaunchCASExe(getDefualtMusic()) to 1500L,
                                 )
                             }
 
@@ -94,9 +102,6 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
                                 }) {
                                 FloatBarMenuView(view.context)
                             }
-
-                            short && e.y <= t * 3 -> CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
-                            !short && e.y <= t * 3 -> CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)
                         }
                     }
 
