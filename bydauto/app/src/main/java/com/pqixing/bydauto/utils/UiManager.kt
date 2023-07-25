@@ -8,6 +8,9 @@ object UiManager : LogcatManager.LogCatCallBack {
     private var lastPkg = ""
     private var lastActivity = ""
 
+    private var windowMode = 1
+
+
     init {
         logcat.addCallBack(this)
         logcat.start()
@@ -47,12 +50,13 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(START|topComponentName).*"
+        return ".*ActivityTaskManager.*(START|topComponentName|activityResumedForAcBar|onConfigurationChanged).*"
     }
 
     override fun onReceiveLog(line: String) {
         //类似 com.miui.home/.launcher.Launcher格式
-        val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") } ?: return
+        val name =
+            line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") } ?: return
 
         val pkg = name.substringBefore("/").replace("cmp=", "")
         val clazz = name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }

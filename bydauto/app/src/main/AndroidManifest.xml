@@ -42,10 +42,10 @@
 
         <activity
             android:name="com.pqixing.bydauto.ui.MainUI"
+            android:supportsPictureInPicture="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize|layoutDirection|fontScale"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:theme="@style/AppMainTheme">
             <intent-filter>

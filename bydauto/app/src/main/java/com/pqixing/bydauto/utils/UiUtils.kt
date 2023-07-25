@@ -3,6 +3,7 @@ package com.pqixing.bydauto.utils
 import android.Manifest
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.DownloadManager
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -11,6 +12,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -23,7 +25,9 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
+import com.pqixing.bydauto.ui.BootUI
 import com.pqixing.bydauto.ui.EmptyUI
+import com.pqixing.bydauto.ui.MainUI
 import java.io.File
 import java.net.URL
 import kotlin.math.roundToInt
@@ -325,6 +329,22 @@ object UiUtils {
         }"
         AdbManager.getClient().runAsync(cmd)
         Const.SP_FULL_SCREEN = full
+    }
+
+    fun startForSplit(context: Context) {
+        val intent = Intent(context, BootUI::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
+        val basic = ActivityOptions.makeBasic()
+        kotlin.runCatching {
+            var method = ActivityOptions::class.java.getMethod("setLaunchWindowingMode", Integer.TYPE)
+            method.isAccessible = false
+            method.invoke(basic, 4)
+        }.onFailure {
+            App.toast(it.message ?: "")
+        }
+
+        context.startActivity(intent, basic.toBundle())
+//        (context as? Activity)?.finish()
     }
 }
 
