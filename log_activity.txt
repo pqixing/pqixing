@@ -1,0 +1,168 @@
+--------- beginning of main
+--------- beginning of system
+2023-07-25 13:32:14.503  1203-1275  ActivityTaskManager     system_server                        D  closeSystemDialogs  reason :homekey
+2023-07-25 13:32:14.503  1203-1275  ActivityTaskManager     system_server                        W  not Ignoring closeSystemDialogs !!!
+2023-07-25 13:32:14.507  1203-1275  ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.HOME_ONLY] flg=0x10000100 cmp=com.android.launcher3/.Launcher (has extras)} from uid 0
+2023-07-25 13:32:16.010  1203-13114 ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.netease.cloudmusic.iot cmp=com.netease.cloudmusic.iot/com.netease.cloudmusic.home.MainActivity} from uid 10108
+2023-07-25 13:32:16.027  1203-13114 ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.launcher3, mResumingPkg =com.netease.cloudmusic.iot
+2023-07-25 13:32:16.041  1203-6016  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 2304
+2023-07-25 13:32:16.381  1203-13114 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:32:17.568  1203-5999  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:32:17.568  1203-5999  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:32:17.568  1203-5999  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:17.571  1203-5999  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:32:17.571  1203-5999  ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:32:17.569  1203-5999  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:17.575  1203-5999  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 2048
+2023-07-25 13:32:17.683  1203-6014  ActivityTaskManager     system_server                        D  closeSystemDialogs  reason :splitscreen
+2023-07-25 13:32:17.683  1203-6014  ActivityTaskManager     system_server                        W  not Ignoring closeSystemDialogs !!!
+2023-07-25 13:32:17.704  1203-13114 ActivityTaskManager     system_server                        I  START u0 {flg=0x10804000 cmp=com.android.systemui/.recents.RecentsActivity} from uid 10067
+2023-07-25 13:32:17.854  1203-13114 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:32:18.039  1203-13114 ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.byd.automap cmp=com.byd.automap/.activity.StartupActivity} from uid 10108
+2023-07-25 13:32:18.045  1203-13114 ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.systemui, mResumingPkg =com.byd.automap
+2023-07-25 13:32:18.225  1203-13114 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.android.systemui.recents.RecentsActivity
+2023-07-25 13:32:18.376  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:32:18.377  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:18.377  1203-6016  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:32:18.377  1203-6016  ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:32:18.378  1203-6016  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 256
+2023-07-25 13:32:18.417  1203-6014  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 3456
+2023-07-25 13:32:18.417  1203-6014  ActivityTaskManager     system_server                        D  4728 changes = 3456------packageName = com.byd.automap
+2023-07-25 13:32:18.494  1203-13114 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.automap.activity.MainActivity
+2023-07-25 13:32:18.862  1203-6016  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:32:19.434  1203-2061  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:32:19.436  1203-2061  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:19.438  1203-2061  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:32:19.439  1203-2061  ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.byd.automap
+2023-07-25 13:32:19.436  1203-2061  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:19.671  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:32:45.921  1203-6016  ActivityTaskManager     system_server                        I  START u0 {flg=0x10000000 cmp=com.byd.avc/.AutoVideoActivity (has extras)} from uid 1000
+2023-07-25 13:32:45.942  1203-6016  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.byd.automap, mResumingPkg =com.byd.avc
+2023-07-25 13:32:45.944  1203-6016  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.netease.cloudmusic.iot, mResumingPkg =com.byd.avc
+2023-07-25 13:32:45.945  1203-6016  ActivityTaskManager     system_server                        D  handleNonResizableTaskIfNeeded: topSecondaryStack id = 100 size= 1
+2023-07-25 13:32:45.945  1203-6016  ActivityTaskManager     system_server                        D  handleNonResizableTaskIfNeeded: mLastPrimaryTaskId = 59 mLastSecondTaskPackage = com.byd.automap
+2023-07-25 13:32:45.951  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.952  1203-6016  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 0
+2023-07-25 13:32:45.952  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.953  1203-6016  ActivityTaskManager     system_server                        I  The Process com.byd.avc Already Exists in BG. So sending its PID: 4010
+2023-07-25 13:32:45.958  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.959  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.959  1203-6016  ActivityTaskManager     system_server                        I  The Process com.byd.avc Already Exists in BG. So sending its PID: 4010
+2023-07-25 13:32:45.965  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.966  1203-6016  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:32:45.966  1203-6016  ActivityTaskManager     system_server                        I  The Process com.byd.avc Already Exists in BG. So sending its PID: 4010
+2023-07-25 13:32:45.977  1203-6016  ActivityTaskManager     system_server                        I  The Process com.byd.avc Already Exists in BG. So sending its PID: 4010
+2023-07-25 13:32:45.980  1203-6016  ActivityTaskManager     system_server                        W  Request to remove task ignored for non-existent task 72
+2023-07-25 13:32:46.259  1203-6016  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.avc.AutoVideoActivity
+2023-07-25 13:32:46.410  1203-1311  ActivityTaskManager     system_server                        I  Displayed com.byd.avc/.AutoVideoActivity: +405ms
+2023-07-25 13:33:00.264  1203-2061  ActivityTaskManager     system_server                        W  topComponentName ComponentInfo{com.byd.automap/com.byd.automap.activity.MainActivity}
+2023-07-25 13:33:00.306  1203-13114 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:00.315  1203-13114 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:00.329  1203-13114 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:00.331  1203-13114 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:00.427  1203-2530  ActivityTaskManager     system_server                        I  moveTaskToBack: TaskRecord{e2c27d #73 A=com.byd.avc U=0 StackId=104 sz=1}
+2023-07-25 13:33:00.605  1203-2061  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.automap.activity.MainActivity
+2023-07-25 13:33:01.005  1203-13076 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:33:01.525  1203-1288  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:01.527  1203-1288  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:27.598  1203-2530  ActivityTaskManager     system_server                        D  snapShotSplitScreenBoth primarystack
+2023-07-25 13:33:27.613  1203-2530  ActivityTaskManager     system_server                        D  snapShotSplitScreenBoth secondStack
+2023-07-25 13:33:27.725  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.727  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.728  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.729  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.731  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.755  1203-6014  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.byd.automap, mResumingPkg =com.android.launcher3
+2023-07-25 13:33:27.757  1203-6014  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.netease.cloudmusic.iot, mResumingPkg =com.android.launcher3
+2023-07-25 13:33:27.803  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.815  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.820  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.824  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:33:27.929  1203-2061  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.android.launcher3.Launcher
+2023-07-25 13:33:33.075  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:33.076  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:33.076  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:33.089  1203-6014  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:33:33.089  1203-6014  ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:33:33.080  1203-6014  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:33.098  1203-6014  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.launcher3, mResumingPkg =com.android.systemui
+2023-07-25 13:33:33.106  1203-6014  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 256
+2023-07-25 13:33:33.294  1203-10562 ActivityTaskManager     system_server                        D  closeSystemDialogs  reason :splitscreen
+2023-07-25 13:33:33.295  1203-10562 ActivityTaskManager     system_server                        W  not Ignoring closeSystemDialogs !!!
+2023-07-25 13:33:33.375  1203-13072 ActivityTaskManager     system_server                        I  START u0 {flg=0x10804000 cmp=com.android.systemui/.recents.RecentsActivity} from uid 10067
+2023-07-25 13:33:34.067  1203-13072 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.android.systemui.recents.RecentsActivity
+2023-07-25 13:33:34.098  1203-13072 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:33:34.640  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:34.642  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:34.642  1203-7797  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:33:34.642  1203-7797  ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:33:34.643  1203-7797  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 256
+2023-07-25 13:33:36.065  1203-2530  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:33:36.067  1203-2530  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:36.123  1203-6014  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:33:36.336  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:36.336  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:33:55.006  1203-2530  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.systemui, mResumingPkg =com.byd.automap
+2023-07-25 13:33:55.057  1203-5999  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.automap.activity.MainActivity
+2023-07-25 13:34:22.846  1203-7797  ActivityTaskManager     system_server                        D  snapShotSplitScreenBoth primarystack
+2023-07-25 13:34:22.858  1203-7797  ActivityTaskManager     system_server                        D  snapShotSplitScreenBoth secondStack
+2023-07-25 13:34:22.959  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:22.961  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:22.962  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:22.963  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:22.965  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:22.989  1203-7797  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.byd.automap, mResumingPkg =com.android.launcher3
+2023-07-25 13:34:23.003  1203-7797  ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.netease.cloudmusic.iot, mResumingPkg =com.android.launcher3
+2023-07-25 13:34:23.037  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:23.049  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:23.054  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:23.061  1203-7797  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:1
+2023-07-25 13:34:23.219  1203-7797  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.android.launcher3.Launcher
+2023-07-25 13:34:23.369  1203-13072 ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.byd.automap cmp=com.byd.automap/.activity.StartupActivity} from uid 10108
+2023-07-25 13:34:23.388  1203-13072 ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.launcher3, mResumingPkg =com.byd.automap
+2023-07-25 13:34:23.462  1203-13114 ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 3328
+2023-07-25 13:34:23.462  1203-13114 ActivityTaskManager     system_server                        D  4728 changes = 3328------packageName = com.byd.automap
+2023-07-25 13:34:24.010  1203-10562 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.automap.activity.MainActivity
+2023-07-25 13:34:24.299  1203-10562 ActivityTaskManager     system_server                        I  Activity reported stop, but no longer stopping: ActivityRecord{479cb97 u0 com.byd.automap/.activity.MainActivity t61}
+2023-07-25 13:34:24.992  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:34:24.993  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:34:24.994  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:25.014  1203-10562 ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:34:25.014  1203-10562 ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:34:24.999  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:25.055  1203-10562 ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 2048
+2023-07-25 13:34:25.055  1203-10562 ActivityTaskManager     system_server                        D  4728 changes = 2048------packageName = com.byd.automap
+2023-07-25 13:34:25.285  1203-13114 ActivityTaskManager     system_server                        D  closeSystemDialogs  reason :splitscreen
+2023-07-25 13:34:25.288  1203-13114 ActivityTaskManager     system_server                        W  not Ignoring closeSystemDialogs !!!
+2023-07-25 13:34:25.348  1203-10562 ActivityTaskManager     system_server                        I  START u0 {flg=0x10804000 cmp=com.android.systemui/.recents.RecentsActivity} from uid 10067
+2023-07-25 13:34:26.295  1203-10562 ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.android.systemui.recents.RecentsActivity
+2023-07-25 13:34:26.453  1203-13114 ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=com.netease.cloudmusic.iot cmp=com.netease.cloudmusic.iot/com.netease.cloudmusic.home.MainActivity} from uid 10108
+2023-07-25 13:34:26.464  1203-13114 ActivityTaskManager     system_server                        D  startPausingLocked mPausingPkg =com.android.systemui, mResumingPkg =com.netease.cloudmusic.iot
+2023-07-25 13:34:26.698  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:34:26.701  1203-10562 ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:26.702  1203-10562 ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:34:26.702  1203-10562 ActivityTaskManager     system_server                        D  4728 changes = 1408------packageName = com.android.systemui
+2023-07-25 13:34:26.705  1203-10562 ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1280
+2023-07-25 13:34:26.705  1203-10562 ActivityTaskManager     system_server                        D  4728 changes = 1280------packageName = com.byd.automap
+2023-07-25 13:34:26.960  1203-1283  ActivityTaskManager     system_server                        W  Activity top resumed state loss timeout for ActivityRecord{fc82d2a u0 com.android.systemui/.recents.RecentsActivity t60}
+2023-07-25 13:34:26.968  1203-1283  ActivityTaskManager     system_server                        W  Activity pause timeout for ActivityRecord{fc82d2a u0 com.android.systemui/.recents.RecentsActivity t60}
+2023-07-25 13:34:26.985  1203-1283  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:34:28.016  1203-8712  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+2023-07-25 13:34:28.375  1203-2974  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:3
+2023-07-25 13:34:28.377  1203-2974  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:28.378  1203-2974  ActivityTaskManager     system_server                        D  ensureActivityConfiguration.changes = 1408
+2023-07-25 13:34:28.378  1203-2974  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:28.935  1203-6954  ActivityTaskManager     system_server                        D  onConfigurationChanged windowingMode:4
+2023-07-25 13:34:29.522  1203-6014  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.netease.cloudmusic.home.MainActivity
+
+
+2023-07-25 13:36:22.511  1203-2454  ActivityTaskManager     system_server                        D  activityResumedForAcBar className:com.byd.airconditioning.mainactivity.FullScreenMainActivity
+
+
+2023-07-25 13:36:22.626  1203-1311  ActivityTaskManager     system_server                        I  Displayed com.byd.airconditioning/.mainactivity.FullScreenMainActivity: +704ms
+
+
+2023-07-25 13:36:21.917  1203-2454  ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.byd.airconditioning/.mainactivity.FullScreenMainActivity} from uid 1000
+
+
+2023-07-25 13:42:32.413  1203-2530  ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN flg=0x10200000 cmp=com.byd.carsettings/.MainActivity} from uid 1000
