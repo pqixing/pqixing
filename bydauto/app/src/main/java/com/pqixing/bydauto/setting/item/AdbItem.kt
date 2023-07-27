@@ -1,8 +1,7 @@
 package com.pqixing.bydauto.setting.item
 
 import android.accessibilityservice.AccessibilityService
-import android.app.Activity
-import android.app.PictureInPictureParams
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -17,7 +16,7 @@ import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.GestureCASExe
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.utils.BYDAutoUtils
 import kotlinx.coroutines.launch
 
 class AdbItem : SettingImpl(R.layout.setting_adb) {
@@ -54,12 +53,17 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
 
                     R.id.tv_pull_notify -> CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
                     R.id.tv_action_split -> CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
-                    R.id.tv_action_open_split -> UiUtils.startForSplit(view.context)
+                    R.id.tv_action_open_split ->{
+                        view.context.getSystemService("auto")
+                    }
                     else -> null
                 }.toString()
-            }.getOrElse { it.message }
+            }.getOrElse {
+                it.printStackTrace()
+                it.message
+            }
 //            App.toast("result : $text")
-//            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
+            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
         }
     }
 

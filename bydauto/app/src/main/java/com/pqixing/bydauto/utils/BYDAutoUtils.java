@@ -1,6 +1,6 @@
 package com.pqixing.bydauto.utils;
 
-import android.app.Application;
+import android.content.Context;
 import android.hardware.bydauto.ac.BYDAutoAcDevice;
 import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice;
 import android.hardware.bydauto.radar.BYDAutoRadarDevice;
@@ -17,10 +17,10 @@ public class BYDAutoUtils {
     private static final int FAIL = -2147482648;
     private static final String TAG = "BYDAutoUtils";
 
-    private static Application mContext;
+    private static Context mContext;
 
-    public static void init(Application context) {
-        mContext = context;
+    public static void init(Context context) {
+        mContext = ExtendsKt.hook(context,"com.byd.autovoice");
         //绕过反射Api限制
         setHiddenApiExemptions();
     }
