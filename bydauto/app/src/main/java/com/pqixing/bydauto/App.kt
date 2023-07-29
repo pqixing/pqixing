@@ -3,6 +3,8 @@ package com.pqixing.bydauto
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -168,7 +170,7 @@ class App : Application() {
      * 虚拟名称
      */
     override fun getPackageName(): String {
-        return pkg ?: super.getPackageName()
+        return "com.byd.autovoice"
     }
 
 }

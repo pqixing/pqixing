@@ -16,7 +16,7 @@ import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.GestureCASExe
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.BYDAutoUtils
+import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.launch
 
 class AdbItem : SettingImpl(R.layout.setting_adb) {
@@ -52,10 +52,17 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
                     )
 
                     R.id.tv_pull_notify -> CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
-                    R.id.tv_action_split -> CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
-                    R.id.tv_action_open_split ->{
-                        view.context.getSystemService("auto")
+                    R.id.tv_action_split -> {
+                        CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
                     }
+
+                    R.id.tv_action_open_split -> {
+                        val intent = Intent("com.intent.action.Voice_self_From_Screen")
+                        intent.putExtra("Scrren_ViewText", "风量1")
+                        view.context.sendBroadcast(intent)
+                        "风量设置".toast()
+                    }
+
                     else -> null
                 }.toString()
             }.getOrElse {

@@ -1,0 +1,503 @@
+--------- beginning of main
+--------- beginning of system
+11:06:08.784  3806-3806                           I  queryStatueDao: name ---- STATE_PHONE_USE-----value---0
+11:06:08.784  3806-3806  j                        D  dealPermissions
+11:06:08.798  3806-3806  l                        D  getPersonDao --- VOICE_AGREEMENT_STATE---1
+11:06:08.800  3806-3806                           D  getPersonDao --- SERVICE_VOICE_STATE---1
+11:06:08.800  3806-3806  a                        I  queryStatueDao: name ---- IFLY_STATUE-----value---1
+11:06:08.800  3806-3806                           I  queryStatueDao: name ---- CONTACT_IFLYTEK_BOOLEAN_EFFECTIVE-----value---1
+11:06:08.800  3806-3806  c                        D  processAudioMix: isDownVolume state=false
+11:06:08.801  3806-3806                           D  setNaviMuteState: true
+11:06:08.811  3806-3806                           I  getNaviMuteState = true
+11:06:08.816  3806-3806                           D  getCurrentAudioFocusPackage:
+11:06:08.816  3806-3806                           D  setTrackVolumeDuck: 当前流= 3，当前占有音频焦点的包名=，resultCode=0，state=true
+11:06:08.817  3806-3806  MyWindowManager          D  show() called with: type = [0], data = [[风量2]]
+11:06:08.818  3806-3806  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:08.818  3806-3806  LogUitlsKK               D  secondaryWindow_tag_windowType_show: 4
+11:06:08.819  3806-3806                           D  setAlpha_applySkin_onShow: TAG_FILM
+11:06:08.819  3806-3806                           D  updateConfiguration_isNeedUpdateUI: false mCurrentTag: TAG_FILM
+11:06:08.819  3806-3806                           D  updateBackgroundAlpha_isCallBack: true ,isChangedSkin: false ,tag: TAG_FILM ,background: android.graphics.drawable.ColorDrawable@131ae9
+11:06:08.819  3806-3806  a                        E  sys.byd.pano_start = 0
+11:06:08.819  3806-3806  LogUitlsKK               D  setAlpha_updateBackgroundAlpha: true ,tag: TAG_FILM ,background: android.graphics.drawable.ColorDrawable@131ae9
+11:06:08.820  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:08.821  3806-3806                           D  isContinousSrOpen=false
+11:06:08.821  3806-3806  LogUitlsKK               D  WindowUtils_onShow: false ,continousSrOpen: false
+11:06:08.822  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:08.822  3806-3806                           D  isContinousSrOpen=false
+11:06:08.822  3806-3806  LogUitlsKK               D  LogoView _show_wake:
+11:06:08.822  3806-3806                           D  destroy_tag:  TAG_DIALOGUE
+11:06:08.822  3806-3806  WakeupWindow             D  show() called with: list = [[风量2]]
+11:06:08.822  3806-3806                           D  doCancel() called countDownTimer = null mThirdListener = null
+11:06:08.822  3806-3806  LogUitlsKK               D  WakeupWindow_setData() called:0
+11:06:08.822  3806-3806  WakeupWindow             D  list: 风量2
+11:06:08.822  3806-3806                           D  list: 1
+11:06:08.822  3806-3806  LogUitlsKK               D  showAnswerText : 风量2
+11:06:08.823  3806-3806                           D  secondaryWindow_tag_windowType_show: 0
+11:06:08.823  3806-3806                           D  destroy_tag:  TAG_COUNTDOWN
+11:06:08.823  3806-3806                           D  destroy_tag:  TAG_TIME_OUT
+11:06:08.823  3806-3806                           D  FloatView_createFloatView: com.byd.autovoice_view.j@98ae151
+11:06:08.823  3806-3806                           D  destroy_tag:  TAG_WAKE
+11:06:08.824  3806-3806                           D  FloatView_FloatPhone_setView: null --this: com.byd.autovoice_view.floatwindow.c.a@3137002
+11:06:08.824  3806-3806                           D  FloatView_build: TAG_WAKE
+11:06:08.825  3806-3806                           D  FloatView_FloatPhone_addView: com.byd.autovoice_view.view.MyFrameLayout{ef37d13 VFE...... .F....I. 0,0-0,0} --this: com.byd.autovoice_view.floatwindow.c.a@3137002
+11:06:08.839  3806-3806  BaseSurface              D  init>>>>>>com.yuyashuai.frameanimation.g.b@b4c8a4e
+11:06:08.839  3806-3806                           D  getLogoView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ......I. 0,0-0,0}
+11:06:08.839  3806-3806                           E  isChangedPaths: false ,lastStopPaths: null ,restoreEnable: true
+11:06:08.839  3806-3806  LogUitlsKK               D  setAlpha_applySkin_onShow: TAG_WAKE
+11:06:08.839  3806-3806                           D  updateConfiguration_isNeedUpdateUI: false mCurrentTag: TAG_WAKE
+11:06:08.839  3806-3806                           D  WakeupWindow_updateConfiguration:true isNeedUpdateUI: false
+11:06:08.840  3806-3806                           D  updateBackgroundAlpha_isCallBack: true ,isChangedSkin: false ,tag: TAG_WAKE ,background: android.graphics.drawable.GradientDrawable@a35c9d5
+11:06:08.840  3806-3806  a                        E  sys.byd.pano_start = 0
+11:06:08.840  3806-3806  LogUitlsKK               D  setAlpha_updateBackgroundAlpha: true ,tag: TAG_WAKE ,background: android.graphics.drawable.GradientDrawable@a35c9d5
+11:06:08.841  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:08.841  3806-3806                           D  isContinousSrOpen=false
+11:06:08.841  3806-3806  LogUitlsKK               D  WindowUtils_onShow: false ,continousSrOpen: false
+11:06:08.842  3806-3806                           D  OnWakeIconClickListener_onShow: 0
+11:06:08.842  3806-3806  j                        D  Wakeup onShow isGetDoa= true
+11:06:08.842  3806-3806  a                        D  StatueDao-update name = LAUNCH_TYPE,value =5
+11:06:08.842  3806-3806                           E  net.lte.apn3.real_state = disconnected
+11:06:08.842  3806-3806                           I  queryStatueDao: name ---- NETWORKSTATE-----value---1
+11:06:08.843  3806-3806  l                        D  getPersonDao --- SWITCH_VOICE_CONTROL---1
+11:06:08.843  3806-3806  VoiceManager             D  isVoiceControl: true
+11:06:08.846  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:08.846  3806-3806                           D  isContinousSrOpen=false
+11:06:08.846  3806-3806  a                        I  queryStatueDao: name ---- SEOPT_BEAM-----value---0
+11:06:08.846  3806-3806  LogUitlsKK               D  stopWindow>>> 21
+11:06:08.847  3806-29429 [BYD NLU]NlpManager      D  BYD NLU is not Running!
+11:06:08.847  3806-29429 a                        E  net.lte.apn3.real_state = disconnected
+11:06:08.847  3806-29429                          I  queryStatueDao: name ---- NETWORKSTATE-----value---1
+11:06:08.847  3806-29429 sr_jni                   D  mspSearch
+11:06:08.849  3806-3806  l                        D  getPersonDao --- CURRENT_ROLE---0
+11:06:08.849  3806-3806  MicrosoftTts             D  openConnection: start
+11:06:08.849  3806-3806                           D  openConnection: end
+11:06:08.850  3806-3806  [BYD NLU]NlpManager      D  BYDNluReConnect isBYDNluConnect = false
+11:06:08.850  3806-3806  DialogManager            D  updateWakeUpWindowType: 0
+11:06:08.850  3806-4170  MicrosoftTts             D  Opening connection.
+11:06:08.877  3806-3806  BaseSurface              D  onAttachedToWindow>>Surface:com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ......I. 0,0-0,0}
+11:06:08.889  3806-3806                           D  surfaceCreated>>>>>>com.yuyashuai.frameanimation.g.b@b4c8a4e ,Listener: null
+11:06:08.889  3806-3806                           D  surfaceChanged>>>>>>com.yuyashuai.frameanimation.g.b@b4c8a4e
+11:06:08.914  3806-3806  LogUitlsKK               D  stopFloatView: TAG_TIP
+11:06:08.914  3806-3806                           D  updateLogoState_before: logo_normal ,isShowing: true
+11:06:08.914  3806-3806                           D  updateLogoState_after: logo_normal mImageView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} tag: TAG_SECONDARY
+11:06:08.914  3806-31873                          D  startAnim: Thread-5779
+11:06:08.915  3806-31873 BaseSurface              E  playAnimationFromAssets: logo_normal
+11:06:08.919  3806-31873                          E  mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} ,mTextureView: null
+11:06:08.919  3806-31873                          E  repeatStrategy: com.yuyashuai.frameanimation.i.a@1c93905 ,state:1
+11:06:08.919  3806-31873                          E  playAnimation: false
+11:06:08.919  3806-31873                          E  playAnimation_drawThread: null
+11:06:08.919  3806-31873                          E  draw_init
+11:06:08.919  3806-31873                          D  isViewCreated: true ,this: com.yuyashuai.frameanimation.g.b@b4c8a4e
+11:06:08.920  3806-31875                          E  isPlaying: true ,drawing: true ,drawThread: 15400282 thread: FA-DrawThread
+11:06:08.920  3806-31874                          E  start_after_state_before: 4
+11:06:09.390  3806-29429 sr_jni                   D  mspSearch szRlt: {"intent":{"semantic":{"slots":{"fanSpeed":{"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}}},"custom_gram":"false","getanswer_time":2.24,"resultId":"1","lastResult":"true","semantic_info":{"multi_intent":"false","nlp_ori_score":"1","custom_gram":"false","history_service":"airControl","change_sent":"false","has_inherited":"false","cd_intent_supported":"true","cd_intent":"null","change_entity_norm_content":"false","grammar_type":"general_whole","first_interaction":"true","interAction_tag":"false"},"first_interaction":"true","uuid":"cid0001e495@dx1899b18eb736040013","moreResults":[],"sid":"cid0001e495@dx1899b18eb736040013","score":0,"rc":0,"jsDebug":{"inhertPostProcessTime":0.002,"dataSearchTime":0,"dialogScriptTime":0.001},"service":"airControl","cd_intent":"weak","text":"风量2","search_semantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"category":"airControl","operation":"SET","use_pre_category":"v2","searchSema
+11:06:09.392  3806-29429 a                        D  ---语义结果------
+11:06:09.393  3806-29429                          D  {"intent":{"semantic":{"slots":{"fanSpeed":{"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}}},"custom_gram":"false","getanswer_time":2.24,"resultId":"1","lastResult":"true","semantic_info":{"multi_intent":"false","nlp_ori_score":"1","custom_gram":"false","history_service":"airControl","change_sent":"false","has_inherited":"false","cd_intent_supported":"true","cd_intent":"null","change_entity_norm_content":"false","grammar_type":"general_whole","first_interaction":"true","interAction_tag":"false"},"first_interaction":"true","uuid":"cid0001e495@dx1899b18eb736040013","moreResults":[],"sid":"cid0001e495@dx1899b18eb736040013","score":0,"rc":0,"jsDebug":{"inhertPostProcessTime":0.002,"dataSearchTime":0,"dialogScriptTime":0.001},"service":"airControl","cd_intent":"weak","text":"风量2","search_semantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"category":"airControl","operation":"SET","use_pre_category":"v2","searchSemantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"cid":"NULL"}}
+                                                     ========
+11:06:09.394  3806-29429 [BYD NLU]NlpManager      D  getIflytekText = 风量2
+11:06:09.394  3806-29429                          D  feedOtherNlp result = {"intent":{"semantic":{"slots":{"fanSpeed":{"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}}},"custom_gram":"false","getanswer_time":2.24,"resultId":"1","lastResult":"true","semantic_info":{"multi_intent":"false","nlp_ori_score":"1","custom_gram":"false","history_service":"airControl","change_sent":"false","has_inherited":"false","cd_intent_supported":"true","cd_intent":"null","change_entity_norm_content":"false","grammar_type":"general_whole","first_interaction":"true","interAction_tag":"false"},"first_interaction":"true","uuid":"cid0001e495@dx1899b18eb736040013","moreResults":[],"sid":"cid0001e495@dx1899b18eb736040013","score":0,"rc":0,"jsDebug":{"inhertPostProcessTime":0.002,"dataSearchTime":0,"dialogScriptTime":0.001},"service":"airControl","cd_intent":"weak","text":"风量2","search_semantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"category":"airControl","operation":"SET","use_pre_category":"v2","searchSemantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"cid":"NULL"}}
+                                                     ========
+11:06:09.394  3806-29429                          D  feedOtherNlp msgID =
+11:06:09.394  3806-29429                          D  feedOtherNlp isNlpResultOutput = false
+11:06:09.395  3806-29429 [BYD NLU]H...NlpManager  D  onHybridNlpResult9 【BYD NLU未打开，直接使用供应商(在线全局)结果】 msgID :
+11:06:09.395  3806-29429 [BYD NLU]NlpManager      I  onHybridNlpResult isNlpResultOutput : false
+11:06:09.395  3806-29429 [BYD NLU]a               D  ---最终识别结果------
+                                                     {"intent":{"semantic":{"slots":{"fanSpeed":{"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}}},"custom_gram":"false","getanswer_time":2.24,"resultId":"1","lastResult":"true","semantic_info":{"multi_intent":"false","nlp_ori_score":"1","custom_gram":"false","history_service":"airControl","change_sent":"false","has_inherited":"false","cd_intent_supported":"true","cd_intent":"null","change_entity_norm_content":"false","grammar_type":"general_whole","first_interaction":"true","interAction_tag":"false"},"first_interaction":"true","uuid":"cid0001e495@dx1899b18eb736040013","moreResults":[],"sid":"cid0001e495@dx1899b18eb736040013","score":0,"rc":0,"jsDebug":{"inhertPostProcessTime":0.002,"dataSearchTime":0,"dialogScriptTime":0.001},"service":"airControl","cd_intent":"weak","text":"风量2","search_semantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"category":"airControl","operation":"SET","use_pre_category":"v2","searchSemantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"cid":"NULL"}}
+                                                     ========
+11:06:09.395  3806-29429                          D  classifyjson type = iflytek; msgID = ; operationSource = 0;typeCode = 1009
+11:06:09.396  3806-29148 LogUitlsKK               D  jsonStr==={"intent":{"semantic":{"slots":{"fanSpeed":{"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}}},"custom_gram":"false","getanswer_time":2.24,"resultId":"1","lastResult":"true","semantic_info":{"multi_intent":"false","nlp_ori_score":"1","custom_gram":"false","history_service":"airControl","change_sent":"false","has_inherited":"false","cd_intent_supported":"true","cd_intent":"null","change_entity_norm_content":"false","grammar_type":"general_whole","first_interaction":"true","interAction_tag":"false"},"first_interaction":"true","uuid":"cid0001e495@dx1899b18eb736040013","moreResults":[],"sid":"cid0001e495@dx1899b18eb736040013","score":0,"rc":0,"jsDebug":{"inhertPostProcessTime":0.002,"dataSearchTime":0,"dialogScriptTime":0.001},"service":"airControl","cd_intent":"weak","text":"风量2","search_semantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"category":"airControl","operation":"SET","use_pre_category":"v2","searchSemantic":{"fanSpeed.ref":"ZERO","fanSpeed.offset":"2","service":"airControl","fanSpeed.direct":"+","fanSpeed.type":"SPOT"},"cid":"NULL"}}
+11:06:09.397  3806-29148                          D  MULTI_INTENT_isMultiIntent: false
+11:06:09.397  3806-29148 a                        D  parseJson: serviceairControl
+11:06:09.401  3806-29148 l                        E  VoiceCommand=风量2
+11:06:09.404  3806-29148                          D  isLocalCmd: commandId=0
+11:06:09.404  3806-29148 n                        D  isToItemSelect=SET
+11:06:09.426  3806-29148 a                        I  parserSemantic
+11:06:09.436  3806-29148                          I  AirControlFilterResultSlots :
+                                                      commandId = 0
+                                                      operation = SET
+                                                      mode =
+                                                      direction =
+                                                      airflowDirection =
+                                                      temperature =
+                                                      fahrenheitTemperature =
+                                                      fanSpeed = {"ref":"ZERO","offset":"2","direct":"+","type":"SPOT"}
+                                                      insType = null
+                                                      name =
+                                                      tempretureOrfanspeed =
+11:06:09.436  3806-29148                          D  getSlotsByOperationSet
+11:06:09.436  3806-29148                          D  setSlotsByFanSpeed
+11:06:09.436  3806-29148                          I  AirControl parserSemantic CommandId = 106222
+11:06:09.436  3806-29148 j                        D  -------onSlotsResults------
+11:06:09.436  3806-29148 DialogManager            D  updateIflytekResultState: 1
+11:06:09.436  3806-29148                          D  getWakeUpWindowType: 0
+11:06:09.436  3806-29148 j                        D  onSlotsResults: ==============================解析以后 要去展示用户话术了
+11:06:09.436  3806-29148 MyWindowManager          D  show() called with: type = [0], data = [[风量2]]
+11:06:09.436  3806-29148 test                     D  Timer_countTime: 60000
+11:06:09.436  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.436  3806-29148 j                        D  onSlotsResults() called with: slots = [AirControlFilterResultSlots]106222 currentTtsProperty = EXIT_AFTER_TTS ,curSrMode = 0
+11:06:09.436  3806-3806  LogUitlsKK               D  secondaryWindow_tag_windowType_show: 4
+11:06:09.436  3806-29148 j                        D  onSlotsResults() called with: commandID = [106222
+11:06:09.436  3806-3806  LogUitlsKK               D  LogoView _show_wake:
+11:06:09.436  3806-29148 j                        D  onSlotsResults: dialogState === null
+11:06:09.437  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.436  3806-3806  LogUitlsKK               D  destroy_tag:  TAG_DIALOGUE
+11:06:09.437  3806-29148                          D  stopWindow>>> 58
+11:06:09.437  3806-3806  WakeupWindow             D  show() called with: list = [[风量2]]
+11:06:09.437  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.437  3806-29148 SWYSManager              D  endSWYS:
+11:06:09.437  3806-29148 mvw_jni                  D  stopscene
+11:06:09.437  3806-29148                          D  before ISSMVWStopScene hISSMVW=72426c00, uMvwScene=16384
+11:06:09.437  3806-3806  WakeupWindow             D  doCancel() called countDownTimer = null mThirdListener = null
+11:06:09.437  3806-3806  LogUitlsKK               D  WakeupWindow_setData() called:0
+11:06:09.437  3806-3806  WakeupWindow             D  list: 风量2
+11:06:09.437  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.437  3806-3806  WakeupWindow             D  list: 1
+11:06:09.437  3806-29148 j                        I  ============================processAfterSr() called , curSrMode = 0
+11:06:09.437  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.437  3806-3806  LogUitlsKK               D  showAnswerText : 风量2
+11:06:09.437  3806-29148 sr_jni                   D  setParam
+11:06:09.437  3806-29148 a                        E  stopSr: 识别停止false
+11:06:09.437  3806-29148                          D  StatueDao-update name = CUR_SR_MODE,value =0
+11:06:09.437  3806-29148                          D  StatueDao-update name = SR_STATUE,value =0
+11:06:09.437  3806-29148 DialogManager            D  resetCurDialogState:
+11:06:09.437  3806-29148 MuteControl              I  try to setNaviMuteState false
+11:06:09.438  3806-29148                          I  getNaviMuteState = true
+11:06:09.438  3806-29148 a                        I  queryStatueDao: name ---- STATE_PHONE_USE-----value---0
+11:06:09.438  3806-29148                          I  queryStatueDao: name ---- STATE_BT_CALL_WIND_SPEED-----value---0
+11:06:09.438  3806-29148                          D  StatueDao-update name = STATE_BT_CALL_WIND_SPEED,value =0
+11:06:09.438  3806-29148                          E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.438  3806-29148                          D  getIflytekConfig: vehicle_Type=Di3.0_3.5UI
+11:06:09.438  3806-29148 j                        D  readyToMvw: false
+11:06:09.439  3806-3806  LogUitlsKK               D  secondaryWindow_tag_windowType_show: 0
+11:06:09.439  3806-3806                           D  destroy_tag:  TAG_COUNTDOWN
+11:06:09.439  3806-3806                           D  destroy_tag:  TAG_TIME_OUT
+11:06:09.439  3806-3806                           D  stopFloatView: TAG_FESTIVAL_ANIM
+11:06:09.441  3806-29148 l                        D  getPersonDao --- SWITCH_SEOPT---1
+11:06:09.441  3806-29148 a                        E  hal.activemic.config = 1
+11:06:09.441  3806-29148 VoiceManager             D  isSeoptOpen=true
+11:06:09.441  3806-29148 IflyekUtils              D  isOldSePlatform: newSe
+11:06:09.441  3806-29148 a                        D  run: 线程名称   Avt-cache-77
+11:06:09.441  3806-29148 sr_jni                   D  stop
+11:06:09.441  3806-29148 a                        D  run: libisssr.stop() time=0
+11:06:09.441  3806-29148 sr_jni                   D  setParam
+11:06:09.441  3806-29148 a                        E  stopSrSeoptMode success
+11:06:09.441  3806-29148 mvw_jni                  D  setParam
+11:06:09.441  3806-29148                          D  setParam
+11:06:09.441  3806-29148 a                        D  switchWakeUpNrMode: mSceneMvwHandle audiomode 0,0
+11:06:09.441  3806-29148                          D  startMainMvw_define()
+11:06:09.442  3806-29148 FunctionManager          D  deal() called with: commandID = [106222], listener = [com.byd.autovoice.service.presenter.j$i@8ed51ef], source = [iflytek]
+11:06:09.442  3806-29148 LogUitlsKK               D  FunctionManger  slots.getCommandId()====106222
+11:06:09.442  3806-29148 f                        I  toAirControlMode : CommandId = 106222
+11:06:09.442  3806-29148 a                        I  queryStatueDao: name ---- SEOPT_BEAM-----value---0
+11:06:09.442  3806-29148 c                        I  isDmiPowerOnReadyNotOk
+11:06:09.448  3806-3806  a                        I  queryStatueDao: name ---- SEOPT_BEAM-----value---0
+11:06:09.448  3806-3806                           I  queryStatueDao: name ---- LAUNCH_TYPE-----value---5
+11:06:09.448  3806-3806  LogUitlsKK               D  setFrameWaveSize: 0
+11:06:09.448  3806-3806                           D  Left_width: 1200 height: 100
+11:06:09.449  3806-3806  BaseSurface              D  init>>>>>>com.yuyashuai.frameanimation.g.b@3c5a1b0
+11:06:09.449  3806-3806  LogUitlsKK               D  currentLocation: 0
+11:06:09.449  3806-3806  FrameWaveUtils           D  startCenterAnim_isChangeLocation: false ,isShowing(): false
+11:06:09.449  3806-3806                           D  startCenterAnimOnShow>>com.yuyashuai.frameanimation.LogoAnimSurfaceView{89a829 V.E...... ......I. 0,0-0,0}
+11:06:09.449  3806-29148 g                        D  getDB: 2
+11:06:09.449  3806-3806  BaseSurface              E  playAnimationFromAssets: wave_listen_center
+11:06:09.450  3806-29148 a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.450  3806-29148 AbsBYDAutoDevice         D  int eventTypes is 12d0002a
+11:06:09.451  3806-29148                          D  int eventTypes is 34100010
+11:06:09.451  3806-29148 a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.451  3806-29148 h                        I  toAirControlTemperature : CommandId = 106222
+11:06:09.451  3806-29148 a                        I  queryStatueDao: name ---- SEOPT_BEAM-----value---0
+11:06:09.451  3806-29148 e                        I  toAirControlFanSpeed : CommandId = 106222
+11:06:09.451  3806-29148 a                        I  queryStatueDao: name ---- SEOPT_BEAM-----value---0
+11:06:09.453  3806-3806  BaseSurface              E  mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{89a829 V.E...... ......I. 0,0-0,0} ,mTextureView: null
+11:06:09.453  3806-3806                           E  repeatStrategy: com.yuyashuai.frameanimation.i.a@48f47ae ,state:1
+11:06:09.454  3806-3806                           E  playAnimation: false
+11:06:09.454  3806-3806                           E  playAnimation_drawThread: null
+11:06:09.454  3806-3806                           E  draw_init
+11:06:09.454  3806-3806                           D  setAnimationListener: com.byd.autovoice_view.o.b$b@76cb94f
+11:06:09.454  3806-3806  LogUitlsKK               D  secondaryWindow_tag_windowType_show: 8
+11:06:09.454  3806-3806                           D  FloatView_createFloatView: com.byd.autovoice_view.m.b0@e8756a8
+11:06:09.455  3806-3806                           D  destroy_tag:  TAG_WAVE
+11:06:09.459  3806-3806                           D  FloatView_FloatPhone_setView: null --this: com.byd.autovoice_view.floatwindow.c.a@bdb28dc
+11:06:09.459  3806-3806                           D  FloatView_build: TAG_WAVE
+11:06:09.460  3806-29148 g                        D  getDB: 2
+11:06:09.460  3806-29148 a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.461  3806-3806  LogUitlsKK               D  FloatView_FloatPhone_addView: com.byd.autovoice_view.view.MyFrameLayout{8eb9de5 VFE...... .F....I. 0,0-0,0} --this: com.byd.autovoice_view.floatwindow.c.a@bdb28dc
+11:06:09.461  3806-29148 AbsBYDAutoDevice         D  int eventTypes is 12d0002a
+11:06:09.462  3806-29148                          D  int eventTypes is 34100010
+11:06:09.463  3806-29148 c                        D  setFanSpeed: 2
+11:06:09.463  3806-29148                          D  getAcType
+11:06:09.474  3806-31888 BaseSurface              E  start_after_state_before: 4
+11:06:09.475  3806-29148 c                        D  actype = 1
+11:06:09.476  3806-29148 BYDAcquisitionClient     I  sendBuffer!
+11:06:09.478  3806-29148 BYDAutoAcDevice          D  setAcWindLevel level is: 2
+11:06:09.479  3806-29148 e                        D  setFanSpeed--error=0
+11:06:09.479  3806-29148 DialogManager            D  NORMAL deal: slots = 0 commandId106179
+11:06:09.480  3806-29148                          D  NORMAL deal: slots = AirControlFilterResultSlots
+11:06:09.480  3806-29148 LogUitlsKK               D  String.valueOf(slots.getCommandId()===106179
+11:06:09.480  3806-29148 a                        I  Air deal CommandId = 106179
+11:06:09.480  3806-29148 DialogManager            D  resetSecondRoundState
+11:06:09.480  3806-29148 a                        I  getVoiceCollectSwitch: isCollect---1
+11:06:09.481  3806-17410 BYDAcquisitionClient     I  EventHandler: message type is 0
+11:06:09.481  3806-17410                          D  getProxy
+11:06:09.482  3806-29148 AppUtils                 D  getSecondActivityPackageName: =com.byd.airconditioning | topPkgName==com.byd.airconditioning | secondPkgName==com.android.launcher3
+11:06:09.482  3806-29148 a                        D  insertSpotInf: {"spotState":"0","bislocalresult":"0","windowState":"0","errCode":"","topPackageName":"com.byd.airconditioning","awakenTime":"0","semanticRes":"{\"acBackExists\":false,\"acBackOn\":false,\"acBackTemperature\":0,\"acOn\":false,\"airSupplyOn\":false,\"airflowDirection\":\"\",\"answer\":\"好的，风量调到2挡了\",\"answerNum\":-1,\"answerTts\":\"\",\"backDefrostOn\":false,\"bislocalresult\":\"0\",\"cmdId\":\"\",\"cold\":false,\"commandId\":106179,\"deputyTemperature\":0,\"device\":\"\",\"di2WithCharging\":false,\"dialogScene\":0,\"direction\":\"\",\"divisionOn\":false,\"divisionSingle\":false,\"dmiAccOff\":false,\"electric\":false,\"fahrenheitTemperature\":\"\",\"fanLevel\":\"\",\"fanSpeed\":\"2\",\"frontDefrostOn\":false,\"hot\":false,\"intent\":\"\",\"mainTemperature\":0,\"mode\":\"\",\"modeValue\":\"\",\"mulText\":\"\",\"name\":\"\",\"nlu_msgid\":\"\",\"operation\":\"SET\",\"operationSource\":0,\"queried\":\"\",\"rawJson\":\"\",\"rawText\":\"风量2\",\"rc\":\"0\",\"rearMaxWindLevel4\":false,\"semanticSource\":\"iflytek\",\"service\":\"airControl\",\"setValue\":\"2\",\"sid\":\"cid0001e495@dx1899b18eb736040013\",\"speechSlotsHashMap\":{},\"target\":\"\",\"task\":\"\",\"temperature\":\"\",\"temperatureGear\":\"\",\"tempretureOrfanspeed\":\"\",\"teraction\":false,\"teractionCommandid\":false,\"textContainOC\":false,\"textContainOF\":false,\"wstext\":\"\"}","type":"iflytek","commandId":"106179"}
+11:06:09.482  3806-29148                          I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.483  3806-29148 j                        D  onNormalResult() called with: dialogType = [TEXT_SEND], ttsProperty = [EXIT_AFTER_TTS], slots = [AirControlFilterResultSlots] 命令码 = 106179 回复语：好的，风量调到2挡了，话术：风量2
+11:06:09.483  3806-3806  LogUitlsKK               D  setAlpha_applySkin_onShow: TAG_WAVE
+11:06:09.483  3806-3806                           D  updateConfiguration_isNeedUpdateUI: false mCurrentTag: TAG_WAVE
+11:06:09.483  3806-3806                           D  updateBackgroundAlpha_isCallBack: true ,isChangedSkin: false ,tag: TAG_WAVE ,background: null
+11:06:09.483  3806-3806  a                        E  sys.byd.pano_start = 0
+11:06:09.483  3806-3806  LogUitlsKK               D  waveWindow_updateBackgroundAlpha: true
+11:06:09.483  3806-29148 MyWindowManager          D  show() called with: type = [0], data = [[风量2, 好的，风量调到2挡了]]
+11:06:09.483  3806-29148 test                     D  Timer_countTime: 60000
+11:06:09.483  3806-29432 j                        E   handle AnotherVoiceText = 好的，风量调到2挡了--type = EXIT_AFTER_TTS
+11:06:09.483  3806-29432 c                        D  processAudioMix: isDownVolume state=true
+11:06:09.483  3806-29148 a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.514  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:09.514  3806-3806                           D  isContinousSrOpen=false
+11:06:09.514  3806-3806  LogUitlsKK               D  WindowUtils_onShow: false ,continousSrOpen: false
+11:06:09.534  3806-3806  BaseSurface              D  onAttachedToWindow>>Surface:com.yuyashuai.frameanimation.LogoAnimSurfaceView{89a829 V.E...... ......I. 0,0-0,0}
+11:06:09.537  3806-29432 l                        D  getPersonDao --- CURRENT_ROLE---0
+11:06:09.537  3806-29432 MicrosoftTts             D  openConnection: start
+11:06:09.537  3806-29432                          D  openConnection: end
+11:06:09.537  3806-29432 TtsSession_0             D  stopSpeak
+11:06:09.537  3806-29432 TtsPlayer_0              D  Stop
+11:06:09.537  3806-29432 MicrosoftTts             E   --> beginVoice: 好的，风量调到2挡了--EXIT_AFTER_TTS,isPlaying = false,isSynthesising = false,isSynthesCallback=false
+11:06:09.537  3806-29432 a                        D  StatueDao-update name = TTS_PLAY_STATUE,value =1
+11:06:09.537  3806-4170  MicrosoftTts             D  Opening connection.
+11:06:09.537  3806-29432                          D  0====SpeakingRunnable ...setContent()..好的，风量调到2挡了
+11:06:09.538  3806-29432                          D  beginVoice: post ttsHandler
+11:06:09.538  3806-4165                           D  run: ready to play
+11:06:09.538  3806-4165                           D  SpeakingRunnable SSMLContent before=好的，风量调到2挡了
+11:06:09.539  3806-4166                           D  开始缓存音频流  2,0
+11:06:09.543  3806-4166  l                        D  getPersonDao --- isOnlineTts---0
+11:06:09.543  3806-4166  a                        E  net.lte.apn3.real_state = disconnected
+11:06:09.543  3806-4166                           I  queryStatueDao: name ---- NETWORKSTATE-----value---1
+11:06:09.543  3806-4166  MicrosoftTts             D  switchSynthMode: curSynthBackend=parallel_buffer,curSynthBackend=hybrid,isDisableCache=false
+11:06:09.543  3806-4166                           D  switchSynthMode: end
+11:06:09.544  3806-4166                           D  RequestRunnable  StartSpeakingSsmlAsync
+11:06:09.546  3806-4166                           D  RequestRunnable StartSpeakingSsmlAsync end<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="zh-CN"><voice name="Microsoft Server Speech Text to Speech Voice (zh-CN, XiaoxiaoNeural)" style="assistant"  pitch="+0.00%" rate="+10.00%" volume="+0.00%">好的</voice></speak>
+11:06:09.546  3806-4166                           D  run: AudioDataStream.fromResult(result) start
+11:06:09.546  3806-4166                           D  run: AudioDataStream.fromResult(result)  end 385e83d70ee64edb992e588b5c006085,0,com.microsoft.cognitiveservices.speech.AudioDataStream@748355b
+11:06:09.547  3806-4166                           D  RequestRunnable  StartSpeakingSsmlAsync
+11:06:09.548  3806-4914                           D  Synthesis started. Result Id: 385e83d70ee64edb992e588b5c006085.
+11:06:09.548  3806-4914  a                        D  StatueDao-update name = TTS_PLAY_STATUE,value =1
+11:06:09.548  3806-4169  MicrosoftTts             D  ReadDataRunnable run: read data start 2,1
+11:06:09.548  3806-4169                           D  ReadDataRunnable run: enter the for loop
+11:06:09.548  3806-4169                           D  ReadDataRunnable run: for i = 0;audioDataStreamList.size()1;audioDataStreamList.get(i) = com.microsoft.cognitiveservices.speech.AudioDataStream@748355b;requestRunnable.isStop() = false
+11:06:09.548  3806-4169                           D  ReadDataRunnable while: end false
+11:06:09.548  3806-4169                           W  audioDataStream.readData(buffer) start, 0,com.microsoft.cognitiveservices.speech.AudioDataStream@748355b
+11:06:09.551  3806-4169                           W  audioDataStream.readData(buffer) end ,position = 1600,len=1600,0,com.microsoft.cognitiveservices.speech.AudioDataStream@748355b
+11:06:09.552  3806-4165                           D  ready to start audioTrack
+11:06:09.552  3806-4169                           D  run: play len=0,true,totalLen=48478,times=32
+11:06:09.552  3806-4169                           D  run: audioDataStream.close() start com.microsoft.cognitiveservices.speech.AudioDataStream@748355b
+11:06:09.552  3806-4914                           D  Synthesizing. received 48478 bytes. Finished by: cache.
+11:06:09.552  3806-4165  AudioTrack               I  call isStreamAllowed before start
+11:06:09.552  3806-4169  MicrosoftTts             D  run: audioDataStream.close() end com.microsoft.cognitiveservices.speech.AudioDataStream@748355b
+11:06:09.552  3806-4169                           D  ReadDataRunnable run: for i = 1;audioDataStreamList.size()1;audioDataStreamList.get(i) = size<=i;requestRunnable.isStop() = false
+11:06:09.552  3806-4914  test                     D  Timer_countTime: 30000
+11:06:09.552  3806-4166  MicrosoftTts             D  RequestRunnable StartSpeakingSsmlAsync end<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="zh-CN"><voice name="Microsoft Server Speech Text to Speech Voice (zh-CN, XiaoxiaoNeural)" style="assistant"  pitch="+0.00%" rate="+10.00%" volume="+0.00%">风量调到2挡了</voice></speak>
+11:06:09.552  3806-4166                           D  run: AudioDataStream.fromResult(result) start
+11:06:09.552  3806-4166                           D  run: AudioDataStream.fromResult(result)  end 3e734d7ba3624513b5ae51545416172e,0,com.microsoft.cognitiveservices.speech.AudioDataStream@962a1f8
+11:06:09.552  3806-4169                           D  ReadDataRunnable while: end false
+11:06:09.552  3806-4169                           W  audioDataStream.readData(buffer) start, 31,com.microsoft.cognitiveservices.speech.AudioDataStream@962a1f8
+11:06:09.554  3806-4914                           D  Synthesis finished backend mode cache,true
+11:06:09.554  3806-4914  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.554  3806-4914                           E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.554  3806-4914  MicrosoftTts             D  getSubscriptionName: VOICE-SW4-Di3
+11:06:09.554  3806-4914  a                        I  AutoVIN: Exception
+11:06:09.555  3806-4914  System.err               W  java.lang.NoSuchMethodError: No virtual method getRealAutoVIN()Ljava/lang/String; in class Landroid/hardware/bydauto/bodywork/BYDAutoBodyworkDevice; or its super classes (declaration of 'android.hardware.bydauto.bodywork.BYDAutoBodyworkDevice' appears in /system/framework/framework.jar)
+11:06:09.555  3806-4165  IAudioManager            I  isStreamAllowed, ret is: 1
+11:06:09.555  3806-4914  System.err               W  	at com.byd.autovoice_common.l.a.b(SystemPropertiesUtils.java:2)
+11:06:09.555  3806-4914                           W  	at com.byd.autovoice_common.e.g.c(MSTtsDaoManager.java:1)
+11:06:09.555  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.saveTtsData(MicrosoftTtsApiImpl.java:6)
+11:06:09.555  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.h(MicrosoftTtsApiImpl.java:6)
+11:06:09.555  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.i(Unknown Source:0)
+11:06:09.555  3806-4914                           W  	at com.byd.autovoice_tts.c.onEvent(Unknown Source:4)
+11:06:09.555  3806-4914                           W  	at com.microsoft.cognitiveservices.speech.util.EventHandlerImpl.fireEvent(Unknown Source:25)
+11:06:09.555  3806-4914                           W  	at com.microsoft.cognitiveservices.speech.SpeechSynthesizer.synthesisCompletedEventCallback(Unknown Source:19)
+11:06:09.556  3806-3806  BaseSurface              E  draw_start: 102
+11:06:09.557  3806-3806                           D  surfaceCreated>>>>>>com.yuyashuai.frameanimation.g.b@3c5a1b0 ,Listener: com.yuyashuai.frameanimation.b$f@1afb536
+11:06:09.557  3806-3806                           D  surfaceChanged>>>>>>com.yuyashuai.frameanimation.g.b@3c5a1b0
+11:06:09.558  3806-31897                          E  isPlaying: true ,drawing: true ,drawThread: 248171575 thread: FA-DrawThread
+11:06:09.559  3806-7881  AudioSystem              V  ioConfigChanged() event 8
+11:06:09.559  3806-7881                           V  ioConfigChanged() AUDIO_CLIENT_STARTED  io 13 port 33 num callbacks 0
+11:06:09.559  3806-4165  MicrosoftTts             D  onTTSPlayBegin: EXIT_AFTER_TTS
+11:06:09.559  3806-4165  AudioProcessor           D  onPlayBegin: EXIT_AFTER_TTS
+11:06:09.559  3806-4165  a                        I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:09.559  3806-4165  j                        D  onPlayBegin
+11:06:09.560  3806-4149  a                        D  setMainMvwSampleAvg  sampleAvgON= true
+11:06:09.560  3806-4149  mvw_jni                  D  setParam
+11:06:09.560  3806-4149  a                        D  setMainMvwSampleAvg: error=0
+11:06:09.560  3806-4149                           D  setSceneMvwSampleAvg  sampleAvgON= true
+11:06:09.560  3806-4149  mvw_jni                  D  setParam
+11:06:09.561  3806-4914  a                        I  getAutoVIN: LGXC74C43N0061710
+11:06:09.564  3806-4149                           D  setSceneMvwSampleAvg: error=0
+11:06:09.571  3806-4914  l                        D  getPersonDao --- CAR_UUID---72f83f2e-a327-4403-ba2a-f815aa17e1ba
+11:06:09.571  3806-4914                           D  UUID == 72f83f2e-a327-4403-ba2a-f815aa17e1ba
+11:06:09.571  3806-4914  BYDAutoBodyworkDevice    D  getAutoType type is: 71
+11:06:09.572  3806-4914  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.575  3806-4914  l                        D  getPersonDao --- IS_VEHICLE_DELIVER_STATUS---1
+11:06:09.575  3806-4914  MicrosoftTtsDB           D  insertMSTtsDao() called with:  uuid = [72f83f2e-a327-4403-ba2a-f815aa17e1ba], vehicleID = [71], platformID = [Di3.0_3.5UI], systemVersion = [13.1.22.2304120.1], appVersion = [v7.10.147.230329], ttsSource = [AutoVoice], ttsText = [好的], syntheticModel = [3], subscriptionID = [0ef429dd-9284-4404-ae6b-63fb1e62bd8c], resName = [VOICE-SW4-Di3], resultID = [385e83d70ee64edb992e588b5c006085], deliveryStatus = [1], ttsTime = [1690599969546]
+11:06:09.578  3806-3806  LogUitlsKK               D  secondaryWindow_tag_windowType_show: 4
+11:06:09.578  3806-3806                           D  LogoView _show_wake:
+11:06:09.578  3806-3806                           D  destroy_tag:  TAG_DIALOGUE
+11:06:09.578  3806-3806  WakeupWindow             D  show() called with: list = [[风量2, 好的，风量调到2挡了]]
+11:06:09.578  3806-3806                           D  doCancel() called countDownTimer = null mThirdListener = null
+11:06:09.578  3806-3806  LogUitlsKK               D  WakeupWindow_setData() called:0
+11:06:09.578  3806-3806  WakeupWindow             D  list: 风量2
+11:06:09.578  3806-3806                           D  list: 好的，风量调到2挡了
+11:06:09.578  3806-3806                           D  list: 2
+11:06:09.579  3806-3806  LogUitlsKK               D  showAnswerText : 好的，风量调到2挡了
+11:06:09.579  3806-3806                           D  secondaryWindow_tag_windowType_show: 0
+11:06:09.579  3806-3806                           D  destroy_tag:  TAG_COUNTDOWN
+11:06:09.579  3806-3806                           D  destroy_tag:  TAG_TIME_OUT
+11:06:09.582  3806-4914  MicrosoftTts             D  Synthesis finished.385e83d70ee64edb992e588b5c006085
+11:06:09.582  3806-4914                           D  First byte latency: 5 ms.
+11:06:09.582  3806-4914                           D  Last byte latency: 5 ms.
+11:06:09.582  3806-4914                           D  Audio duration: 1009 ms.
+11:06:09.583  3806-4914                           D  Synthesis started. Result Id: 3e734d7ba3624513b5ae51545416172e.
+11:06:09.583  3806-4914  a                        D  StatueDao-update name = TTS_PLAY_STATUE,value =1
+11:06:09.585  3806-4169  MicrosoftTts             W  audioDataStream.readData(buffer) end ,position = 1600,len=1600,31,com.microsoft.cognitiveservices.speech.AudioDataStream@962a1f8
+11:06:09.586  3806-4169                           D  run: play len=0,true,totalLen=88798,times=57
+11:06:09.586  3806-4169                           D  run: audioDataStream.close() start com.microsoft.cognitiveservices.speech.AudioDataStream@962a1f8
+11:06:09.586  3806-4914                           D  Synthesis finished backend mode cache,true
+11:06:09.586  3806-4169                           D  run: audioDataStream.close() end com.microsoft.cognitiveservices.speech.AudioDataStream@962a1f8
+11:06:09.586  3806-4169                           D  ReadDataRunnable: isComplete true
+11:06:09.586  3806-4914  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.586  3806-4914                           E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.586  3806-4914  MicrosoftTts             D  getSubscriptionName: VOICE-SW4-Di3
+11:06:09.591  3806-4914  a                        I  AutoVIN: Exception
+11:06:09.592  3806-4914  System.err               W  java.lang.NoSuchMethodError: No virtual method getRealAutoVIN()Ljava/lang/String; in class Landroid/hardware/bydauto/bodywork/BYDAutoBodyworkDevice; or its super classes (declaration of 'android.hardware.bydauto.bodywork.BYDAutoBodyworkDevice' appears in /system/framework/framework.jar)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_common.l.a.b(SystemPropertiesUtils.java:2)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_common.e.g.c(MSTtsDaoManager.java:1)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.saveTtsData(MicrosoftTtsApiImpl.java:6)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.h(MicrosoftTtsApiImpl.java:6)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_tts.MicrosoftTtsApiImpl.i(Unknown Source:0)
+11:06:09.592  3806-4914                           W  	at com.byd.autovoice_tts.c.onEvent(Unknown Source:4)
+11:06:09.592  3806-4914                           W  	at com.microsoft.cognitiveservices.speech.util.EventHandlerImpl.fireEvent(Unknown Source:25)
+11:06:09.592  3806-4914                           W  	at com.microsoft.cognitiveservices.speech.SpeechSynthesizer.synthesisCompletedEventCallback(Unknown Source:19)
+11:06:09.593  3806-4914  a                        I  getAutoVIN: LGXC74C43N0061710
+11:06:09.595  3806-4914  l                        D  getPersonDao --- CAR_UUID---72f83f2e-a327-4403-ba2a-f815aa17e1ba
+11:06:09.596  3806-4914                           D  UUID == 72f83f2e-a327-4403-ba2a-f815aa17e1ba
+11:06:09.596  3806-4914  BYDAutoBodyworkDevice    D  getAutoType type is: 71
+11:06:09.596  3806-4914  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:09.613  3806-4914  l                        D  getPersonDao --- IS_VEHICLE_DELIVER_STATUS---1
+11:06:09.613  3806-4914  MicrosoftTtsDB           D  insertMSTtsDao() called with:  uuid = [72f83f2e-a327-4403-ba2a-f815aa17e1ba], vehicleID = [71], platformID = [Di3.0_3.5UI], systemVersion = [13.1.22.2304120.1], appVersion = [v7.10.147.230329], ttsSource = [AutoVoice], ttsText = [风量调到2挡了], syntheticModel = [3], subscriptionID = [0ef429dd-9284-4404-ae6b-63fb1e62bd8c], resName = [VOICE-SW4-Di3], resultID = [3e734d7ba3624513b5ae51545416172e], deliveryStatus = [1], ttsTime = [1690599969552]
+11:06:09.631  3806-4914  MicrosoftTts             D  Synthesis finished.3e734d7ba3624513b5ae51545416172e
+11:06:09.632  3806-4914                           D  First byte latency: 30 ms.
+11:06:09.633  3806-4914                           D  Last byte latency: 31 ms.
+11:06:09.633  3806-4914                           D  Audio duration: 1849 ms.
+11:06:09.633  3806-3806  LogUitlsKK               D  updateLogoState_before: logo_tts ,isShowing: true
+11:06:09.634  3806-3806                           D  updateLogoState_after: logo_tts mImageView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} tag: TAG_SECONDARY
+11:06:09.634  3806-3806                           D  startAnim: main
+11:06:09.634  3806-3806  BaseSurface              E  playAnimationFromAssets: logo_tts
+11:06:09.638  3806-3806                           E  mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} ,mTextureView: null
+11:06:09.638  3806-3806                           E  repeatStrategy: com.yuyashuai.frameanimation.i.a@d3c350e ,state:4
+11:06:09.638  3806-3806                           E  playAnimation: true
+11:06:10.701  3806-23912 ToolsUtils               E  netWrokCheck: start
+11:06:10.702  3806-23912                          D  isNetWorkReachable:  start www.alibaba.com
+11:06:11.505  3806-23912                          D  isNetWorkReachable:  get  InetAddress
+11:06:11.597  3806-23912                          D  isNetWorkReachable:  end
+11:06:11.597  3806-23912                          D  ping isNetWorkReachable: inetAddress.isReachable true www.alibaba.com
+11:06:11.597  3806-23912 a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:11.597  3806-23912 ToolsUtils               E  netWrokCheck: end
+11:06:11.597  3806-23912 a                        D  StatueDao-update name = NETWORKSTATE,value =1
+11:06:11.643  3806-4165  test                     D  Timer_countTime: 30000
+11:06:12.442  3806-4165  MicrosoftTts             D  run: play finish 87
+11:06:12.442  3806-4165                           D  onTTSPlayCompleted: EXIT_AFTER_TTS
+11:06:12.443  3806-4165  AudioProcessor           D  onTTSPlayCompleted: EXIT_AFTER_TTS
+11:06:12.443  3806-4165  a                        D  setACETTSOnOff  setTTSon= false
+11:06:12.443  3806-4165                           D  setACETTSOnOff: TTS OFF error=0
+11:06:12.443  3806-4165  AudioProcessor           I   onPlayCompleted: setACETTSOnOff(false)-
+11:06:12.443  3806-4165  j                        D  onPlayCompleted() called false currentTtsProperty = EXIT_AFTER_TTS
+11:06:12.443  3806-4165  a                        D  StatueDao-update name = TTS_PLAY_STATUE,value =0
+11:06:12.443  3806-4165                           I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:12.443  3806-4165                           I  queryStatueDao: name ---- SR_STATUE-----value---0
+11:06:12.443  3806-4165  LogUitlsKK               D  stopAllWindow>>>
+11:06:12.443  3806-3806                           D  updateLogoState_before: logo_normal ,isShowing: true
+11:06:12.443  3806-3806                           D  updateLogoState_after: logo_normal mImageView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} tag: TAG_SECONDARY
+11:06:12.443  3806-3806                           D  startAnim: main
+11:06:12.443  3806-3806  BaseSurface              E  playAnimationFromAssets: logo_normal
+11:06:12.443  3806-4165  a                        I  getVoiceCollectSwitch: isCollect---1
+11:06:12.443  3806-4165                           D  insertQuitInf: {"awakenTime":"0","quitPattern":"1"}
+11:06:12.444  3806-4165  c                        D  processAudioMix: isDownVolume state=true
+11:06:12.445  3806-4165                           D  setNaviMuteState: false
+11:06:12.449  3806-3806  BaseSurface              E  mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102} ,mTextureView: null
+11:06:12.449  3806-3806                           E  repeatStrategy: com.yuyashuai.frameanimation.i.a@7ba77f0 ,state:4
+11:06:12.449  3806-3806                           E  playAnimation: true
+11:06:12.449  3806-3806  LogUitlsKK               D  release>>>
+11:06:12.449  3806-3806  test                     E  FloatWindow_destroyAll:
+11:06:12.449  3806-3806  LogUitlsKK               D  onBackPressed_onWindowDismiss: 0 ,isContinuous: false com.byd.autovoice_view.m.h@f3d96dc
+11:06:12.450  3806-4165  c                        I  getNaviMuteState = false
+11:06:12.456  3806-4165                           D  getCurrentAudioFocusPackage:
+11:06:12.456  3806-4165                           D  setTrackVolumeDuck: 当前流= 3，当前占有音频焦点的包名=，resultCode=0，state=false
+11:06:12.456  3806-4165  MicrosoftTts             D  SpeakingRunnable  in onTTSPlayCompleted....then close(),stopped=true
+11:06:12.457  3806-4165                           D  SpeakingRunnable audioTrack.write....then close() ,stopped=true,false,isSynthesCallback=false
+11:06:12.457  3806-4165                           D  stopAudioTrackPlay ...11111 stopped  isPlaying=true,isSynthesising=false,isSynthesCallback=false
+11:06:12.457  3806-4165                           D  stopAudioTrackPlay: isPlaying = false
+11:06:12.457  3806-4165                           D  stopAudioTrackPlay: ttsHandler.removeCallbacks
+11:06:12.459  3806-4165  AudioTrack               D  stop: mState is 4
+11:06:12.459  3806-4165  MicrosoftTts             D  stop: audioTrack stop finish
+11:06:12.468  3806-3806  a                        E  ro.vehicle.type = Di3.0_3.5UI
+11:06:12.468  3806-3806                           I  queryStatueDao: name ---- CUR_SR_MODE-----value---0
+11:06:12.468  3806-3806  j                        D  ================WindowDismiss: setOnWindowDismissListener======in normal=======
+11:06:12.468  3806-3806  a                        I  queryStatueDao: name ---- SR_STATUE-----value---0
+11:06:12.468  3806-3806  LogUitlsKK               D  stopWindow>>> 36
+11:06:12.468  3806-3806  a                        D  StatueDao-update name = WINDOW_STATE,value =1
+11:06:12.468  3806-3806                           D  StatueDao-update name = SEOPT_BEAM,value =0
+11:06:12.468  3806-3806                           D  StatueDao-update name = SPEECH_WAKEUP_INDEX,value =0
+11:06:12.468  3806-3806                           D  StatueDao-update name = LAUNCH_TYPE,value =0
+11:06:12.468  3806-3806  DialogManager            D  resetWakeUpWindowType: -1
+11:06:12.468  3806-3806  a                        I  queryStatueDao: name ---- TTS_PLAY_STATUE-----value---0
+11:06:12.468  3806-3806  DialogManager            D  resetCurDialogState:
+11:06:12.468  3806-3806                           D  resetSecondRoundState
+11:06:12.468  3806-3806  a                        I  queryStatueDao: name ---- STATE_PHONE_USE-----value---0
+11:06:12.469  3806-3806                           I  queryStatueDao: name ---- STATE_PHONE_USE-----value---0
+11:06:12.469  3806-3806  j                        D  processAudioMix false === wakeupWindowDismissProcess
+11:06:12.469  3806-3806  c                        D  processAudioMix: isDownVolume state=false
+11:06:12.470  3806-3806  l                        D  getPersonDao --- SWITCH_VOICE_CONTROL---1
+11:06:12.470  3806-3806  VoiceManager             D  isVoiceControl: true
+11:06:12.472  3806-3806  l                        D  getPersonDao --- SWITCH_CONTINOUS_SR---0
+11:06:12.473  3806-3806                           D  isContinousSrOpen=false
+11:06:12.473  3806-3806  DialogManager            D  NewUserGuide--updateResquestId:
+11:06:12.473  3806-3806  RandomFeedBack           D  NewUserGuide---updateNewUserText:
+11:06:12.473  3806-3806  test                     E  FloatWindow: key: TAG_WAKE
+11:06:12.473  3806-3806                           E  FloatWindow: object: com.byd.autovoice_view.floatwindow.d.c@e906169
+11:06:12.560  3806-3806  BaseSurface              D  surfaceDestroyed>>>>>>com.yuyashuai.frameanimation.g.b@b4c8a4e
+11:06:12.562  3806-3806                           D  onDetachedFromWindow>>Surface:com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102}
+11:06:12.563  3806-3806                           E  pause_isPlaying:true
+11:06:12.563  3806-3806                           D  pause_lastStopPaths: [PathData(path=logo_normal/listen_072.png, type=1), PathData(path=logo_normal/listen_073.png, type=1), PathData(path=logo_normal/listen_074.png, type=1), PathData(path=logo_normal/listen_075.png, type=1), PathData(path=logo_normal/listen_076.png, type=1), PathData(path=logo_normal/listen_077.png, type=1), PathData(path=logo_normal/listen_078.png, type=1), PathData(path=logo_normal/listen_079.png, type=1), PathData(path=logo_normal/listen_080.png, type=1), PathData(path=logo_normal/listen_081.png, type=1), PathData(path=logo_normal/listen_082.png, type=1), PathData(path=logo_normal/listen_083.png, type=1), PathData(path=logo_normal/listen_084.png, type=1), PathData(path=logo_normal/listen_085.png, type=1), PathData(path=logo_normal/listen_086.png, type=1), PathData(path=logo_normal/listen_087.png, type=1), PathData(path=logo_normal/listen_088.png, type=1), PathData(path=logo_normal/listen_089.png, type=1), PathData(path=logo_normal/listen_090.png, type=1), PathData(path=logo_normal/listen_091.png, type=1), PathData(path=logo_normal/listen_092.png, type=1), PathData(path=logo_normal/listen_093.png, type=1), PathData(path=logo_normal/listen_094.png, type=1), PathData(path=logo_normal/listen_095.png, type=1), PathData(path=logo_normal/listen_096.png, type=1), PathData(path=logo_normal/listen_097.png, type=1), PathData(path=logo_normal/listen_098.png, type=1), PathData(path=logo_normal/listen_099.png, type=1), PathData(path=logo_normal/listen_100.png, type=1), PathData(path=logo_normal/listen_101.png, type=1), PathData(path=logo_normal/listen_102.png, type=1), PathData(path=logo_normal/listen_103.png, type=1), PathData(path=logo_normal/listen_104.png, type=1), PathData(path=logo_normal/listen_105.png, type=1), PathData(path=logo_normal/listen_106.png, type=1), PathData(path=logo_normal/listen_107.png, type=1), PathData(path=logo_normal/listen_108.png, type=1), PathData(path=logo_normal/listen_109.png, type=1), PathData(path=logo_normal/listen_110.png, type=1), PathData(path=logo_normal/listen_111.png, type=1), PathData(path=logo_normal/listen_112.png, type=1), PathData(path=logo_normal/listen_113.png, type=1), PathData(path=logo_normal/listen_114.png, type=1), PathData(path=logo_normal/listen_115.png, type=1), PathData(path=logo_normal/listen_116.png, type=1), PathData(path=logo_normal/listen_117.png, type=1), PathData(path=logo_normal/listen_118.png, type=1), PathData(path=logo_normal/listen_119.png, type=1), PathData(path=logo_normal/listen_120.png, type=1), PathData(path=logo_normal/listen_121.png, type=1), PathData(path=logo_normal/listen_122.png, type=1), PathData(path=logo_normal/listen_123.png, type=1), PathData(path=logo_normal/listen_124.png, type=1), PathData(path=logo_normal/listen_125.png, type=1), PathData(path=logo_normal/listen_126.png, type=1), PathData(path=logo_normal/listen_127.png, type=1), PathData(path=logo_normal/listen_128.png, type=1), PathData(path=logo_normal/listen_129.png, type=1), PathData(path=logo_normal/listen_130.png, type=1), PathData(path=logo_normal/listen_131.png, type=1), PathData(path=logo_normal/listen_132.png, type=1), PathData(path=logo_normal/listen_133.png, type=1), PathData(path=logo_normal/listen_134.png, type=1), PathData(path=logo_normal/listen_135.png, type=1)]
+11:06:12.563  3806-3806                           E  stopAnimation: true ,mTextureView: null ,mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102}
+11:06:12.563  3806-3806                           E  BitmapPoolImpl_stop: true
+11:06:12.564  3806-31875                          E  -relayDraw: false
+11:06:12.564  3806-3806                           E  stopAnimation_temporaryStop: true ,animationListener: null
+11:06:12.564  3806-3806                           E  stopAnimation: false ,mTextureView: null ,mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{80ed76f V.E...... ........ 0,0-102,102}
+11:06:12.565  3806-3806                           E  release>>>>
+11:06:12.565  3806-3806                           E  BitmapPoolImpl_stop: false
+11:06:12.566  3806-31874                          E  start_InterruptedException: null
+11:06:12.566  3806-31874                          E  clearAndStop: 16
+11:06:12.573  3806-3806  LogUitlsKK               D  releaseLogoView>>9
+11:06:12.573  3806-3806  WakeupWindow             D  OnWakeIconClickListener_onDismiss: 0
+11:06:12.573  3806-3806                           D  doCancel() called countDownTimer = null mThirdListener = null
+11:06:12.586  3806-3806  LogUitlsKK               D  stopFloatView: TAG_WAVE
+11:06:12.586  3806-3806                           D  destroy_tag:  TAG_WAVE
+11:06:12.596  3806-3806  BaseSurface              D  surfaceDestroyed>>>>>>com.yuyashuai.frameanimation.g.b@3c5a1b0
+11:06:12.600  3806-3806                           D  onDetachedFromWindow>>Surface:com.yuyashuai.frameanimation.LogoAnimSurfaceView{89a829 V.E...... ........ 0,0-1200,100}
+11:06:12.601  3806-3806                           E  stopAnimation: true ,mTextureView: null ,mSurfaceView: com.yuyashuai.frameanimation.LogoAnimSurfaceView{89a829 V.E...... ........ 0,0-1200,100}
+11:06:12.601  3806-3806                           E  BitmapPoolImpl_stop: true
+11:06:12.601  3806-31897                          E  -relayDraw: false
+11:06:12.602  3806-3806                           E  stopAnimation_temporaryStop: false ,animationListener: com.byd.autovoice_view.o.b$b@76cb94f
+11:06:12.602  3806-3806                           E  release>>>>
+11:06:12.602  3806-3806                           E  BitmapPoolImpl_stop: false
+11:06:12.602  3806-3806  LogUitlsKK               D  releaseLogoView>>1
+11:06:12.602  3806-3806  BaseSurface              D  setAnimationListener: null
+11:06:12.602  3806-3806  WaveWindow               D  onDismiss_waveWindow...
+11:06:12.603  3806-31888 BaseSurface              E  start_InterruptedException: null
+11:06:12.603  3806-31888                          E  clearAndStop: 16
+11:06:12.944  3806-4149  a                        D  setMainMvwSampleAvg  sampleAvgON= false
+11:06:12.944  3806-4149  mvw_jni                  D  setParam
+11:06:12.944  3806-4149  a                        D  setMainMvwSampleAvg: error=0
+11:06:12.944  3806-4149                           D  setSceneMvwSampleAvg  sampleAvgON= false
+11:06:12.944  3806-4149  mvw_jni                  D  setParam
+11:06:12.944  3806-4149  a                        D  setSceneMvwSampleAvg: error=0
+ç
