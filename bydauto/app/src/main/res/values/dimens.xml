@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bottom_float_heigt">40dp</dimen>
+    <dimen name="bottom_float_height">40dp</dimen>
 </resources>

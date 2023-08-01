@@ -13,7 +13,8 @@
         <Button
             android:id="@+id/tv_shell_ui"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_item_rect"
             android:padding="4dp"
             android:text="Shell页面"
             android:textSize="12sp" />
@@ -21,30 +22,31 @@
         <Button
             android:id="@+id/tv_pull_setting"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_item_rect"
             android:padding="4dp"
             android:text="下拉设置"
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/tv_pull_notify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:text="下拉通知"
-            android:textSize="12sp" />
-
-        <Button
             android:id="@+id/tv_action_split"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+
+            android:background="@drawable/bg_item_rect"
             android:padding="4dp"
             android:text="分屏模式"
             android:textSize="12sp" />
+
         <Button
-            android:id="@+id/tv_action_open_split"
+            android:id="@+id/tv_action_taiya"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+
+            android:background="@drawable/bg_item_rect"
             android:padding="4dp"
             android:text="胎压"
             android:textSize="12sp" />

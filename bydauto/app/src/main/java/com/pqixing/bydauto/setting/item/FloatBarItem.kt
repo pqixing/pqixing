@@ -55,49 +55,13 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     }
 
     private fun float(context: Context) {
-//
-//        val onTouch = { type: String, short: Boolean, e: MotionEvent, view: View ->
-//            App.uiScope.launch {
-//                val t = view.height / 2
-//                when (type) {
-//                    FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT -> {
-//                        when {
-//                            short && e.y <= t -> CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
-//                            !short && e.y <= t -> {
-//                                CAService.performs(
-//                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-//                                    LaunchCASExe(getDefualtMusic()) to 1500L,
-//                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
-//                                    LaunchCASExe("com.byd.automap") to 500L,
-//                                )
-//                            }
-//
-//                            !short && e.y <= t * 2 -> {
-//                                CAService.performs(
-//                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-//                                    LaunchCASExe("com.byd.automap") to 500L,
-//                                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
-//                                    LaunchCASExe(getDefualtMusic()) to 1500L,
-//                                )
-//                            }
-//
-//                            short && e.y <= t * 2 -> UiUtils.showOrUpdateFloatView(
-//                                FLOAT_TAG_BAR_MEMU,
-//                                layoutManager(type).also {
-//                                    it.x = UiUtils.dp2dx(30)
-//                                    it.height = WindowManager.LayoutParams.WRAP_CONTENT
-//                                }) {
-//                                FloatBarMenuView(view.context)
-//                            }
-//                        }
-//                    }
-//
-//                }
-//            }
-//        }
         floatTypes.forEach {
             UiUtils.showOrUpdateFloatView(it, layoutManager(it)) {
-                if (it == FLOAT_TAG_BAR_BOTTOM) BottomFloatView(context) else RecentFloatView(context).setLeft(it == FLOAT_TAG_BAR_LEFT)
+                if (it == FLOAT_TAG_BAR_BOTTOM) {
+                    BottomFloatView(context)
+                } else {
+                    RecentFloatView(context).setLeft(it == FLOAT_TAG_BAR_LEFT)
+                }
             }
         }
     }

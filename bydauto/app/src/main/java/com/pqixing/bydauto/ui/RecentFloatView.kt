@@ -11,6 +11,8 @@ import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.utils.BYDAutoUtils
+import com.pqixing.bydauto.utils.UiManager
+import com.pqixing.bydauto.utils.UiUtils
 
 class RecentFloatView : FrameLayout {
     constructor(context: Context) : super(context)
@@ -21,7 +23,6 @@ class RecentFloatView : FrameLayout {
         defStyleAttr
     )
 
-//    var bottomFloatHeight: Int = UiUtils.dp2dx(100)
 
     var barContent: TouchBarContentView
     var content: FrameLayout
@@ -34,9 +35,13 @@ class RecentFloatView : FrameLayout {
         val items = listOf(
             TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
             TouchBarContentView.BarItem("快捷") {
-                CAService.performs(
+                if (UiManager.inSplitMode && UiManager.isResumeActivity("com.byd.automap")
+                    && UiManager.isResumeActivity(getDefualtMusic())
+                ) {
+                    UiUtils.sendDiCmd("左右互换")
+                } else CAService.performs(
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                    LaunchCASExe(getDefualtMusic()) to 1500L,
+                    LaunchCASExe(getDefualtMusic()) to 800L,
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
                     LaunchCASExe("com.byd.automap") to 500L,
                 )
@@ -44,7 +49,6 @@ class RecentFloatView : FrameLayout {
             TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },
         )
         barContent.setItems(items)
-//        setPadding(0, 0, 0, bottomFloatHeight)
     }
 
     fun getDefualtMusic(): String {

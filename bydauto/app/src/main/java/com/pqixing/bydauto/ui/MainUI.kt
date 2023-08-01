@@ -36,7 +36,7 @@ class MainUI : BaseActivity() {
         val rvData = findViewById<RecyclerView>(R.id.rv_data)
         rvData.adapter = mainAdapter
         rvData.isNestedScrollingEnabled = true
-        updaLayoutManager(rvData)
+        updateLayoutManager(rvData)
     }
 
     private fun showHideMenu() {
@@ -96,7 +96,7 @@ class MainUI : BaseActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updaLayoutManager(findViewById(R.id.rv_data))
+        updateLayoutManager(findViewById(R.id.rv_data))
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -106,7 +106,7 @@ class MainUI : BaseActivity() {
         mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
     }
 
-    private fun updaLayoutManager(rvData: RecyclerView?) {
+    private fun updateLayoutManager(rvData: RecyclerView?) {
         rvData ?: return
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE && !UiManager.inSplitMode) {

@@ -44,19 +44,24 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
         App.uiScope.launch {
             val text = runCatching {
                 when (view.id) {
-                    R.id.tv_shell_ui -> view.context.startActivity(Intent(view.context, ConnectActivity::class.java))
+                    R.id.tv_shell_ui -> view.context.startActivity(
+                        Intent(
+                            view.context,
+                            ConnectActivity::class.java
+                        )
+                    )
+
                     R.id.tv_pull_setting -> CAService.performs(
                         GestureCASExe()
                             .moveTo(100f, if (Const.SP_FULL_SCREEN) -10f else 10f)
                             .lineTo(100f, 500f) to 0L
                     )
 
-                    R.id.tv_pull_notify -> CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
                     R.id.tv_action_split -> {
                         CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
                     }
 
-                    R.id.tv_action_open_split -> {
+                    R.id.tv_action_taiya -> {
                         UiUtils.sendDiCmd("胎压查询")
                     }
 

@@ -3,11 +3,11 @@ package com.pqixing.bydauto.ui
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.utils.UiUtils
 
 class BottomFloatView : FrameLayout {
     constructor(context: Context) : super(context)
@@ -21,7 +21,7 @@ class BottomFloatView : FrameLayout {
 //    var bottomFloatHeight: Int = UiUtils.dp2dx(100)
 
     var barContent: TouchBarContentView
-    var content: FrameLayout
+    var content: LinearLayout
 
     init {
         inflate(context, R.layout.ui_bottom_float, this)
@@ -29,11 +29,12 @@ class BottomFloatView : FrameLayout {
         content = findViewById(R.id.fl_content)
 
         val items = listOf(
-            TouchBarContentView.BarItem("全屏") {
-                UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
+            TouchBarContentView.BarItem("导航栏") {
+                content.visibility =
+                    if (content.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             },
-            TouchBarContentView.BarItem("主页", 6) {
-                CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
+            TouchBarContentView.BarItem("主页", 3) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
             },
             TouchBarContentView.BarItem("最近") {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)

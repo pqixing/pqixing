@@ -24,6 +24,8 @@ class TouchBarContentView : LinearLayout {
     var vertica = false
 
     var onDown = -1
+    var allWeight = 0
+    val unValidDistance = UiUtils.dp2dx(250)
 
     fun setItems(items: List<BarItem>) {
         this.vertica = orientation == VERTICAL
@@ -31,6 +33,8 @@ class TouchBarContentView : LinearLayout {
         val verticalMargin = if (vertica) UiUtils.dp2dx(5) else UiUtils.dp2dx(2)
 
         onTouchItems = items
+        allWeight = items.sumOf { it.weight }
+
         removeAllViews()
         items.forEach {
             val params = LayoutParams(
@@ -56,8 +60,14 @@ class TouchBarContentView : LinearLayout {
 
         val d = (if (vertica) event.x else event.y).toInt()
         if (onDown == -1) onDown = d
-        val index =
-            ((if (vertica) event.y / height else event.x / width) * onTouchItems.size).toInt()
+        var w =
+            ((if (vertica) event.y / height else event.x / width) * allWeight)
+
+        val index = onTouchItems.indexOfFirst {
+            w -= it.weight
+            w <= 0f
+        }
+
         val distance = (d - onDown).absoluteValue
 
         if (event.action == MotionEvent.ACTION_UP) {
@@ -66,11 +76,13 @@ class TouchBarContentView : LinearLayout {
                 child.isPressed = false
                 child.isSelected = false
             }
-            onTouchItems[index].click.onClick(getChildAt(index))
+            if (distance <= unValidDistance) {
+                onTouchItems[index].click.onClick(getChildAt(index))
+            }
         } else {
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
-                child.isPressed = index == i && distance > 300
+                child.isPressed = index == i && distance <= unValidDistance
                 child.isSelected = true
             }
         }

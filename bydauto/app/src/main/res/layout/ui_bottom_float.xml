@@ -3,18 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/fl_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/bottom_float_height"
         android:background="@android:color/holo_blue_light"
+        android:orientation="horizontal"
         android:visibility="gone">
 
-    </FrameLayout>
+    </LinearLayout>
 
     <com.pqixing.bydauto.ui.TouchBarContentView
         android:id="@+id/ll_touch_bar"
         android:layout_width="match_parent"
         android:layout_height="10dp"
+        android:layout_gravity="bottom"
         android:orientation="horizontal" />
 </merge>
