@@ -4,17 +4,23 @@ import android.content.Context
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.ISetting
-import com.pqixing.bydauto.setting.item.*
+import com.pqixing.bydauto.setting.item.AdbItem
+import com.pqixing.bydauto.setting.item.FloatBarItem
+import com.pqixing.bydauto.setting.item.MusicItem
+import com.pqixing.bydauto.setting.item.PermItem
+import com.pqixing.bydauto.setting.item.RadarItem
+import com.pqixing.bydauto.setting.item.RotationItem
+import com.pqixing.bydauto.setting.item.WireChargeItem
 
 object SettingManager {
     private val settings = arrayOf<ISetting>(
         PermItem(),
-        AdbItem(),
         FloatBarItem(),
         WireChargeItem(),
         RadarItem(),
         MusicItem(),
         RotationItem(),
+        AdbItem(),
     )
     private var curs: List<ISetting> = emptyList()
 

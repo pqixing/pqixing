@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class BYDMediaReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         intent ?: return
-        Const.lastMediaReceiver = System.currentTimeMillis()
         App.uiScope.launch {
             runCatching {
                 SettingManager.findSetting(MusicItem::class.java)?.resend(context, intent)

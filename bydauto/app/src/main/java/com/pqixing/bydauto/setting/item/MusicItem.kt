@@ -61,9 +61,7 @@ class MusicItem : SettingImpl(R.layout.setting_music) {
             return
         }
 
-        val infos = withContext(Dispatchers.IO) {
-            UiUtils.loadAppInfos(viewHolder.context, matchPkgs(viewHolder.context))
-        }
+        val infos = UiManager.getAppInfo(matchPkgs(viewHolder.context))
 
         val lastPkg = Const.SP_MUSIC_PKG
 

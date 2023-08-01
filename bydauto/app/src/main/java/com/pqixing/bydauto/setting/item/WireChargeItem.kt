@@ -34,7 +34,6 @@ class WireChargeItem : SettingImpl(R.layout.setting_charge) {
 
         val lastId = ids[Const.SP_CHARGE_TYPE] ?: R.id.rbChargeNone
 
-        setChargeState()
         charge.findViewById<RadioButton>(lastId)?.isChecked = true
         charge.setOnCheckedChangeListener { _, checkedId ->
             Const.SP_CHARGE_TYPE = ids.entries.find { it.value == checkedId }?.key ?: CHARGE_TYPE_NONE

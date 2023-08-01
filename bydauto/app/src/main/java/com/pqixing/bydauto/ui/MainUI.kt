@@ -16,6 +16,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.SettingManager
+import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,31 +42,30 @@ class MainUI : BaseActivity() {
     private fun showHideMenu() {
         val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程")
 
-        AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
-            .setSingleChoiceItems(names, -1) { d, w ->
-                d.dismiss()
-                when (w) {
-                    0 -> updateSelf()
-                    1 -> UiUtils.downloadAndInstallAPK(this, Const.URL_DOWNLOAD)
-                    2 -> showCrashLog()
-                    3 -> exitProcess(0)
-                }
-            }.setOnDismissListener {
-                mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
-            }.show()
+        AlertDialog.Builder(this).setTitle(
+            getString(R.string.main_title_cur_version) + "_${packageManager.getPackageInfo(packageName, 0).versionName}"
+        ).setSingleChoiceItems(names, -1) { d, w ->
+            d.dismiss()
+            when (w) {
+                0 -> updateSelf()
+                1 -> UiUtils.downloadAndInstallAPK(this, Const.URL_DOWNLOAD)
+                2 -> showCrashLog()
+                3 -> exitProcess(0)
+            }
+        }.setOnDismissListener {
+            mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
+        }.show()
     }
 
     private fun showCrashLog() {
         val logFile = File(cacheDir, "crash.log")
         if (!logFile.exists()) return App.toast("暂无崩溃日志")
-        AlertDialog.Builder(this).setMessage(logFile.readText())
-            .setNegativeButton("取消") { d, _ ->
-                d.dismiss()
-            }
-            .setPositiveButton("清除") { d, w ->
-                d.dismiss()
-                logFile.delete()
-            }.show()
+        AlertDialog.Builder(this).setMessage(logFile.readText()).setNegativeButton("取消") { d, _ ->
+            d.dismiss()
+        }.setPositiveButton("清除") { d, w ->
+            d.dismiss()
+            logFile.delete()
+        }.show()
     }
 
     override fun onDestroy() {
@@ -109,7 +109,7 @@ class MainUI : BaseActivity() {
     private fun updaLayoutManager(rvData: RecyclerView?) {
         rvData ?: return
         val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE && UiUtils.inSplitMode(this)) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && UiManager.inSplitMode) {
             rvData.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         } else {
             rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

@@ -1,5 +1,9 @@
 package com.pqixing.bydauto.utils
 
+import com.pqixing.bydauto.App
+import com.pqixing.bydauto.model.AppInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.LinkedList
 
 object UiManager : LogcatManager.LogCatCallBack {
@@ -9,12 +13,34 @@ object UiManager : LogcatManager.LogCatCallBack {
     private var maps = hashMapOf<String, String>()
     private var stacks = LinkedList<String>()
 
-    private var inSplitMode = false
+    var inSplitMode = false
+        private set
+
+    private var apps = mutableMapOf<String, AppInfo>()
 
 
     init {
-        logcat.addCallBack(this)
+        logcat.addCallBack(this@UiManager)
         logcat.start()
+        App.get().uiScope.launch(Dispatchers.IO) { initApps() }
+    }
+
+    private fun initApps() {
+        val context = App.get()
+        val pm = context.packageManager
+        apps = pm.getInstalledApplications(0).mapNotNull { info ->
+            kotlin.runCatching {
+                val name = pm.getApplicationLabel(info).toString()
+                val icon = pm.getApplicationIcon(info)
+                val intent = pm.getLaunchIntentForPackage(info.packageName)
+                AppInfo(info.packageName, name, icon, intent)
+            }.getOrNull()?.let { info.packageName to it }
+        }.toMap().toMutableMap()
+        apps.remove(context.packageName)
+    }
+
+    fun getAppInfo(pkg: Collection<String>): List<AppInfo> {
+        return (if (pkg.isEmpty()) apps.values.toList() else pkg.mapNotNull { apps[it] })
     }
 
     fun addCallBack(callBack: IActivityLife) {
@@ -30,7 +56,7 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     fun isResumePkg(pkg: String?): Boolean {
-        pkg?:return false
+        pkg ?: return false
         return maps[stacks.getOrNull(0)] == pkg || (inSplitMode && maps[stacks.getOrNull(1)] == pkg)
     }
 

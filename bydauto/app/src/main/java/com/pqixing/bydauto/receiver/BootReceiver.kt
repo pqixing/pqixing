@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.pqixing.bydauto.ui.BootUI
+import com.pqixing.bydauto.utils.toast
 
 
 class BootReceiver : BroadcastReceiver() {

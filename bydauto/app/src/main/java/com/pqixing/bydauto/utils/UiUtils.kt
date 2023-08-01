@@ -122,10 +122,6 @@ object UiUtils {
         }.isSuccess
     }
 
-    fun inSplitMode(context: Activity): Boolean {
-        return false
-    }
-
     fun hadGrantAll(context: Context): Boolean {
         return Settings.canDrawOverlays(context) && context.checkSelfPermission(Manifest.permission.READ_LOGS) == PackageManager.PERMISSION_GRANTED
     }

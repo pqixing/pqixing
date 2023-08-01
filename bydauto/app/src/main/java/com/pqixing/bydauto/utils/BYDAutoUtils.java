@@ -20,7 +20,7 @@ public class BYDAutoUtils {
     private static Context mContext;
 
     public static void init(Context context) {
-        mContext = ExtendsKt.hook(context,"com.byd.autovoice");
+        mContext = context;
         //绕过反射Api限制
         setHiddenApiExemptions();
     }

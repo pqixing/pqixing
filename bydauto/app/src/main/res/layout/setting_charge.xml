@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/group"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -10,20 +9,28 @@
         android:id="@+id/rbChargeClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open"/>
-    <View android:layout_width="0dp" android:layout_height="1px" android:layout_weight="1"/>
+        android:text="@string/close" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_weight="1" />
 
     <RadioButton
         android:id="@+id/rbChargeOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/close"/>
-    <View android:layout_width="0dp" android:layout_height="1px" android:layout_weight="1"/>
+        android:text="@string/open" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_weight="1" />
 
     <RadioButton
         android:id="@+id/rbChargeNone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/none"/>
+        android:text="@string/none" />
 </RadioGroup>
 
