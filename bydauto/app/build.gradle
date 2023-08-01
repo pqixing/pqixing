@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
 }
@@ -8,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.pqixing.bydauto"
         versionCode 1
-        versionName "1.0.001"
+        versionName "1.0.${new SimpleDateFormat("yyMMddHH").format(new Date())}"
     }
 }
 dependencies {

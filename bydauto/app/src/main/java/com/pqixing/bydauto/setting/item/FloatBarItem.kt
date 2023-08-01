@@ -27,12 +27,14 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     val FLOAT_TAG_BAR_LEFT = "FLOAT_TAG_BAR_LEFT"
     val FLOAT_TAG_BAR_RIGHT = "FLOAT_TAG_BAR_RIGHT"
     val FLOAT_TAG_BAR_BOTTOM = "FLOAT_TAG_BAR_BOTTOM"
+
     val FLOAT_TAG_BAR_MEMU = "FLOAT_TAG_BAR_MEMU"
 
     override fun getNameId(): Int = R.string.setting_name_item_bar
     val floatTypes = mapOf(
         FLOAT_TAG_BAR_LEFT to R.drawable.float_bar_bg_left,
         FLOAT_TAG_BAR_RIGHT to R.drawable.float_bar_bg_right,
+        FLOAT_TAG_BAR_BOTTOM to R.drawable.float_bar_bg_right,
     )
 
     override fun onCreate(context: Context) {

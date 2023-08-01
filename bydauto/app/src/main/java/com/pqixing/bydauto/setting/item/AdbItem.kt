@@ -16,7 +16,7 @@ import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.GestureCASExe
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.toast
+import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
 
 class AdbItem : SettingImpl(R.layout.setting_adb) {
@@ -57,10 +57,7 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
                     }
 
                     R.id.tv_action_open_split -> {
-                        val intent = Intent("com.intent.action.Voice_self_From_Screen")
-                        intent.putExtra("Scrren_ViewText", "风量1")
-                        view.context.sendBroadcast(intent)
-                        "风量设置".toast()
+                        UiUtils.sendDiCmd("胎压查询")
                     }
 
                     else -> null

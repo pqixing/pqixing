@@ -12,7 +12,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -27,7 +26,6 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.ui.BootUI
 import com.pqixing.bydauto.ui.EmptyUI
-import com.pqixing.bydauto.ui.MainUI
 import java.io.File
 import java.net.URL
 import kotlin.math.roundToInt
@@ -44,8 +42,7 @@ object UiUtils {
             closeFloatView(tag)
             val context = App.get()
             if (!Settings.canDrawOverlays(context)) kotlin.runCatching {
-                val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setData(Uri.parse("package:${context.packageName}"))
                 context.startActivity(i)
             }
@@ -63,11 +60,7 @@ object UiUtils {
         return floatViews[tag]?.isAttachedToWindow == true
     }
 
-    fun showOrUpdateFloatView(
-        tag: String,
-        params: WindowManager.LayoutParams,
-        getView: () -> View
-    ) {
+    fun showOrUpdateFloatView(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
         runCatching {
             if (isShow(tag)) {
                 val context = App.get()
@@ -120,8 +113,7 @@ object UiUtils {
 
     fun tryLaunch(context: Context, pkg: String): Boolean {
         return kotlin.runCatching {
-            val start: Intent =
-                context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
+            val start: Intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
             start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(start)
             App.log("checkLastPkg : start launch $pkg")
@@ -135,8 +127,7 @@ object UiUtils {
     }
 
     fun hadGrantAll(context: Context): Boolean {
-        return Settings.canDrawOverlays(context)
-                && context.checkSelfPermission(Manifest.permission.READ_LOGS) == PackageManager.PERMISSION_GRANTED
+        return Settings.canDrawOverlays(context) && context.checkSelfPermission(Manifest.permission.READ_LOGS) == PackageManager.PERMISSION_GRANTED
     }
 
     fun getStatusBarH(context: Context): Int {
@@ -159,16 +150,12 @@ object UiUtils {
         })
     }
 
-    fun isAccessibilitySettingsOn(
-        mContext: Context,
-        clazz: Class<out AccessibilityService?>
-    ): Boolean {
+    fun isAccessibilitySettingsOn(mContext: Context, clazz: Class<out AccessibilityService?>): Boolean {
         var accessibilityEnabled = 0
         val service = mContext.packageName + "/" + clazz.canonicalName
         try {
             accessibilityEnabled = Settings.Secure.getInt(
-                mContext.applicationContext.contentResolver,
-                Settings.Secure.ACCESSIBILITY_ENABLED
+                mContext.applicationContext.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED
             )
         } catch (e: Settings.SettingNotFoundException) {
             e.printStackTrace()
@@ -176,8 +163,7 @@ object UiUtils {
         val mStringColonSplitter = TextUtils.SimpleStringSplitter(':')
         if (accessibilityEnabled == 1) {
             val settingValue = Settings.Secure.getString(
-                mContext.applicationContext.contentResolver,
-                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+                mContext.applicationContext.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             )
             if (settingValue != null) {
                 mStringColonSplitter.setString(settingValue)
@@ -207,13 +193,7 @@ object UiUtils {
         }
     }
 
-    fun downloadAPK(
-        context: Context,
-        url: String,
-        file: File,
-        visible: Boolean = true,
-        call: (success: Boolean) -> Unit
-    ) {
+    fun downloadAPK(context: Context, url: String, file: File, visible: Boolean = true, call: (success: Boolean) -> Unit) {
 
         //获取DownloadManager
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -251,8 +231,7 @@ object UiUtils {
 
         context.startActivity(
             Intent(
-                context,
-                EmptyUI::class.java
+                context, EmptyUI::class.java
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }
@@ -273,9 +252,7 @@ object UiUtils {
             // 给目标应用一个临时授权
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             FileProvider.getUriForFile(
-                context,
-                context.packageName + ".fileProvider",
-                downFile
+                context, context.packageName + ".fileProvider", downFile
             )
 
         } else {
@@ -304,18 +281,13 @@ object UiUtils {
     }
 
     fun enableAccessibility(context: Context, enable: Boolean): Boolean = kotlin.runCatching {
-        val strValue =
-            if (enable) "${context.packageName}/${CAService::class.java.canonicalName}" else null
+        val strValue = if (enable) "${context.packageName}/${CAService::class.java.canonicalName}" else null
         Settings.Secure.putString(
-            context.contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-            strValue
+            context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, strValue
         )
         val intValue = if (enable) 1 else 0
         Settings.Secure.putInt(
-            context.contentResolver,
-            Settings.Secure.ACCESSIBILITY_ENABLED,
-            intValue
+            context.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED, intValue
         )
     }.getOrDefault(false)
 
@@ -346,15 +318,18 @@ object UiUtils {
         context.startActivity(intent, basic.toBundle())
 //        (context as? Activity)?.finish()
     }
+
+    fun sendDiCmd(cmd: String) {
+        "send di cmd $cmd".log()
+        val intent = Intent("com.intent.action.Voice_self_From_Screen")
+        intent.putExtra("Scrren_ViewText", cmd)
+        App.get().sendBroadcast(intent)
+    }
 }
 
 
-class DownloadReceiver(
-    val context: Context,
-    val downloadId: Long,
-    val downloadManager: DownloadManager,
-    val call: (success: Boolean) -> Unit
-) : BroadcastReceiver() {
+class DownloadReceiver(val context: Context, val downloadId: Long, val downloadManager: DownloadManager, val call: (success: Boolean) -> Unit) :
+    BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
         if (id != downloadId) {

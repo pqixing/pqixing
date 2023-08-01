@@ -4,7 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.view.View
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.HorizontalScrollView
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Toast
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
@@ -111,7 +115,7 @@ class MusicItem : SettingImpl(R.layout.setting_music) {
         val bg = when (type) {
             SEARCH_TYPE_BACK -> true
             SEARCH_TYPE_FORE -> false
-            else -> UiManager.curPkg() != BYDAutoUtils.getCurrentAudioFocusPackage()
+            else -> UiManager.isResumePkg(BYDAutoUtils.getCurrentAudioFocusPackage())
         }
 
 

@@ -1,14 +1,15 @@
 package com.pqixing.bydauto.utils
 
-import com.pqixing.bydauto.App
+import java.util.LinkedList
 
 object UiManager : LogcatManager.LogCatCallBack {
     private var sCallBack = arrayListOf<IActivityLife>()
     private val logcat = LogcatManager(listOf("ActivityTaskManager:I"))
-    private var lastPkg = ""
-    private var lastActivity = ""
 
-    private var windowMode = 1
+    private var maps = hashMapOf<String, String>()
+    private var stacks = LinkedList<String>()
+
+    private var inSplitMode = false
 
 
     init {
@@ -24,29 +25,18 @@ object UiManager : LogcatManager.LogCatCallBack {
         sCallBack.remove(callBack)
     }
 
-    fun curActivity() = lastActivity
-    fun curPkg() = lastPkg
-
-    fun onActivityResume(activity: String, pkg: String) {
-        if (lastPkg == pkg && lastActivity == activity) {
-            return
-        }
-        App.log("onActivityResume $pkg/$activity")
-        if (lastActivity.isNotEmpty()) {
-            onActivityPause(activity, pkg)
-        }
-        lastActivity = activity
-        lastPkg = pkg
-        sCallBack.forEach { it.onActivityResume(activity, pkg) }
+    fun isResumeActivity(activity: String): Boolean {
+        return stacks.getOrNull(0) == activity || (inSplitMode && stacks.getOrNull(1) == activity)
     }
 
-    fun onActivityPause(activity: String, pkg: String) {
-        sCallBack.forEach { it.onActivityPause(activity, pkg) }
+    fun isResumePkg(pkg: String?): Boolean {
+        pkg?:return false
+        return maps[stacks.getOrNull(0)] == pkg || (inSplitMode && maps[stacks.getOrNull(1)] == pkg)
     }
+
 
     interface IActivityLife {
-        abstract fun onActivityResume(activity: String, pkg: String)
-        abstract fun onActivityPause(activity: String, pkg: String)
+        fun onActivityResume(activity: String, pkg: String)
     }
 
     override fun getFilterRex(): String {
@@ -54,12 +44,30 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     override fun onReceiveLog(line: String) {
-        //类似 com.miui.home/.launcher.Launcher格式
-        val name =
-            line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") } ?: return
+        when {
+            line.contains("activityResumedForAcBar") -> {
+                val activity = line.substringAfter("className:").trim()
+                if (!isResumeActivity(activity)) {
+                    stacks.remove(activity)
+                    stacks.addFirst(activity)
+                    sCallBack.forEach { it.onActivityResume(activity, maps[activity] ?: "") }
+                }
+            }
 
-        val pkg = name.substringBefore("/").replace("cmp=", "")
-        val clazz = name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
-        onActivityResume(clazz, pkg)
+            line.contains("onConfigurationChanged") -> {
+                val mode = line.substringAfter("windowingMode:").trim()
+                inSplitMode = (mode == "3" || mode == "4")
+            }
+
+            else -> {
+                //类似 com.miui.home/.launcher.Launcher格式
+                val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") }
+                    ?: return
+
+                val pkg = name.substringBefore("/").replace("cmp=", "")
+                val clazz = name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
+                maps[clazz] = pkg
+            }
+        }
     }
 }
