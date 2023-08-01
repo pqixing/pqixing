@@ -15,7 +15,11 @@ import com.pqixing.bydauto.utils.BYDAutoUtils
 class RecentFloatView : FrameLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
 //    var bottomFloatHeight: Int = UiUtils.dp2dx(100)
 
@@ -27,21 +31,19 @@ class RecentFloatView : FrameLayout {
         inflate(context, R.layout.ui_recent_float, this)
         barContent = findViewById<TouchBarContentView>(R.id.ll_touch_bar)
         content = findViewById<FrameLayout>(R.id.fl_content)
-        val items = listOf("返回", "快捷", "分屏")
-        barContent.setItems(items) { index, distance ->
-            when (items[index]) {
-                "返回" -> CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
-                "快捷" -> CAService.performs(
+        val items = listOf(
+            TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
+            TouchBarContentView.BarItem("快捷") {
+                CAService.performs(
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
                     LaunchCASExe(getDefualtMusic()) to 1500L,
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
                     LaunchCASExe("com.byd.automap") to 500L,
                 )
-
-                "分屏" -> CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
-            }
-
-        }
+            },
+            TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },
+        )
+        barContent.setItems(items)
 //        setPadding(0, 0, 0, bottomFloatHeight)
     }
 

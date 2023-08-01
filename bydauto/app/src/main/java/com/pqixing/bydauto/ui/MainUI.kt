@@ -109,7 +109,7 @@ class MainUI : BaseActivity() {
     private fun updaLayoutManager(rvData: RecyclerView?) {
         rvData ?: return
         val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE && UiManager.inSplitMode) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE && !UiManager.inSplitMode) {
             rvData.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
         } else {
             rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

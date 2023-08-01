@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -12,25 +13,30 @@ import kotlin.math.absoluteValue
 class TouchBarContentView : LinearLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
 
-    var onTouchItems = listOf<View>()
-    var onTapUp: (index: Int, distance: Int) -> Unit = { _, _ -> }
+    var onTouchItems = listOf<BarItem>()
     var vertica = false
 
     var onDown = -1
 
-    fun setItems(items: List<String>, onTapUp: (index: Int, distance: Int) -> Unit) {
-        this.onTapUp = onTapUp
+    fun setItems(items: List<BarItem>) {
         this.vertica = orientation == VERTICAL
         val horizontalMargin = if (vertica) UiUtils.dp2dx(2) else UiUtils.dp2dx(5)
         val verticalMargin = if (vertica) UiUtils.dp2dx(5) else UiUtils.dp2dx(2)
-        onTouchItems = items.map {
+
+        onTouchItems = items
+        removeAllViews()
+        items.forEach {
             val params = LayoutParams(
                 if (vertica) LayoutParams.MATCH_PARENT else 0,
                 if (vertica) 0 else LayoutParams.MATCH_PARENT,
-                1f
+                it.weight.toFloat()
             )
             params.bottomMargin = verticalMargin
             params.topMargin = verticalMargin
@@ -39,9 +45,9 @@ class TouchBarContentView : LinearLayout {
             params.rightMargin = horizontalMargin
 
             val child = View(context)
+            Color.YELLOW
             child.setBackgroundResource(R.drawable.bg_item_press)
             addView(child, params)
-            child
         }
     }
 
@@ -50,21 +56,26 @@ class TouchBarContentView : LinearLayout {
 
         val d = (if (vertica) event.x else event.y).toInt()
         if (onDown == -1) onDown = d
-        val index = ((if (vertica) event.y / height else event.x / width) * onTouchItems.size).toInt()
+        val index =
+            ((if (vertica) event.y / height else event.x / width) * onTouchItems.size).toInt()
         val distance = (d - onDown).absoluteValue
 
         if (event.action == MotionEvent.ACTION_UP) {
-            onTouchItems.forEach { child ->
+            for (i in 0 until childCount) {
+                val child = getChildAt(i)
                 child.isPressed = false
                 child.isSelected = false
             }
-            onTapUp(index, distance)
+            onTouchItems[index].click.onClick(getChildAt(index))
         } else {
-            onTouchItems.forEachIndexed { i, pair ->
-                pair.isSelected = true
-                pair.isPressed = index == i
+            for (i in 0 until childCount) {
+                val child = getChildAt(i)
+                child.isPressed = index == i && distance > 300
+                child.isSelected = true
             }
         }
         return true
     }
+
+    data class BarItem(val name: String, val weight: Int = 1, val click: View.OnClickListener)
 }

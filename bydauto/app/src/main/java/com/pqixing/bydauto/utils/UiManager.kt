@@ -8,7 +8,7 @@ import java.util.LinkedList
 
 object UiManager : LogcatManager.LogCatCallBack {
     private var sCallBack = arrayListOf<IActivityLife>()
-    private val logcat = LogcatManager(listOf("ActivityTaskManager:I"))
+    private val logcat = LogcatManager(listOf("ActivityTaskManager:D"))
 
     private var maps = hashMapOf<String, String>()
     private var stacks = LinkedList<String>()
@@ -69,15 +69,18 @@ object UiManager : LogcatManager.LogCatCallBack {
         return ".*ActivityTaskManager.*(START|topComponentName|activityResumedForAcBar|onConfigurationChanged).*"
     }
 
+    fun onActivityResume(activity: String) {
+        if (isResumeActivity(activity)) return
+        stacks.remove(activity)
+        stacks.addFirst(activity)
+        sCallBack.forEach { it.onActivityResume(activity, maps[activity] ?: "") }
+    }
+
     override fun onReceiveLog(line: String) {
         when {
             line.contains("activityResumedForAcBar") -> {
                 val activity = line.substringAfter("className:").trim()
-                if (!isResumeActivity(activity)) {
-                    stacks.remove(activity)
-                    stacks.addFirst(activity)
-                    sCallBack.forEach { it.onActivityResume(activity, maps[activity] ?: "") }
-                }
+                onActivityResume(activity)
             }
 
             line.contains("onConfigurationChanged") -> {
@@ -87,12 +90,15 @@ object UiManager : LogcatManager.LogCatCallBack {
 
             else -> {
                 //类似 com.miui.home/.launcher.Launcher格式
-                val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ").find { it.contains("/") }
+                val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ")
+                    .find { it.contains("/") }
                     ?: return
 
                 val pkg = name.substringBefore("/").replace("cmp=", "")
-                val clazz = name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
+                val clazz =
+                    name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
                 maps[clazz] = pkg
+                onActivityResume(clazz)
             }
         }
     }
