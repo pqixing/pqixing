@@ -14,7 +14,7 @@
 
     <com.pqixing.bydauto.ui.TouchBarContentView
         android:id="@+id/ll_touch_bar"
-        android:layout_width="10dp"
+        android:layout_width="8dp"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/bottom_float_height"
         android:orientation="vertical" />

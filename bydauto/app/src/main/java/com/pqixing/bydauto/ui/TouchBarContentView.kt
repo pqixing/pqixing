@@ -29,8 +29,8 @@ class TouchBarContentView : LinearLayout {
 
     fun setItems(items: List<BarItem>) {
         this.vertica = orientation == VERTICAL
-        val horizontalMargin = if (vertica) UiUtils.dp2dx(2) else UiUtils.dp2dx(5)
-        val verticalMargin = if (vertica) UiUtils.dp2dx(5) else UiUtils.dp2dx(2)
+        val horizontalMargin = if (vertica) UiUtils.dp2dx(1) else UiUtils.dp2dx(5)
+        val verticalMargin = if (vertica) UiUtils.dp2dx(5) else UiUtils.dp2dx(1)
 
         onTouchItems = items
         allWeight = items.sumOf { it.weight }

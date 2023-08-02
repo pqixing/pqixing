@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -300,9 +301,14 @@ object UiUtils {
     }
 
     fun switchFullScreen(context: Context, full: Boolean) {
-        val cmd = "wm overscan 0,${if (full) -getStatusBarH(context) else 0},0,${
-            if (full) -getNavigationBarH(context) else 0
-        }"
+        val land = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val statusH = if (full) -getStatusBarH(context) else 0
+        val navigationH = if (full) -getNavigationBarH(context) else 0
+
+        val cmd =
+            "wm overscan ${if (land) 0 else statusH}0,${if (land) statusH else 0},${if (land) 0 else navigationH},${
+                if (land) navigationH else 0
+            }"
         AdbManager.getClient().runAsync(cmd)
         Const.SP_FULL_SCREEN = full
     }

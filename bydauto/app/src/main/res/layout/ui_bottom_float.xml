@@ -7,8 +7,13 @@
         android:id="@+id/fl_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_float_height"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_bottom_content"
         android:orientation="horizontal">
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="1px" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -30,16 +35,19 @@
                 <ImageView
                     android:id="@+id/btn_music_pre"
                     style="@style/def_button_navigation"
+                    android:scaleType="center"
                     android:src="@android:drawable/ic_media_previous" />
 
                 <ImageView
                     android:id="@+id/btn_music_play"
                     style="@style/def_button_navigation"
-                    android:src="@android:drawable/ic_media_play" />
+                    android:scaleType="center"
+                    android:src="@android:drawable/ic_media_pause" />
 
                 <ImageView
                     android:id="@+id/btn_music_next"
                     style="@style/def_button_navigation"
+                    android:scaleType="center"
                     android:src="@android:drawable/ic_media_next" />
 
             </LinearLayout>
@@ -56,7 +64,7 @@
             android:id="@+id/ll_ac_control"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <TextView
@@ -131,12 +139,16 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="5dp"
+            android:layout_height="1px" />
     </LinearLayout>
 
     <com.pqixing.bydauto.ui.TouchBarContentView
         android:id="@+id/ll_touch_bar"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="8dp"
         android:layout_gravity="bottom"
         android:orientation="horizontal" />
+
 </merge>
