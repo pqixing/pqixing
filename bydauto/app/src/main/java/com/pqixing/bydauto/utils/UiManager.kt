@@ -51,41 +51,43 @@ object UiManager : LogcatManager.LogCatCallBack {
         sCallBack.remove(callBack)
     }
 
-    fun isResumeActivity(activity: String): Boolean {
-        return stacks.getOrNull(0) == activity || (inSplitMode && stacks.getOrNull(1) == activity)
-    }
-
     fun isResumePkg(pkg: String?): Boolean {
         pkg ?: return false
-        return maps[stacks.getOrNull(0)] == pkg || (inSplitMode && maps[stacks.getOrNull(1)] == pkg)
+        return stacks.getOrNull(0) == pkg || (inSplitMode && stacks.getOrNull(1) == pkg)
     }
 
 
     interface IActivityLife {
-        fun onActivityResume(activity: String, pkg: String)
+        fun onPkgResume(pkg: String)
     }
 
     override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(START|topComponentName|activityResumedForAcBar|onConfigurationChanged).*"
+        return ".*ActivityTaskManager.*(START|topComponentName|activityResumedForAcBar|onConfigurationChanged|startPausingLocked).*"
     }
 
-    fun onActivityResume(activity: String) {
-        if (isResumeActivity(activity)) return
-        stacks.remove(activity)
-        stacks.addFirst(activity)
-        sCallBack.forEach { it.onActivityResume(activity, maps[activity] ?: "") }
+    fun onPkgResume(pkg: String) {
+        if (isResumePkg(pkg)) return
+        stacks.remove(pkg)
+        stacks.addFirst(pkg)
+        sCallBack.forEach { it.onPkgResume(pkg) }
     }
 
     override fun onReceiveLog(line: String) {
         when {
             line.contains("activityResumedForAcBar") -> {
                 val activity = line.substringAfter("className:").trim()
-                onActivityResume(activity)
+                maps[activity]?.let { onPkgResume(it) }
             }
 
             line.contains("onConfigurationChanged") -> {
                 val mode = line.substringAfter("windowingMode:").trim()
                 inSplitMode = (mode == "3" || mode == "4")
+            }
+
+            line.contains("startPausingLocked") -> {
+                val pkg = line.substringAfter("mPausingPkg =").substringBefore(",").trim()
+                stacks.remove(pkg)
+                stacks.addLast(pkg)
             }
 
             else -> {
@@ -98,7 +100,7 @@ object UiManager : LogcatManager.LogCatCallBack {
                 val clazz =
                     name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
                 maps[clazz] = pkg
-                onActivityResume(clazz)
+                onPkgResume(pkg)
             }
         }
     }
