@@ -77,7 +77,7 @@ class TouchBarContentView : LinearLayout {
                 child.isSelected = false
             }
             if (distance <= unValidDistance) {
-                onTouchItems[index].click.onClick(getChildAt(index))
+                onTouchItems.getOrNull(index)?.click?.onClick(getChildAt(index))
             }
         } else {
             for (i in 0 until childCount) {

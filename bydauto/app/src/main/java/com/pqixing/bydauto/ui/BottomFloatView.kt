@@ -20,12 +20,12 @@ class BottomFloatView : FrameLayout {
 
 //    var bottomFloatHeight: Int = UiUtils.dp2dx(100)
 
-    var barContent: TouchBarContentView
-    var content: LinearLayout
+    private var touch: TouchBarContentView
+    private var content: LinearLayout
 
     init {
         inflate(context, R.layout.ui_bottom_float, this)
-        barContent = findViewById(R.id.ll_touch_bar)
+        touch = findViewById(R.id.ll_touch_bar)
         content = findViewById(R.id.fl_content)
 
         val items = listOf(
@@ -33,13 +33,20 @@ class BottomFloatView : FrameLayout {
                 content.visibility =
                     if (content.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             },
+            TouchBarContentView.BarItem("最近",2) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)
+            },
             TouchBarContentView.BarItem("主页", 3) {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
             },
-            TouchBarContentView.BarItem("最近") {
+            TouchBarContentView.BarItem("最近",2) {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)
             },
+            TouchBarContentView.BarItem("导航栏") {
+                content.visibility =
+                    if (content.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            },
         )
-        barContent.setItems(items)
+        touch.setItems(items)
     }
 }

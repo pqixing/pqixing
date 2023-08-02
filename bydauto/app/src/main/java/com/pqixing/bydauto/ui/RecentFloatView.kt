@@ -10,6 +10,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.LaunchCASExe
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
@@ -24,19 +25,22 @@ class RecentFloatView : FrameLayout {
     )
 
 
-    var barContent: TouchBarContentView
-    var content: FrameLayout
+    private var touch: TouchBarContentView
+    private var content: FrameLayout
 
 
     init {
         inflate(context, R.layout.ui_recent_float, this)
-        barContent = findViewById<TouchBarContentView>(R.id.ll_touch_bar)
-        content = findViewById<FrameLayout>(R.id.fl_content)
+        touch = findViewById(R.id.ll_touch_bar)
+        content = findViewById(R.id.fl_content)
         val items = listOf(
-            TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
-            TouchBarContentView.BarItem("快捷") {
-                if (UiManager.inSplitMode && UiManager.isResumeActivity("com.byd.automap")
-                    && UiManager.isResumeActivity(getDefualtMusic())
+            TouchBarContentView.BarItem("下拉设置") {
+                AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+            },
+            TouchBarContentView.BarItem("返回", 3) { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
+            TouchBarContentView.BarItem("快捷", 3) {
+                if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
+                    && UiManager.isResumePkg(getDefualtMusic())
                 ) {
                     UiUtils.sendDiCmd("左右互换")
                 } else CAService.performs(
@@ -48,7 +52,7 @@ class RecentFloatView : FrameLayout {
             },
             TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },
         )
-        barContent.setItems(items)
+        touch.setItems(items)
     }
 
     fun getDefualtMusic(): String {
@@ -58,7 +62,7 @@ class RecentFloatView : FrameLayout {
     }
 
     fun setLeft(left: Boolean): RecentFloatView {
-        val params = barContent.layoutParams as LayoutParams
+        val params = touch.layoutParams as LayoutParams
         params.gravity = if (left) Gravity.LEFT else Gravity.RIGHT
         return this
     }
