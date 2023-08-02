@@ -1,6 +1,5 @@
 package com.pqixing.bydauto.setting.item
 
-import android.content.Context
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.pqixing.bydauto.R
@@ -21,11 +20,6 @@ class WireChargeItem : SettingImpl(R.layout.setting_charge) {
         CHARGE_TYPE_OPEN to R.id.rbChargeOpen,
         CHARGE_TYPE_CLOSE to R.id.rbChargeClose
     )
-
-    override fun onCreate(context: Context) {
-        super.onCreate(context)
-        setChargeState()
-    }
 
     override fun getNameId(): Int = R.string.setting_name_charge
 

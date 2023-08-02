@@ -11,7 +11,6 @@ import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.utils.AdbManager
-import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 
@@ -39,15 +38,16 @@ class RecentFloatView : FrameLayout {
             },
             TouchBarContentView.BarItem("返回", 3) { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
             TouchBarContentView.BarItem("快捷", 3) {
+                val musicPkg = UiUtils.getDefualtMusic()
                 if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
-                    && UiManager.isResumePkg(getDefualtMusic())
+                    && UiManager.isResumePkg(musicPkg)
                 ) {
                     UiUtils.sendDiCmd("左右互换")
                 } else CAService.performs(
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                    LaunchCASExe(getDefualtMusic()) to 800L,
+                    LaunchCASExe("com.byd.automap") to 1000L,
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
-                    LaunchCASExe("com.byd.automap") to 500L,
+                    LaunchCASExe(musicPkg) to 1000L,
                 )
             },
             TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },
@@ -55,11 +55,6 @@ class RecentFloatView : FrameLayout {
         touch.setItems(items)
     }
 
-    fun getDefualtMusic(): String {
-        return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
-            ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
-            ?: "com.kuwo.tingshu"
-    }
 
     fun setLeft(left: Boolean): RecentFloatView {
         val params = touch.layoutParams as LayoutParams

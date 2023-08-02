@@ -2,7 +2,6 @@ package com.pqixing.bydauto.utils
 
 import android.Manifest
 import android.accessibilityservice.AccessibilityService
-import android.app.Activity
 import android.app.ActivityOptions
 import android.app.DownloadManager
 import android.app.Service
@@ -114,9 +113,18 @@ object UiUtils {
     fun tryLaunch(context: Context, pkg: String): Boolean {
         return kotlin.runCatching {
             val start: Intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false
-            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(start)
+            tryLaunch(context, start)
             App.log("checkLastPkg : start launch $pkg")
+        }.onFailure {
+            App.log(null, it)
+        }.isSuccess
+    }
+
+    fun tryLaunch(context: Context, intent: Intent): Boolean {
+        return kotlin.runCatching {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            App.log("checkLastPkg : start launch $intent")
         }.onFailure {
             App.log(null, it)
         }.isSuccess
@@ -321,6 +329,13 @@ object UiUtils {
         intent.putExtra("Scrren_ViewText", cmd)
         App.get().sendBroadcast(intent)
     }
+
+    fun getDefualtMusic(): String {
+        return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
+            ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
+            ?: "com.kugou.android.auto"
+    }
+
 }
 
 

@@ -69,22 +69,15 @@ class TouchBarContentView : LinearLayout {
         }
 
         val distance = (d - onDown).absoluteValue
+        if (event.action == MotionEvent.ACTION_UP && distance <= unValidDistance) {
+            onTouchItems.getOrNull(index)?.click?.onClick(getChildAt(index))
+        }
 
-        if (event.action == MotionEvent.ACTION_UP) {
-            for (i in 0 until childCount) {
-                val child = getChildAt(i)
-                child.isPressed = false
-                child.isSelected = false
-            }
-            if (distance <= unValidDistance) {
-                onTouchItems.getOrNull(index)?.click?.onClick(getChildAt(index))
-            }
-        } else {
-            for (i in 0 until childCount) {
-                val child = getChildAt(i)
-                child.isPressed = index == i && distance <= unValidDistance
-                child.isSelected = true
-            }
+        val press = event.action == MotionEvent.ACTION_MOVE || event.action == MotionEvent.ACTION_DOWN
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
+            child.isPressed = press && index == i && distance <= unValidDistance
+            child.isSelected = press
         }
         return true
     }

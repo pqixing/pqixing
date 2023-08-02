@@ -54,7 +54,7 @@ class RotationItem : SettingImpl(R.layout.setting_rotate) {
         rotate.findViewById<RadioButton>(lastCheckedId)?.isChecked = true
 
         rotate.setOnCheckedChangeListener { v, checkedId ->
-            val orientation = ids.find { it.first == checkedId }?.first ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            val orientation = ids.find { it.first == checkedId }?.second ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Const.SP_ORIENTATION = orientation
             updateFloatView(v.context, orientation)
         }
