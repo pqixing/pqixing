@@ -31,6 +31,15 @@ class LaunchCASExe(val pkg: String) : CASExe {
         return "LaunchCASExe(pkg='$pkg')"
     }
 }
+class LaunchSplitCASExe(val pkg: String) : CASExe {
+    override suspend fun execute(service: AccessibilityService) {
+        UiUtils.startForSplit(service.applicationContext, pkg)
+    }
+
+    override fun toString(): String {
+        return "LaunchCASExe(pkg='$pkg')"
+    }
+}
 
 class GestureCASExe() : CASExe {
     val path: Path = Path()

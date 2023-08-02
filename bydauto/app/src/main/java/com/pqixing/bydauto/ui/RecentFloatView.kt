@@ -10,6 +10,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.LaunchCASExe
+import com.pqixing.bydauto.service.LaunchSplitCASExe
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
@@ -45,9 +46,8 @@ class RecentFloatView : FrameLayout {
                     UiUtils.sendDiCmd("左右互换")
                 } else CAService.performs(
                     ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                    LaunchCASExe("com.byd.automap") to 1000L,
-                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1500L,
                     LaunchCASExe(musicPkg) to 1000L,
+                    LaunchSplitCASExe("com.byd.automap") to 1500L,
                 )
             },
             TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },

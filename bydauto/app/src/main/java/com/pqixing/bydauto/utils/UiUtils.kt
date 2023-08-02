@@ -24,7 +24,6 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.ui.BootUI
 import com.pqixing.bydauto.ui.EmptyUI
 import java.io.File
 import java.net.URL
@@ -313,8 +312,8 @@ object UiUtils {
         Const.SP_FULL_SCREEN = full
     }
 
-    fun startForSplit(context: Context) {
-        val intent = Intent(context, BootUI::class.java)
+    fun startForSplit(context: Context, pkg: String) {
+        val intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
         val basic = ActivityOptions.makeBasic()
         kotlin.runCatching {
