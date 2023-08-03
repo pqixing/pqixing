@@ -1,5 +1,6 @@
 package com.pqixing.bydauto.utils
 
+import android.content.pm.ApplicationInfo
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
 import kotlinx.coroutines.Dispatchers
@@ -33,14 +34,14 @@ object UiManager : LogcatManager.LogCatCallBack {
                 val name = pm.getApplicationLabel(info).toString()
                 val icon = pm.getApplicationIcon(info)
                 val intent = pm.getLaunchIntentForPackage(info.packageName)
-                AppInfo(info.packageName, name, icon, intent)
+                AppInfo(info.packageName, name, icon, info.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0,info.sourceDir, info)
             }.getOrNull()?.let { info.packageName to it }
         }.toMap().toMutableMap()
         apps.remove(context.packageName)
     }
 
-    fun getAppInfo(pkg: Collection<String>): List<AppInfo> {
-        return (if (pkg.isEmpty()) apps.values.toList() else pkg.mapNotNull { apps[it] })
+    fun getAppInfo(pkg: Collection<String>? = null): List<AppInfo> {
+        return pkg?.mapNotNull { apps[it] } ?: apps.values.toList()
     }
 
     fun addCallBack(callBack: IActivityLife) {

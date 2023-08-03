@@ -15,9 +15,11 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -40,7 +42,7 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideMenu() {
-        val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程")
+        val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程", "备份第三方应用")
 
         AlertDialog.Builder(this).setTitle(
             getString(R.string.main_title_cur_version) + "_${packageManager.getPackageInfo(packageName, 0).versionName}"
@@ -51,10 +53,26 @@ class MainUI : BaseActivity() {
                 1 -> UiUtils.downloadAndInstallAPK(this, Const.URL_DOWNLOAD)
                 2 -> showCrashLog()
                 3 -> exitProcess(0)
+                4 -> backupThird()
             }
         }.setOnDismissListener {
             mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
         }.show()
+    }
+
+    private fun backupThird() {
+        App.uiScope.launch {
+            val client = AdbManager.getClient()
+            val apks = UiManager.getAppInfo().filter { !it.system }
+            "开始备份${apks.size}个应用".toast()
+            client.runSync("mkdir /sdcard/thirdApks/")
+            apks.forEach {
+                client.runSync("cp ${it.sourceDir} /sdcard/thirdApks/${it.name}_${it.pkg}.apk")
+            }
+            client.runSync("cp /system/framework/framework.jar /sdcard/thirdApks/framework.jar")
+            "备份应用完成".toast()
+        }
+
     }
 
     private fun showCrashLog() {
@@ -74,6 +92,7 @@ class MainUI : BaseActivity() {
     }
 
     private fun updateSelf() = App.uiScope.launch(Dispatchers.IO) {
+
         val dataDir = File(packageResourcePath)
         val downloadApk = File(App.get().getExternalFilesDir(null), "temp.apk")
         downloadApk.writeBytes(dataDir.readBytes())

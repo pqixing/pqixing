@@ -1,7 +1,7 @@
 package com.pqixing.bydauto.utils
 
 import com.pqixing.bydauto.App
-import java.util.*
+import java.util.LinkedList
 import java.util.regex.Pattern
 import kotlin.concurrent.thread
 
@@ -49,7 +49,7 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
 //                    Runtime.getRuntime().exec("logcat -T 0")
                 pro.inputStream.bufferedReader().use {
                     while (curTs == startProTs) {
-                        val line = it.readLine()
+                        val line = it.readLine() ?: continue
                         if (allPatterns?.matcher(line)?.matches() != true) continue
 
                         val posts = LinkedList<LogCatCallBack>()

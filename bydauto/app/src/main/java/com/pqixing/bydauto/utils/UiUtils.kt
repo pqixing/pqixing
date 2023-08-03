@@ -94,22 +94,6 @@ object UiUtils {
         }
     }
 
-    fun loadAppInfos(context: Context, pkgs: List<String>): List<AppInfo> {
-        val pm = context.packageManager
-        val curPkg = context.packageName
-
-        return pkgs.filter { it != curPkg }.mapNotNull {
-            kotlin.runCatching {
-                val info = pm.getApplicationInfo(it, PackageManager.GET_META_DATA)
-                val name = pm.getApplicationLabel(info).toString()
-                val icon = pm.getApplicationIcon(info)
-                val intent = pm.getLaunchIntentForPackage(it)
-                AppInfo(it, name, icon, intent)
-            }.getOrNull()
-        }
-    }
-
-
     fun tryLaunch(context: Context, pkg: String): Boolean {
         return kotlin.runCatching {
             val start: Intent = context.packageManager.getLaunchIntentForPackage(pkg) ?: return false

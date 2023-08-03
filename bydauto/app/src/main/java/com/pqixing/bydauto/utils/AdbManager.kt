@@ -57,7 +57,7 @@ class AdbManager private constructor(val host: String = "127.0.0.1", val port: I
     suspend fun runSync(cmd: String): Result<String> {
         buffer.clear()
         val conn = connection() ?: return Result.failure(Exception("not connect"))
-        conn.queueCommand("$cmd \n")
+        conn.queueCommand("$cmd \n".log())
         delay(500)
         return Result.success(buffer.toString())
     }
