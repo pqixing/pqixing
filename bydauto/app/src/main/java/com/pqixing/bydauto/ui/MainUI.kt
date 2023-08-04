@@ -42,6 +42,7 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideMenu() {
+
         val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程", "备份第三方应用")
 
         AlertDialog.Builder(this).setTitle(

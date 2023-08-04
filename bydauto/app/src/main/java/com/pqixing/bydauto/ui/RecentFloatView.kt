@@ -6,13 +6,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.service.LaunchCASExe
-import com.pqixing.bydauto.utils.AdbManager
-import com.pqixing.bydauto.utils.UiManager
-import com.pqixing.bydauto.utils.UiUtils
 
 class RecentFloatView : FrameLayout {
     constructor(context: Context) : super(context)
@@ -33,24 +27,9 @@ class RecentFloatView : FrameLayout {
         touch = findViewById(R.id.ll_touch_bar)
         content = findViewById(R.id.fl_content)
         val items = listOf(
-            TouchBarContentView.BarItem("下拉设置") {
-                AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-            },
-            TouchBarContentView.BarItem("返回", 3) { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
-            TouchBarContentView.BarItem("快捷", 3) {
-                val musicPkg = UiUtils.getDefualtMusic()
-                if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
-                    && UiManager.isResumePkg(musicPkg)
-                ) {
-                    UiUtils.sendDiCmd("左右互换")
-                } else CAService.performs(
-                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                    LaunchCASExe("com.byd.automap") to 1000L,
-                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
-                    LaunchCASExe(musicPkg) to 1000L,
-                )
-            },
-            TouchBarContentView.BarItem("分屏") { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) },
+
+            TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
+            TouchBarContentView.BarItem("多任务") { CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS) },
         )
         touch.setItems(items)
     }

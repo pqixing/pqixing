@@ -17,9 +17,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_item_rect_white"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_item_rect_white"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -62,15 +63,22 @@
         <LinearLayout
             android:id="@+id/ll_ac_control"
             android:layout_width="0dp"
-            android:background="@drawable/bg_item_rect_white"
             android:layout_height="match_parent"
+
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:background="@drawable/bg_item_rect_white"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <TextView
                 android:id="@+id/btn_ac_toggle"
                 style="@style/def_button_navigation"
                 android:text="空调\n温度" />
+
+            <TextView
+                android:id="@+id/btn_ac_temp_cycle"
+                style="@style/def_button_navigation"
+                android:text="外循环" />
 
             <TextView
                 android:id="@+id/btn_ac_temp_18"
@@ -115,27 +123,24 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_item_rect_white"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <TextView
-                android:id="@+id/btn_map_open"
+                android:id="@+id/btn_menu_set"
                 style="@style/def_button_navigation"
-                android:text="地图" />
+                android:text="设置" />
 
             <TextView
-                android:id="@+id/btn_map_home"
+                android:id="@+id/btn_menu_split"
                 style="@style/def_button_navigation"
-                android:text="回家" />
+                android:text="分屏" />
+
 
             <TextView
-                android:id="@+id/btn_map_company"
+                android:id="@+id/btn_menu_fast"
                 style="@style/def_button_navigation"
-                android:text="公司" />
-
-            <TextView
-                android:id="@+id/btn_map_address_1"
-                style="@style/def_button_navigation"
-                android:text="后海村" />
+                android:text="应用" />
 
         </LinearLayout>
 

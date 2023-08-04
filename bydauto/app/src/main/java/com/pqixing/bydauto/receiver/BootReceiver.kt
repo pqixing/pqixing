@@ -6,7 +6,7 @@ import android.content.Intent
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.item.WireChargeItem
 import com.pqixing.bydauto.ui.BootUI
-import com.pqixing.bydauto.utils.BYDUtils
+import com.pqixing.bydauto.utils.BYDAutoUtils
 
 
 class BootReceiver : BroadcastReceiver() {
@@ -16,8 +16,9 @@ class BootReceiver : BroadcastReceiver() {
             context.startActivity(Intent(context, BootUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             //设置无线充电
             when (Const.SP_CHARGE_TYPE) {
-                WireChargeItem.CHARGE_TYPE_OPEN -> BYDUtils.setWirelessCharging(true)
-                WireChargeItem.CHARGE_TYPE_CLOSE -> BYDUtils.setWirelessCharging(false)
+                WireChargeItem.CHARGE_TYPE_OPEN -> BYDAutoUtils.setWirelessCharging(true)
+                WireChargeItem.CHARGE_TYPE_CLOSE -> BYDAutoUtils.setWirelessCharging(false)
+                else -> ""
             }
         }
     }
