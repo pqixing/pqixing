@@ -43,7 +43,7 @@ class MainUI : BaseActivity() {
 
     private fun showHideMenu() {
 
-        val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程", "备份第三方应用")
+        val names = arrayOf("重装", "新版本", "崩溃日志", "停止进程", "备份应用")
 
         AlertDialog.Builder(this).setTitle(
             getString(R.string.main_title_cur_version) + "_${packageManager.getPackageInfo(packageName, 0).versionName}"
