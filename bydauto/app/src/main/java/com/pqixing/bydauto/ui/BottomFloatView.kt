@@ -37,7 +37,7 @@ class BottomFloatView : FrameLayout, UiManager.IActivityLife {
     private var dimiss = object : Runnable {
         override fun run() {
             removeCallbacks(this)
-            touch.visibility = View.GONE
+            content.visibility = View.GONE
         }
     }
     private var inlaunch = true

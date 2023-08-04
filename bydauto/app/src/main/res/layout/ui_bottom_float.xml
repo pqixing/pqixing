@@ -127,20 +127,20 @@
             android:padding="2dp">
 
             <TextView
-                android:id="@+id/btn_menu_set"
-                style="@style/def_button_navigation"
-                android:text="设置" />
-
-            <TextView
                 android:id="@+id/btn_menu_split"
                 style="@style/def_button_navigation"
                 android:text="分屏" />
+
+            <TextView
+                android:id="@+id/btn_menu_set"
+                style="@style/def_button_navigation"
+                android:text="设置" />
 
 
             <TextView
                 android:id="@+id/btn_menu_fast"
                 style="@style/def_button_navigation"
-                android:text="应用" />
+                android:text="快捷" />
 
         </LinearLayout>
 
