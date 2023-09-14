@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_float_height"
         android:layout_marginBottom="15dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+
+        tools:visibility="visible">
 
         <View
             android:layout_width="11dp"
@@ -149,7 +153,7 @@
             android:layout_height="1px" />
     </LinearLayout>
 
-    <com.pqixing.bydauto.ui.TouchBarContentView
+    <com.pqixing.bydauto.widget.TouchBarContentView
         android:id="@+id/ll_touch_bar"
         android:layout_width="match_parent"
         android:layout_height="10dp"

@@ -4,7 +4,8 @@ import com.pqixing.bydauto.App
 
 object Const {
 
-    val URL_DOWNLOAD: String = "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"
+    val URL_DOWNLOAD: String =
+        "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"
     var lastMediaReceiver: Long = -1L
     var SYSTEM_APPLICATION_OVERLAY = "android.permission.SYSTEM_APPLICATION_OVERLAY"
 
@@ -47,6 +48,10 @@ object Const {
     var SP_PERM_ADB_CONNECT: Boolean
         get() = App.sp.getBoolean("SP_PERM_ADB_CONNECT", false)!!
         set(value) = App.sp.edit().putBoolean("SP_PERM_ADB_CONNECT", value).apply()
+
+    var SP_DELAY_DISMISS: Long
+        get() = App.sp.getLong("SP_DELAY_DISMISS", 10000)!!
+        set(value) = App.sp.edit().putLong("SP_DELAY_DISMISS", value).apply()
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
     const val MEDIA_HOST = "host.intent.action.MEDIA"

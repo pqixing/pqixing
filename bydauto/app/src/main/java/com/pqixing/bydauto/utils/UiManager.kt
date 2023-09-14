@@ -34,7 +34,14 @@ object UiManager : LogcatManager.LogCatCallBack {
                 val name = pm.getApplicationLabel(info).toString()
                 val icon = pm.getApplicationIcon(info)
                 val intent = pm.getLaunchIntentForPackage(info.packageName)
-                AppInfo(info.packageName, name, icon, info.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0,info.sourceDir, info)
+                AppInfo(
+                    info.packageName,
+                    name,
+                    icon,
+                    info.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0,
+                    info.sourceDir,
+                    info
+                )
             }.getOrNull()?.let { info.packageName to it }
         }.toMap().toMutableMap()
         apps.remove(context.packageName)
@@ -59,25 +66,25 @@ object UiManager : LogcatManager.LogCatCallBack {
 
 
     interface IActivityLife {
-        fun onPkgResume(pkg: String)
+        fun onPkgResume(pkg: String?, ac: String)
     }
 
     override fun getFilterRex(): String {
         return ".*ActivityTaskManager.*(START|topComponentName|activityResumedForAcBar|onConfigurationChanged|startPausingLocked).*"
     }
 
-    fun onPkgResume(pkg: String) {
+    fun onPkgResume(pkg: String?, ac: String) {
         if (isResumePkg(pkg)) return
         stacks.remove(pkg)
         stacks.addFirst(pkg)
-        sCallBack.forEach { it.onPkgResume(pkg) }
+        sCallBack.forEach { it.onPkgResume(pkg, ac) }
     }
 
     override fun onReceiveLog(line: String) {
         when {
             line.contains("activityResumedForAcBar") -> {
                 val activity = line.substringAfter("className:").trim()
-                maps[activity]?.let { onPkgResume(it) }
+                onPkgResume(maps[activity], activity)
             }
 
             line.contains("onConfigurationChanged") -> {
@@ -101,7 +108,7 @@ object UiManager : LogcatManager.LogCatCallBack {
                 val clazz =
                     name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
                 maps[clazz] = pkg
-                onPkgResume(pkg)
+                onPkgResume(pkg, clazz)
             }
         }
     }

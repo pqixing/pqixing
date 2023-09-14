@@ -17,11 +17,11 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.AppInfo
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.ui.EmptyUI
@@ -36,7 +36,7 @@ object UiUtils {
 
     fun getFloatView(tag: String): View? = floatViews[tag]
 
-    fun reShowFloatView(tag: String, view: View, params: WindowManager.LayoutParams) {
+    fun reShowFloatView(tag: String, view: View, params: ViewGroup.LayoutParams) {
         runCatching {
             closeFloatView(tag)
             val context = App.get()
@@ -59,7 +59,7 @@ object UiUtils {
         return floatViews[tag]?.isAttachedToWindow == true
     }
 
-    fun showOrUpdateFloatView(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
+    fun showOrUpdate(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
         runCatching {
             if (isShow(tag)) {
                 val context = App.get()
@@ -70,6 +70,22 @@ object UiUtils {
             }
         }
     }
+
+    fun showOrUpdate(tag: String, getView: () -> View) {
+        runCatching {
+            val oldView = floatViews[tag]
+            if (oldView?.isAttachedToWindow == true) {
+                val context = App.get()
+                val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+                wm.updateViewLayout(oldView, oldView.layoutParams)
+            } else {
+                val newView = getView()
+                reShowFloatView(tag, newView, newView.layoutParams)
+            }
+        }
+    }
+
 
     fun closeFloatView(tag: String) {
         runCatching {
@@ -283,13 +299,13 @@ object UiUtils {
         return (App.get().resources.displayMetrics.density * dp).roundToInt()
     }
 
-    fun switchFullScreen(context: Context, full: Boolean) {
-        val land = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    fun switchFullScreen(context: Context, full: Boolean, orientation: Int = context.resources.configuration.orientation) {
+        val land = orientation == Configuration.ORIENTATION_LANDSCAPE
         val statusH = if (full) -getStatusBarH(context) else 0
         val navigationH = if (full) -getNavigationBarH(context) else 0
 
         val cmd =
-            "wm overscan ${if (land) 0 else statusH}0,${if (land) statusH else 0},${if (land) 0 else navigationH},${
+            "wm overscan ${if (land) 0 else statusH},${if (land) statusH else 0},${if (land) 0 else navigationH},${
                 if (land) navigationH else 0
             }"
         AdbManager.getClient().runAsync(cmd)
@@ -323,6 +339,12 @@ object UiUtils {
         return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
             ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
             ?: "com.kugou.android.auto"
+    }
+
+    fun isNightMode(context: Context): Boolean {
+        return kotlin.runCatching {
+            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        }.getOrDefault(false)
     }
 
 }

@@ -2,10 +2,6 @@ package com.pqixing.bydauto.setting.item
 
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.graphics.PixelFormat
-import android.view.Gravity
-import android.view.View
-import android.view.WindowManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.pqixing.bydauto.R
@@ -13,6 +9,7 @@ import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.widget.DefaultFloatView
 
 class RotationItem : SettingImpl(R.layout.setting_rotate) {
 
@@ -29,14 +26,12 @@ class RotationItem : SettingImpl(R.layout.setting_rotate) {
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
-        updateFloatView(context, Const.SP_ORIENTATION)
+        updateFloatView(context)
     }
 
-    private fun updateFloatView(context: Context, orientation: Int) {
-        if (orientation == ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED) {
-            UiUtils.closeFloatView(FLOAT_TAG_ROTATION)
-        } else {
-            UiUtils.showOrUpdateFloatView(FLOAT_TAG_ROTATION, layoutParams(orientation)) { View(context) }
+    private fun updateFloatView(context: Context) {
+        UiUtils.showOrUpdate(FLOAT_TAG_ROTATION) {
+            DefaultFloatView(context.applicationContext)
         }
     }
 
@@ -56,22 +51,7 @@ class RotationItem : SettingImpl(R.layout.setting_rotate) {
         rotate.setOnCheckedChangeListener { v, checkedId ->
             val orientation = ids.find { it.first == checkedId }?.second ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Const.SP_ORIENTATION = orientation
-            updateFloatView(v.context, orientation)
-        }
-    }
-
-    private fun layoutParams(orientation: Int): WindowManager.LayoutParams {
-        return WindowManager.LayoutParams().also {
-            it.width = 1
-            it.height = 1
-            it.format = PixelFormat.TRANSLUCENT
-            it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            it.flags =
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            it.gravity = Gravity.START or Gravity.TOP
-
-            it.screenOrientation = orientation
-            it.alpha = 0f
+            updateFloatView(v.context)
         }
     }
 }

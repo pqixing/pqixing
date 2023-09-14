@@ -1,4 +1,4 @@
-package com.pqixing.bydauto.ui
+package com.pqixing.bydauto.widget
 
 import android.content.Context
 import android.graphics.Color
@@ -82,5 +82,5 @@ class TouchBarContentView : LinearLayout {
         return true
     }
 
-    data class BarItem(val name: String, val weight: Int = 1, val click: View.OnClickListener)
+    data class BarItem(val name: String, val weight: Int = 1, val icon: Int = 0, val click: View.OnClickListener)
 }

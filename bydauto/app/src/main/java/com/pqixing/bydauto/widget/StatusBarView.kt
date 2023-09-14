@@ -1,14 +1,18 @@
-package com.pqixing.bydauto.ui
+package com.pqixing.bydauto.widget
 
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.PixelFormat
 import android.media.AudioManager
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,7 +25,7 @@ import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 
-class BottomFloatView : FrameLayout, UiManager.IActivityLife {
+class StatusBarView : FrameLayout, UiManager.IActivityLife {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -165,9 +169,26 @@ class BottomFloatView : FrameLayout, UiManager.IActivityLife {
         touch.setItems(items)
     }
 
-    override fun onPkgResume(pkg: String) {
-        inlaunch = "com.android.launcher3" == pkg
-        updateContentState(inlaunch)
 
+    override fun getLayoutParams(): ViewGroup.LayoutParams {
+        return super.getLayoutParams() as? WindowManager.LayoutParams ?: createParams()
+    }
+
+    fun createParams(): WindowManager.LayoutParams {
+        return WindowManager.LayoutParams().also {
+            it.width = WindowManager.LayoutParams.MATCH_PARENT
+            it.height = WindowManager.LayoutParams.WRAP_CONTENT
+            it.format = PixelFormat.RGBA_8888
+            it.flags =
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            it.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            it.alpha = 1f
+        }
+    }
+
+    override fun onPkgResume(pkg: String?, ac: String) {
+        inlaunch = "com.android.launcher3" == pkg
+//        updateContentState(inlaunch)
     }
 }

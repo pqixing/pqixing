@@ -19,7 +19,7 @@
     <application
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_compass"
-        android:label="指令转发-${applicationId}"
+        android:label="指令流转"
         android:resizeableActivity="true">
         <activity
             android:name="com.pqixing.music.WelComeActivity"
