@@ -1,7 +1,6 @@
 package com.pqixing.bydauto.setting.item
 
 import android.accessibilityservice.AccessibilityService
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -71,8 +70,8 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
                 it.printStackTrace()
                 it.message
             }
-//            App.toast("result : $text")
-            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
+            App.toast("result : $text")
+//            AlertDialog.Builder(view.context).setTitle("执行结果").setMessage(text).show()
         }
     }
 

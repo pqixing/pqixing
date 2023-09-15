@@ -2,6 +2,7 @@ package com.pqixing.bydauto.widget
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
@@ -14,10 +15,9 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.service.LaunchCASExe
-import com.pqixing.bydauto.utils.UiManager
+import com.pqixing.bydauto.ui.MainUI
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 
 class MenuFloatView : LinearLayout {
@@ -31,11 +31,17 @@ class MenuFloatView : LinearLayout {
 
 
     private var touch = TouchBarContentView(context).also {
-        it.layoutParams = LayoutParams(UiUtils.dp2dx(8), ViewGroup.LayoutParams.MATCH_PARENT)
+        it.layoutParams = LayoutParams(UiUtils.dp2dx(9), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
+            p.topMargin = UiUtils.dp2dx(30)
+            p.bottomMargin = UiUtils.dp2dx(30)
+        }
         it.orientation = VERTICAL
     }
     private var content = LinearLayout(context).also {
-        it.layoutParams = LayoutParams(UiUtils.dp2dx(56), ViewGroup.LayoutParams.MATCH_PARENT)
+        it.layoutParams = LayoutParams(UiUtils.dp2dx(56), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
+            p.topMargin = UiUtils.dp2dx(30)
+            p.bottomMargin = UiUtils.dp2dx(30)
+        }
         it.orientation = VERTICAL
         it.isClickable = true
         it.background = ColorDrawable(Color.parseColor("#33000000"))
@@ -47,7 +53,7 @@ class MenuFloatView : LinearLayout {
     init {
         val items = listOf(
             TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
-            TouchBarContentView.BarItem("桌面") { CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME) },
+            TouchBarContentView.BarItem("桌面", 2) { CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME) },
             TouchBarContentView.BarItem("更多") { reShowContent() },
         )
         touch.setItems(items)
@@ -56,6 +62,13 @@ class MenuFloatView : LinearLayout {
     private fun initContent() {
         content.removeAllViews()
         listOf(
+            TouchBarContentView.BarItem(
+                "",
+                1,
+                if (left) R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right
+            ) {
+                hideContent.run()
+            },
             TouchBarContentView.BarItem("返回", 3, R.drawable.icon_menu_back) {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
             },
@@ -72,20 +85,17 @@ class MenuFloatView : LinearLayout {
                 UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
             },
             TouchBarContentView.BarItem("应用", 3, R.drawable.icon_menu_app) {
-                val musicPkg = UiUtils.getDefualtMusic()
-                if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
-                    && UiManager.isResumePkg(musicPkg)
-                ) {
-                    UiUtils.sendDiCmd("左右互换")
-                } else CAService.performs(
-                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                    LaunchCASExe("com.byd.automap") to 1000L,
-                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
-                    LaunchCASExe(musicPkg) to 1000L,
-                )
+                UiUtils.showOrUpdate(ApplicationView.FLOAT_TAG) { ApplicationView(context) }
             },
-            TouchBarContentView.BarItem("", 1, if(left)R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right) {
-                hideContent.run()
+            TouchBarContentView.BarItem("设置", 3, R.drawable.icon_menu_setting) {
+                UiUtils.tryLaunch(context, Intent(context, MainUI::class.java))
+            },
+            TouchBarContentView.BarItem(
+                "",
+                1,
+                R.drawable.icon_menu_arrow_down
+            ) {
+                AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
             },
         ).map {
             content.addView(
@@ -117,7 +127,7 @@ class MenuFloatView : LinearLayout {
     private fun createParams(): WindowManager.LayoutParams {
         return WindowManager.LayoutParams().also {
             it.width = WindowManager.LayoutParams.WRAP_CONTENT
-            it.height = resources.displayMetrics.heightPixels - UiUtils.dp2dx(120)
+            it.height = WindowManager.LayoutParams.MATCH_PARENT
             it.format = PixelFormat.RGBA_8888
             it.flags =
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL

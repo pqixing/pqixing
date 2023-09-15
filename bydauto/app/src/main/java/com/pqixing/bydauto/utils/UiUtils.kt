@@ -17,7 +17,6 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
@@ -33,68 +32,34 @@ import kotlin.math.roundToInt
 object UiUtils {
 
     private val floatViews: HashMap<String, View> = hashMapOf()
-
-    fun getFloatView(tag: String): View? = floatViews[tag]
-
-    fun reShowFloatView(tag: String, view: View, params: ViewGroup.LayoutParams) {
-        runCatching {
-            closeFloatView(tag)
-            val context = App.get()
-            if (!Settings.canDrawOverlays(context)) kotlin.runCatching {
-                val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .setData(Uri.parse("package:${context.packageName}"))
-                context.startActivity(i)
-            }
-
-            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            wm.addView(view, params)
-            floatViews[tag] = view
-
-        }.onFailure {
-            App.toast(it.message.toString())
-        }
-    }
-
     fun isShow(tag: String): Boolean {
-        return floatViews[tag]?.isAttachedToWindow == true
-    }
-
-    fun showOrUpdate(tag: String, params: WindowManager.LayoutParams, getView: () -> View) {
-        runCatching {
-            if (isShow(tag)) {
-                val context = App.get()
-                val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                wm.updateViewLayout(floatViews[tag], params)
-            } else {
-                reShowFloatView(tag, getView(), params)
-            }
-        }
+        return floatViews[tag] != null
     }
 
     fun showOrUpdate(tag: String, getView: () -> View) {
         runCatching {
             val oldView = floatViews[tag]
+            val context = App.get()
+            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             if (oldView?.isAttachedToWindow == true) {
-                val context = App.get()
-                val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
                 wm.updateViewLayout(oldView, oldView.layoutParams)
             } else {
                 val newView = getView()
-                reShowFloatView(tag, newView, newView.layoutParams)
+                wm.addView(newView, newView.layoutParams)
+                floatViews[tag] = newView
             }
-        }
+        }.onFailure { it.message?.toast() }
     }
 
 
     fun closeFloatView(tag: String) {
         runCatching {
-            val view = floatViews.get(tag) ?: return
+            val view = floatViews[tag] ?: return
             val context = App.get()
             val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             wm.removeView(view)
             floatViews.remove(tag)
-        }
+        }.onFailure { it.message?.toast() }
     }
 
     fun checkSelfPermission(context: Context, permission: String): Boolean {

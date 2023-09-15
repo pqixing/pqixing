@@ -30,10 +30,10 @@ class TouchBarContentView : LinearLayout {
     var allWeight = 0
     val unValidDistance = UiUtils.dp2dx(250)
 
-    fun setItems(items: List<BarItem>) {
+    fun setItems(items: List<BarItem>, bgRes: Int = R.drawable.bg_item_press) {
         this.vertica = orientation == VERTICAL
-        val horizontalMargin = if (vertica) UiUtils.dp2dx(1) else UiUtils.dp2dx(5)
-        val verticalMargin = if (vertica) UiUtils.dp2dx(5) else UiUtils.dp2dx(1)
+        val horizontalMargin = if (vertica) UiUtils.dp2dx(1) else UiUtils.dp2dx(3)
+        val verticalMargin = if (vertica) UiUtils.dp2dx(3) else UiUtils.dp2dx(1)
 
         onTouchItems = items
         allWeight = items.sumOf { it.weight }
@@ -53,7 +53,9 @@ class TouchBarContentView : LinearLayout {
 
             val child = View(context)
             Color.YELLOW
-            child.setBackgroundResource(R.drawable.bg_item_press)
+            if (bgRes != 0) {
+                child.setBackgroundResource(bgRes)
+            }
             addView(child, params)
         }
     }

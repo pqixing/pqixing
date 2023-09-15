@@ -14,12 +14,10 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
 
     val FLOAT_TAG_BAR_LEFT = "FLOAT_TAG_BAR_LEFT"
     val FLOAT_TAG_BAR_RIGHT = "FLOAT_TAG_BAR_RIGHT"
-    val FLOAT_TAG_BAR_BOTTOM = "FLOAT_TAG_BAR_BOTTOM"
-
-    val FLOAT_TAG_BAR_MEMU = "FLOAT_TAG_BAR_MEMU"
+    val FLOAT_TAG_BAR_TOP = "FLOAT_TAG_BAR_TOP"
 
     override fun getNameId(): Int = R.string.setting_name_item_bar
-    val floatTypes = arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT, FLOAT_TAG_BAR_BOTTOM)
+    val floatTypes = arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT)
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
@@ -34,7 +32,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     private fun float(context: Context) {
         floatTypes.forEach {
             UiUtils.showOrUpdate(it) {
-                if (it == FLOAT_TAG_BAR_BOTTOM) {
+                if (it == FLOAT_TAG_BAR_TOP) {
                     StatusBarView(context.applicationContext)
                 } else {
                     MenuFloatView(context.applicationContext).setLeft(it == FLOAT_TAG_BAR_LEFT)
@@ -50,8 +48,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
         bar.setOnCheckedChangeListener { buttonView, isChecked ->
             Const.SP_FLOAT_BAR = isChecked
             if (isChecked) float(buttonView.context) else {
-                UiUtils.closeFloatView(FLOAT_TAG_BAR_LEFT)
-                UiUtils.closeFloatView(FLOAT_TAG_BAR_RIGHT)
+                floatTypes.forEach { UiUtils.closeFloatView(it) }
             }
         }
 

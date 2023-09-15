@@ -3,7 +3,10 @@ package com.pqixing.bydauto.widget
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.PixelFormat
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
@@ -38,6 +41,7 @@ class RadarFloatView(context: Context) : FrameLayout(context), LogcatManager.Log
     private val POS_LANDSCAPE: String = "220:260,220:660,700:260,700:680,820:360,820:580,140:400,140:560,860:480"
     private val POS_PORTRAIT: String = "900:40,900:420,1300:40,1300:420,1380:120,1380:320,820:160,820:320,1420:240"
     private val logcatManager = LogcatManager(listOf("BYDAutoRadarDevice:D"))
+
     init {
         View.inflate(context, R.layout.radar_float, this)
         views = maps.map { findViewById(it.first) }
@@ -153,4 +157,25 @@ class RadarFloatView(context: Context) : FrameLayout(context), LogcatManager.Log
             App.log(null, it)
         }
     }
+
+    override fun getLayoutParams(): ViewGroup.LayoutParams {
+        return (super.getLayoutParams() as? WindowManager.LayoutParams ?: createParams())
+    }
+
+    private fun createParams(): WindowManager.LayoutParams {
+
+        return WindowManager.LayoutParams().also {
+            it.width = WindowManager.LayoutParams.MATCH_PARENT
+            it.height = WindowManager.LayoutParams.MATCH_PARENT
+            it.format = PixelFormat.RGBA_8888
+            it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            if (!setBound) {
+                it.flags =
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            }
+            it.gravity = Gravity.START or Gravity.TOP
+            it.alpha = 1f
+        }
+    }
+
 }

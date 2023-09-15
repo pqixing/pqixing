@@ -1,10 +1,6 @@
 package com.pqixing.bydauto.setting.item
 
 import android.content.Context
-import android.content.pm.ActivityInfo
-import android.graphics.PixelFormat
-import android.view.Gravity
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.CheckBox
 import com.pqixing.bydauto.App
@@ -57,34 +53,20 @@ class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
         }
 
         viewHolder.findViewById<Button>(R.id.cb_radar_debug).setOnClickListener {
-            UiUtils.reShowFloatView(
-                FLOAT_TAG_RADAR,
-                RadarFloatView(viewHolder.context.applicationContext).also { it.resetBounds() },
-                layoutParams(true)
-            )
-        }
-    }
-
-    private fun layoutParams(edit: Boolean = false, orientation: Int = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED): WindowManager.LayoutParams {
-        return WindowManager.LayoutParams().also {
-            it.width = WindowManager.LayoutParams.MATCH_PARENT
-            it.height = WindowManager.LayoutParams.MATCH_PARENT
-            it.format = PixelFormat.RGBA_8888
-            it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            if (!edit) {
-                it.flags =
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            UiUtils.showOrUpdate(FLOAT_TAG_RADAR) {
+                RadarFloatView(viewHolder.context.applicationContext).also {
+                    it.resetBounds()
+                }
             }
-            it.gravity = Gravity.START or Gravity.TOP
-            it.screenOrientation = orientation
-            it.alpha = 1f
         }
     }
 
     override fun onPkgResume(pkg: String?, ac: String) {
         val isAutoVideo = RADAR_PKG == pkg || ac == RADAR_ACTIVITY
         if (isAutoVideo && !UiUtils.isShow(FLOAT_TAG_RADAR)) {
-            UiUtils.reShowFloatView(FLOAT_TAG_RADAR, RadarFloatView(App.get()), layoutParams())
+            UiUtils.showOrUpdate(FLOAT_TAG_RADAR) {
+                RadarFloatView(App.get())
+            }
         }
         if (!isAutoVideo) {
             UiUtils.closeFloatView(FLOAT_TAG_RADAR)

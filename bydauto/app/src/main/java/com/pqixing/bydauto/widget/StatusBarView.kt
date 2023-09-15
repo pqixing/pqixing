@@ -24,6 +24,9 @@ import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class StatusBarView : FrameLayout, UiManager.IActivityLife {
     constructor(context: Context) : super(context)
@@ -34,9 +37,13 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
         defStyleAttr
     )
 
-    private val root = inflate(context, R.layout.ui_bottom_float, this)
+    private val root = inflate(context, R.layout.ui_status_bar_float, this)
     private val touch: TouchBarContentView = findViewById(R.id.ll_touch_bar)
     private val content: LinearLayout = findViewById(R.id.fl_content)
+
+
+    private val timeFormat = SimpleDateFormat("HH:mm MM-dd E", Locale.CHINESE)
+    private val tvTime: TextView = findViewById(R.id.tv_bar_time)
 
     private var dimiss = object : Runnable {
         override fun run() {
@@ -44,12 +51,28 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
             content.visibility = View.GONE
         }
     }
+    private var time = object : Runnable {
+        override fun run() {
+            removeCallbacks(this)
+            val newText = timeFormat.format(Date())
+            if (newText != tvTime.text) {
+                tvTime.text = newText
+            }
+            postDelayed(this, 1000)
+        }
+    }
     private var inlaunch = true
 
 
     init {
         initTouch()
+        initBar()
         initContent()
+
+    }
+
+    private fun initBar() {
+        time.run()
     }
 
     override fun onAttachedToWindow() {
@@ -165,7 +188,7 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
             },
         )
-        touch.setItems(items)
+        touch.setItems(items, R.drawable.bg_bar_item_status_bar)
     }
 
 
@@ -188,6 +211,6 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
 
     override fun onPkgResume(pkg: String?, ac: String) {
         inlaunch = "com.android.launcher3" == pkg
-//        updateContentState(inlaunch)
+        updateContentState(inlaunch)
     }
 }
