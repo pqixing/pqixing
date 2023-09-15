@@ -153,17 +153,16 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
 
     private fun initTouch() {
         val items = listOf(
-            TouchBarContentView.BarItem("导航栏") {
-                content.visibility =
-                    if (content.visibility == VISIBLE) GONE else VISIBLE
+            TouchBarContentView.BarItem("快捷设置") {
+                AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
             },
-            TouchBarContentView.BarItem("主页", 2) {
-                CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
-            },
-            TouchBarContentView.BarItem("导航栏") {
+            TouchBarContentView.BarItem("菜单", 4) {
                 removeCallbacks(dimiss)
                 content.visibility =
                     if (content.visibility == VISIBLE) GONE else VISIBLE
+            },
+            TouchBarContentView.BarItem("通知栏") {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
             },
         )
         touch.setItems(items)

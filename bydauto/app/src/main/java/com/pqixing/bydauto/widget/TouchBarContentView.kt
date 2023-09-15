@@ -3,9 +3,12 @@ package com.pqixing.bydauto.widget
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.utils.UiUtils
 import kotlin.math.absoluteValue
@@ -83,4 +86,38 @@ class TouchBarContentView : LinearLayout {
     }
 
     data class BarItem(val name: String, val weight: Int = 1, val icon: Int = 0, val click: View.OnClickListener)
+    class BarView : LinearLayout {
+
+        constructor(context: Context) : super(context)
+
+        constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+        constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+            context,
+            attrs,
+            defStyleAttr
+        )
+
+        private val root = inflate(context, R.layout.bar_item, this)
+        private val icon = findViewById<ImageView>(R.id.iv_icon)
+        private val name = findViewById<TextView>(R.id.tv_name)
+
+        init {
+            setBackgroundResource(R.drawable.bg_bar_item_press)
+            orientation = VERTICAL
+            isClickable = true
+            gravity = Gravity.CENTER
+        }
+
+        fun setBarItem(item: BarItem): BarView {
+            if (item.icon != 0) {
+                icon.setImageResource(item.icon)
+            }
+            name.text = item.name
+            icon.visibility = if (item.icon == 0) View.GONE else VISIBLE
+            name.visibility = if (item.name.isEmpty()) View.GONE else VISIBLE
+
+            setOnClickListener(item.click)
+            return this
+        }
+    }
 }

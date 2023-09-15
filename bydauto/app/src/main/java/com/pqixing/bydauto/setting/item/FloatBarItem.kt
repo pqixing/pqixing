@@ -35,9 +35,9 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
         floatTypes.forEach {
             UiUtils.showOrUpdate(it) {
                 if (it == FLOAT_TAG_BAR_BOTTOM) {
-                    StatusBarView(context)
+                    StatusBarView(context.applicationContext)
                 } else {
-                    MenuFloatView(context).setLeft(it == FLOAT_TAG_BAR_LEFT)
+                    MenuFloatView(context.applicationContext).setLeft(it == FLOAT_TAG_BAR_LEFT)
                 }
             }
         }

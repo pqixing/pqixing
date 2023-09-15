@@ -2,7 +2,9 @@ package com.pqixing.bydauto.widget
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
+import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
@@ -12,7 +14,10 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
+import com.pqixing.bydauto.service.LaunchCASExe
+import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 
 class MenuFloatView : LinearLayout {
@@ -25,21 +30,69 @@ class MenuFloatView : LinearLayout {
     )
 
 
-    private var touch: TouchBarContentView
-    private var content: ViewGroup
+    private var touch = TouchBarContentView(context).also {
+        it.layoutParams = LayoutParams(UiUtils.dp2dx(8), ViewGroup.LayoutParams.MATCH_PARENT)
+        it.orientation = VERTICAL
+    }
+    private var content = LinearLayout(context).also {
+        it.layoutParams = LayoutParams(UiUtils.dp2dx(56), ViewGroup.LayoutParams.MATCH_PARENT)
+        it.orientation = VERTICAL
+        it.isClickable = true
+        it.background = ColorDrawable(Color.parseColor("#33000000"))
+        it.visibility = View.GONE
+    }
 
     private var left: Boolean = true
 
     init {
-        inflate(context, R.layout.ui_recent_float, this)
-        touch = findViewById(R.id.ll_touch_bar)
-        content = findViewById(R.id.fl_content)
         val items = listOf(
             TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
             TouchBarContentView.BarItem("桌面") { CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME) },
             TouchBarContentView.BarItem("更多") { reShowContent() },
         )
         touch.setItems(items)
+    }
+
+    private fun initContent() {
+        content.removeAllViews()
+        listOf(
+            TouchBarContentView.BarItem("返回", 3, R.drawable.icon_menu_back) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
+            },
+            TouchBarContentView.BarItem("桌面", 3, R.drawable.icon_menu_home) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
+            },
+            TouchBarContentView.BarItem("最近", 3, R.drawable.icon_menu_recent) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)
+            },
+            TouchBarContentView.BarItem("分屏", 3, R.drawable.icon_menu_split) {
+                CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
+            },
+            TouchBarContentView.BarItem("全屏", 3, R.drawable.icon_menu_full) {
+                UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
+            },
+            TouchBarContentView.BarItem("应用", 3, R.drawable.icon_menu_app) {
+                val musicPkg = UiUtils.getDefualtMusic()
+                if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
+                    && UiManager.isResumePkg(musicPkg)
+                ) {
+                    UiUtils.sendDiCmd("左右互换")
+                } else CAService.performs(
+                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
+                    LaunchCASExe("com.byd.automap") to 1000L,
+                    ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
+                    LaunchCASExe(musicPkg) to 1000L,
+                )
+            },
+            TouchBarContentView.BarItem("", 1, if(left)R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right) {
+                hideContent.run()
+            },
+        ).map {
+            content.addView(
+                TouchBarContentView.BarView(context).setBarItem(it),
+                LayoutParams(LayoutParams.MATCH_PARENT, 0, it.weight.toFloat())
+            )
+        }
     }
 
     private var hideContent = object : Runnable {
@@ -64,7 +117,7 @@ class MenuFloatView : LinearLayout {
     private fun createParams(): WindowManager.LayoutParams {
         return WindowManager.LayoutParams().also {
             it.width = WindowManager.LayoutParams.WRAP_CONTENT
-            it.height = resources.displayMetrics.heightPixels - UiUtils.dp2dx(160)
+            it.height = resources.displayMetrics.heightPixels - UiUtils.dp2dx(120)
             it.format = PixelFormat.RGBA_8888
             it.flags =
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -82,7 +135,6 @@ class MenuFloatView : LinearLayout {
     }
 
     fun setLeft(left: Boolean): MenuFloatView {
-        if (this.left == left) return this
         this.left = left
         removeAllViews()
         if (left) {
@@ -92,6 +144,7 @@ class MenuFloatView : LinearLayout {
             addView(content)
             addView(touch)
         }
+        initContent()
         return this
     }
 
