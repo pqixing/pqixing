@@ -142,9 +142,6 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
         content.findViewById<View>(R.id.btn_ac_temp_25).setOnClickListener { UiUtils.sendDiCmd("温度25") }
         content.findViewById<View>(R.id.btn_ac_temp_26).setOnClickListener { UiUtils.sendDiCmd("温度26") }
 
-        content.findViewById<View>(R.id.btn_menu_set).setOnClickListener {
-            AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-        }
         content.findViewById<View>(R.id.btn_menu_fast).setOnClickListener {
             val musicPkg = UiUtils.getDefualtMusic()
             if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
@@ -158,9 +155,6 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
                 LaunchCASExe(musicPkg) to 1000L,
             )
         }
-        content.findViewById<View>(R.id.btn_menu_split)
-            .setOnClickListener { CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) }
-
     }
 
     private fun updateContentState(show: Boolean) {

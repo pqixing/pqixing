@@ -17,20 +17,24 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     val FLOAT_TAG_BAR_TOP = "FLOAT_TAG_BAR_TOP"
 
     override fun getNameId(): Int = R.string.setting_name_item_bar
-    val floatTypes = arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT)
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
-        float(context)
+        if (Const.SP_FLOAT_BAR) {
+            float(context, arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT))
+        }
+        if (Const.SP_FLOAT_STATUS) {
+            float(context, arrayOf(FLOAT_TAG_BAR_TOP))
+        }
     }
 
     override fun onDestroy(context: Context) {
         super.onDestroy(context)
-        floatTypes.forEach { UiUtils.closeFloatView(it) }
+        close(context, arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT, FLOAT_TAG_BAR_TOP))
     }
 
-    private fun float(context: Context) {
-        floatTypes.forEach {
+    private fun float(context: Context, types: Array<String>) {
+        types.forEach {
             UiUtils.showOrUpdate(it) {
                 if (it == FLOAT_TAG_BAR_TOP) {
                     StatusBarView(context.applicationContext)
@@ -41,21 +45,28 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
         }
     }
 
+    private fun close(context: Context, types: Array<String>) {
+        types.forEach { UiUtils.closeFloatView(it) }
+    }
+
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
-        val bar = viewHolder.findViewById<CheckBox>(R.id.cb_float_bar)
+        var bar = viewHolder.findViewById<CheckBox>(R.id.cb_float_bar)
 
         bar.isChecked = Const.SP_FLOAT_BAR
         bar.setOnCheckedChangeListener { buttonView, isChecked ->
             Const.SP_FLOAT_BAR = isChecked
-            if (isChecked) float(buttonView.context) else {
-                floatTypes.forEach { UiUtils.closeFloatView(it) }
+            if (isChecked) float(buttonView.context, arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT)) else {
+                close(buttonView.context, arrayOf(FLOAT_TAG_BAR_LEFT, FLOAT_TAG_BAR_RIGHT))
             }
         }
 
-        val full = viewHolder.findViewById<CheckBox>(R.id.cb_full)
-        full.isChecked = Const.SP_FULL_SCREEN
-        full.setOnCheckedChangeListener { buttonView, isChecked ->
-            UiUtils.switchFullScreen(viewHolder.context, isChecked)
+        bar = viewHolder.findViewById<CheckBox>(R.id.cb_float_status_bar)
+        bar.isChecked = Const.SP_FLOAT_STATUS
+        bar.setOnCheckedChangeListener { buttonView, isChecked ->
+            Const.SP_FLOAT_STATUS = isChecked
+            if (isChecked) float(buttonView.context, arrayOf(FLOAT_TAG_BAR_TOP)) else {
+                close(buttonView.context, arrayOf(FLOAT_TAG_BAR_TOP))
+            }
         }
     }
 }

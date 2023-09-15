@@ -23,18 +23,20 @@
 
         <TextView
             android:id="@+id/tv_bar_ac"
-            android:layout_marginStart="10dp"
             style="@style/def_textview_status_bar"
-            android:text="空调" />
+            android:layout_marginStart="10dp"
+            android:text="" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="1px"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/tv_bar_tai"
-            android:layout_marginStart="10dp"
             style="@style/def_textview_status_bar"
-            android:text="胎压:[]" />
+            android:layout_marginStart="10dp"
+            android:text="" />
 
     </LinearLayout>
 
@@ -61,6 +63,28 @@
         android:visibility="gone"
 
         tools:visibility="visible">
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_item_rect_white"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/btn_menu_fast"
+                style="@style/def_button_navigation"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="地图\n音乐" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="11dp"
@@ -116,7 +140,6 @@
             android:id="@+id/ll_ac_control"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-
             android:layout_weight="2"
             android:background="@drawable/bg_item_rect_white"
             android:orientation="horizontal"
@@ -125,7 +148,7 @@
             <TextView
                 android:id="@+id/btn_ac_toggle"
                 style="@style/def_button_navigation"
-                android:text="空调\n温度" />
+                android:text="空调" />
 
             <TextView
                 android:id="@+id/btn_ac_temp_cycle"
@@ -161,38 +184,6 @@
                 android:id="@+id/btn_ac_temp_26"
                 style="@style/def_button_navigation"
                 android:text="26" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_item_rect_white"
-            android:orientation="horizontal"
-            android:padding="2dp">
-
-            <TextView
-                android:id="@+id/btn_menu_split"
-                style="@style/def_button_navigation"
-                android:text="分屏" />
-
-            <TextView
-                android:id="@+id/btn_menu_set"
-                style="@style/def_button_navigation"
-                android:text="设置" />
-
-
-            <TextView
-                android:id="@+id/btn_menu_fast"
-                style="@style/def_button_navigation"
-                android:text="快捷" />
 
         </LinearLayout>
 

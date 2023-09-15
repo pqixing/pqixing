@@ -44,6 +44,9 @@ object Const {
     var SP_FLOAT_BAR: Boolean
         get() = App.sp.getBoolean("SP_FLOAT_BAR", false)
         set(value) = App.sp.edit().putBoolean("SP_FLOAT_BAR", value).apply()
+    var SP_FLOAT_STATUS: Boolean
+        get() = App.sp.getBoolean("SP_FLOAT_STATUS", false)
+        set(value) = App.sp.edit().putBoolean("SP_FLOAT_STATUS", value).apply()
 
     var SP_PERM_ADB_CONNECT: Boolean
         get() = App.sp.getBoolean("SP_PERM_ADB_CONNECT", false)!!

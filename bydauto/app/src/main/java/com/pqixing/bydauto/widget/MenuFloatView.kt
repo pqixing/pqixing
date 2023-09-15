@@ -32,15 +32,15 @@ class MenuFloatView : LinearLayout {
 
     private var touch = TouchBarContentView(context).also {
         it.layoutParams = LayoutParams(UiUtils.dp2dx(9), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
-            p.topMargin = UiUtils.dp2dx(30)
-            p.bottomMargin = UiUtils.dp2dx(30)
+            p.topMargin = UiUtils.dp2dx(60)
+            p.bottomMargin = UiUtils.dp2dx(60)
         }
         it.orientation = VERTICAL
     }
     private var content = LinearLayout(context).also {
         it.layoutParams = LayoutParams(UiUtils.dp2dx(56), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
-            p.topMargin = UiUtils.dp2dx(30)
-            p.bottomMargin = UiUtils.dp2dx(30)
+            p.topMargin = UiUtils.dp2dx(60)
+            p.bottomMargin = UiUtils.dp2dx(60)
         }
         it.orientation = VERTICAL
         it.isClickable = true
@@ -62,13 +62,7 @@ class MenuFloatView : LinearLayout {
     private fun initContent() {
         content.removeAllViews()
         listOf(
-            TouchBarContentView.BarItem(
-                "",
-                1,
-                if (left) R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right
-            ) {
-                hideContent.run()
-            },
+
             TouchBarContentView.BarItem("返回", 3, R.drawable.icon_menu_back) {
                 CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
             },
@@ -93,9 +87,9 @@ class MenuFloatView : LinearLayout {
             TouchBarContentView.BarItem(
                 "",
                 1,
-                R.drawable.icon_menu_arrow_down
+                if (left) R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right
             ) {
-                AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+                hideContent.run()
             },
         ).map {
             content.addView(

@@ -82,7 +82,7 @@
 
 
         <TextView
-            android:id="@+id/cb_full"
+            android:id="@+id/cb_float_status_bar"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"

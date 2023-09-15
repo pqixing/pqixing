@@ -18,11 +18,11 @@
             android:text="@string/setting_name_item_bar" />
 
         <CheckBox
-            android:id="@+id/cb_full"
+            android:id="@+id/cb_float_status_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:text="@string/cb_full_screen" />
+            android:text="@string/cb_float_status_bar" />
 
     </GridLayout>
 </LinearLayout>

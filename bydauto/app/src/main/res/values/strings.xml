@@ -19,6 +19,7 @@
     <string name="permission_write_secure">修改设置</string>
     <string name="permission_adb">ADB</string>
     <string name="cb_full_screen">全屏</string>
+    <string name="cb_float_status_bar">状态栏</string>
     <string name="cb_split_screen">分屏</string>
     <string name="cb_recent_screen">多任务</string>
     <string name="cb_home">桌面</string>
