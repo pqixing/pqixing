@@ -1,11 +1,12 @@
 package com.pqixing.bydauto.utils
 
+import android.util.Log
 import com.pqixing.bydauto.App
 import java.util.LinkedList
 import java.util.regex.Pattern
 import kotlin.concurrent.thread
 
-class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", "BYDAutoRadarDevice:D")) {
+class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAutoRadarDevice:D")) {
 
     private var startProTs: Long = -1L
 
@@ -13,6 +14,9 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
 
     private var patterns = arrayListOf<Pattern>()
     private var allPatterns: Pattern? = null
+    private var hasLog = false
+    private val TAG_START_TEST = "LogcatManagerTest"
+    private val catTags = tags.plus("$TAG_START_TEST:I")
 
     fun addCallBack(callBack: LogCatCallBack) {
         sCallBack.add(callBack)
@@ -33,6 +37,7 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
 
     fun stop() {
         startProTs = -1
+        hasLog = false
     }
 
     fun start(): Boolean {
@@ -46,11 +51,14 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
                 val cmd = "logcat -T 0 -s ${catTags.joinToString(" ")} *:S"
                 val pro = Runtime.getRuntime().exec(cmd)
                 App.log("start $cmd")
+                Log.i(TAG_START_TEST, "start $cmd $curTs")
 //                    Runtime.getRuntime().exec("logcat -T 0")
                 pro.inputStream.bufferedReader().use {
                     while (curTs == startProTs) {
                         val line = it.readLine() ?: continue
-                        if (allPatterns?.matcher(line)?.matches() != true) continue
+
+                        hasLog = true
+                        if (allPatterns?.matcher(line)?.matches() != true || line.contains(TAG_START_TEST)) continue
 
                         val posts = LinkedList<LogCatCallBack>()
                         //解析处理
@@ -61,14 +69,26 @@ class LogcatManager(val catTags: List<String> = listOf("ActivityTaskManager:I", 
                                 posts.add(c)
                             }
                         }
+
                         App.mHandle.post { posts.forEach { f -> f.onReceiveLog(line) } }
                     }
                     pro.destroy()
                 }
-            }.onFailure { it.printStackTrace() }
+            }.onFailure { it.message?.toast() }
         }
         thread(block = watch)
+        checkIfLive()
         return true
+    }
+
+    private fun checkIfLive() {
+        App.mHandle.postDelayed({
+            if (!hasLog) {
+                "重启日志管理器".toast()
+                stop()
+                start()
+            }
+        }, 2000)
     }
 
     interface LogCatCallBack {

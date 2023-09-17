@@ -204,7 +204,7 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
     }
 
     override fun onPkgResume(pkg: String?, ac: String) {
-        inlaunch = "com.android.launcher3" == pkg
-        updateContentState(inlaunch)
+//        inlaunch = "com.android.launcher3" == pkg
+//        updateContentState(inlaunch)
     }
 }

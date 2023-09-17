@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.pqixing.bydauto.utils.BYDAutoUtils
+import com.pqixing.bydauto.utils.UiManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import java.io.File
@@ -75,7 +76,9 @@ class App : Application() {
             crashFile.printWriter().use { e.printStackTrace(it) }
             handle?.uncaughtException(t, e)
         }
+        UiManager.isResumePkg(this.packageName)
     }
+
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
         Log.w("MainService", "enforceCallingOrSelfPermission: $permission")
     }
