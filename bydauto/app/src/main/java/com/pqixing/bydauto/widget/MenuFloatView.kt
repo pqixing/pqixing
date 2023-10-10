@@ -7,20 +7,21 @@ import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.ui.MainUI
-import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.UiUtils
 
-class MenuFloatView : LinearLayout {
+class MenuFloatView : FrameLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -29,38 +30,27 @@ class MenuFloatView : LinearLayout {
         defStyleAttr
     )
 
-
-    private var touch = TouchBarContentView(context).also {
-        it.layoutParams = LayoutParams(UiUtils.dp2dx(9), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
-            p.topMargin = UiUtils.dp2dx(60)
-            p.bottomMargin = UiUtils.dp2dx(60)
-        }
-        it.orientation = VERTICAL
-    }
-    private var content = LinearLayout(context).also {
+    private var menus = LinearLayout(context).also {
         it.layoutParams = LayoutParams(UiUtils.dp2dx(56), ViewGroup.LayoutParams.MATCH_PARENT).also { p ->
             p.topMargin = UiUtils.dp2dx(60)
             p.bottomMargin = UiUtils.dp2dx(60)
         }
-        it.orientation = VERTICAL
+        it.orientation = LinearLayout.VERTICAL
         it.isClickable = true
         it.background = ColorDrawable(Color.parseColor("#33000000"))
         it.visibility = View.GONE
     }
 
     private var left: Boolean = true
-
-    init {
-        val items = listOf(
-            TouchBarContentView.BarItem("返回") { CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK) },
-            TouchBarContentView.BarItem("桌面", 2) { CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME) },
-            TouchBarContentView.BarItem("更多") { reShowContent() },
-        )
-        touch.setItems(items)
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        if(changed){
+            Log.i("MainUI", "onLayout: ")
+        }
     }
 
-    private fun initContent() {
-        content.removeAllViews()
+    init {
+        minimumWidth = UiUtils.dp2dx(5)
         listOf(
 
             TouchBarContentView.BarItem("返回", 3, R.drawable.icon_menu_back) {
@@ -83,18 +73,11 @@ class MenuFloatView : LinearLayout {
             },
             TouchBarContentView.BarItem("设置", 3, R.drawable.icon_menu_setting) {
                 UiUtils.tryLaunch(context, Intent(context, MainUI::class.java))
-            },
-            TouchBarContentView.BarItem(
-                "",
-                1,
-                if (left) R.drawable.icon_menu_arrow_left else R.drawable.icon_menu_arrow_right
-            ) {
-                hideContent.run()
-            },
-        ).map {
-            content.addView(
+            }
+        ).forEach {
+            menus.addView(
                 TouchBarContentView.BarView(context).setBarItem(it),
-                LayoutParams(LayoutParams.MATCH_PARENT, 0, it.weight.toFloat())
+                LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, it.weight.toFloat())
             )
         }
     }
@@ -102,15 +85,15 @@ class MenuFloatView : LinearLayout {
     private var hideContent = object : Runnable {
         override fun run() {
             removeCallbacks(this)
-            content.visibility = View.GONE
-            touch.visibility = View.VISIBLE
+            menus.visibility = View.GONE
         }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN && content.visibility == View.VISIBLE) {
+        if (ev?.action == MotionEvent.ACTION_DOWN && menus.visibility == View.VISIBLE) {
             reShowContent()
         }
+        setBackgroundColor(Color.WHITE)
         return super.dispatchTouchEvent(ev)
     }
 
@@ -133,22 +116,12 @@ class MenuFloatView : LinearLayout {
 
     private fun reShowContent() {
         removeCallbacks(hideContent)
-        content.visibility = View.VISIBLE
-        touch.visibility = View.GONE
+        menus.visibility = View.VISIBLE
         postDelayed(hideContent, Const.SP_DELAY_DISMISS)
     }
 
     fun setLeft(left: Boolean): MenuFloatView {
         this.left = left
-        removeAllViews()
-        if (left) {
-            addView(touch)
-            addView(content)
-        } else {
-            addView(content)
-            addView(touch)
-        }
-        initContent()
         return this
     }
 
