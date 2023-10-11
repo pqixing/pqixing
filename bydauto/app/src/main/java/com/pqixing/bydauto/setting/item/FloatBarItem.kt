@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.setting.item
 
 import android.content.Context
+import android.view.View
 import android.widget.CheckBox
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
@@ -39,7 +40,10 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
                 if (it == FLOAT_TAG_BAR_TOP) {
                     StatusBarView(context.applicationContext)
                 } else {
-                    MenuFloatView(context.applicationContext).setLeft(it == FLOAT_TAG_BAR_LEFT)
+                    MenuFloatView(context.applicationContext).also { view ->
+                        view.setDirection(if (it == FLOAT_TAG_BAR_RIGHT) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR)
+//                        view.setDirection(View.LAYOUT_DIRECTION_RTL)
+                    }
                 }
             }
         }
