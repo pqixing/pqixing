@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bottom_float_height">45dp</dimen>
+    <dimen name="single_item_width">60dp</dimen>
+    <dimen name="single_item_width_parent">64dp</dimen>
 </resources>
