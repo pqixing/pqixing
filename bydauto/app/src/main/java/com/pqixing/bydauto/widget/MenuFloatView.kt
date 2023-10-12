@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +61,7 @@ class MenuFloatView : FrameLayout {
 
     private fun reverseLayout() = layoutDirection == View.LAYOUT_DIRECTION_RTL
     private fun initControl() {
-        content.findViewById<View>(R.id.btn_music_open).setOnClickListener {
+        content.findViewById<ImageView>(R.id.iv_music_icon).setOnClickListener {
             UiUtils.tryLaunch(it.context, UiUtils.getDefualtMusic())
         }
         content.findViewById<View>(R.id.btn_music_next).setOnClickListener {
@@ -161,28 +162,11 @@ class MenuFloatView : FrameLayout {
         SingleItem("全屏", R.drawable.icon_menu_full) {
             UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
         },
-        SingleItem("关屏", R.drawable.icon_menu_app) {
+        SingleItem("锁屏", R.drawable.icon_menu_app) {
             BYDUtils.sendDiCmd("关闭屏幕")
         },
         SingleItem("应用", R.drawable.icon_menu_app) {
             UiUtils.showOrUpdate(ApplicationView.FLOAT_TAG) { ApplicationView(context) }
-        },
-        SingleItem("SOC", R.drawable.icon_menu_setting) {
-
-        }.also {
-            it.onUpdate = {
-                val setting = BYDAutoUtils.getSetting()
-                it.name = "SOC(${setting.socConfig}) : ${setting.socTarget}"
-            }
-        },
-        SingleItem("空调", R.drawable.icon_menu_setting) {
-
-        }.also {
-            it.onUpdate = {
-                val acControl = BYDAutoUtils.getAcControl()
-                val open = acControl.acStartState == BYDAutoAcDevice.AC_POWER_ON
-                it.name = "空调：(${if (open) "开" else "关"}:风${acControl.acWindLevel} }"
-            }
         },
         SingleItem("设置", R.drawable.icon_menu_setting) {
             UiUtils.tryLaunch(context, Intent(context, MainUI::class.java))
