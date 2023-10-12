@@ -40,6 +40,7 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
     }
 
     private fun onChildCick(view: View) {
+
         App.uiScope.launch {
             val text = runCatching {
                 when (view.id) {

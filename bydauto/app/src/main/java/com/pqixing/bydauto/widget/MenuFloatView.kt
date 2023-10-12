@@ -26,6 +26,7 @@ import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.ui.MainUI
 import com.pqixing.bydauto.ui.SingleItem
 import com.pqixing.bydauto.ui.SingleItemAdapter
+import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.BYDUtils
 import com.pqixing.bydauto.utils.UiManager
@@ -165,11 +166,17 @@ class MenuFloatView : FrameLayout {
         SingleItem("锁屏", R.drawable.icon_menu_app) {
             BYDUtils.sendDiCmd("关闭屏幕")
         },
-        SingleItem("应用", R.drawable.icon_menu_app) {
-            UiUtils.showOrUpdate(ApplicationView.FLOAT_TAG) { ApplicationView(context) }
+        SingleItem("图|音", R.drawable.icon_menu_app) {
+            UiUtils.fastLauch(it.context)
         },
         SingleItem("设置", R.drawable.icon_menu_setting) {
+            AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+        },
+        SingleItem("主页", R.drawable.icon_menu_setting) {
             UiUtils.tryLaunch(context, Intent(context, MainUI::class.java))
+        },
+        SingleItem("通知", R.drawable.icon_menu_setting) {
+            CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
         },
     )
 

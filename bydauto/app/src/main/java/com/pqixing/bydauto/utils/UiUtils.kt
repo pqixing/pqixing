@@ -22,7 +22,9 @@ import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
+import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.ui.EmptyUI
 import java.io.File
 import java.net.URL
@@ -304,6 +306,19 @@ object UiUtils {
         return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
             ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
             ?: "com.kugou.android.auto"
+    }
+    fun fastLauch(context: Context){
+        val musicPkg = UiUtils.getDefualtMusic()
+        if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
+            && UiManager.isResumePkg(musicPkg)
+        ) {
+            UiUtils.sendDiCmd("左右互换")
+        } else CAService.performs(
+            ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
+            LaunchCASExe("com.byd.automap") to 1000L,
+            ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
+            LaunchCASExe(musicPkg) to 1000L,
+        )
     }
 
     fun isNightMode(context: Context): Boolean {
