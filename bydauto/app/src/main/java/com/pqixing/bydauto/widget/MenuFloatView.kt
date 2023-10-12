@@ -18,7 +18,6 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
@@ -80,25 +79,9 @@ class MenuFloatView : FrameLayout {
             audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE))
             audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE))
         }
-        content.findViewById<View>(R.id.btn_music_play).setOnLongClickListener {
-            val audio = context.getSystemService(AudioManager::class.java)
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY))
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY))
-            true
-        }
-        val apps = UiManager.getAppInfo().filter { !it.system }.map { infos ->
-            SingleItem(infos.name, R.drawable.icon_menu_home) {
-                UiUtils.tryLaunch(context, infos.pkg)
-            }
-        }
-        var adapter = SingleItemAdapter(apps)
-        content.findViewById<RecyclerView>(R.id.rcv_apps).also {
-            it.adapter = adapter
-            it.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, reverseLayout())
-        }
 
         val acs = listOf(
-            SingleItem("开关", R.drawable.icon_menu_back) {
+            SingleItem("空调", R.drawable.icon_menu_ac_state) {
                 val acControl = BYDAutoUtils.getAcControl()
                 val open = acControl.acStartState == BYDAutoAcDevice.AC_POWER_ON
                 if (open) {
@@ -112,7 +95,7 @@ class MenuFloatView : FrameLayout {
                 it.select = open
 
             },
-            SingleItem("内循环", R.drawable.icon_menu_back) {
+            SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
                 val acControl = BYDAutoUtils.getAcControl()
                 val open = acControl.acCycleMode == BYDAutoAcDevice.AC_CYCLEMODE_INLOOP
                 acControl.setAcCycleMode(
@@ -123,25 +106,14 @@ class MenuFloatView : FrameLayout {
                 val acControl = BYDAutoUtils.getAcControl()
                 val open = acControl.acCycleMode == BYDAutoAcDevice.AC_CYCLEMODE_INLOOP
                 it.select = open
-
+                it.icon = if (open) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
             },
-            SingleItem("SOC", R.drawable.icon_menu_setting) {
-
-            }.also {
-                it.onUpdate = {
-                    val setting = BYDAutoUtils.getSetting()
-                    it.name = "SOC(${setting.socConfig}) : ${setting.socTarget}"
-                }
-            }
         )
 
-        adapter = SingleItemAdapter(acs)
+        val adapter = SingleItemAdapter(acs)
         content.findViewById<RecyclerView>(R.id.rcv_ac_state).also {
             it.adapter = adapter
-            it.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, reverseLayout())
         }
-
-
     }
 
     private fun menuItems() = listOf(
@@ -204,8 +176,21 @@ class MenuFloatView : FrameLayout {
     }
 
     fun update() = kotlin.runCatching {
-        menus.adapter?.notifyDataSetChanged()
+        val apps = UiManager.getAppInfo().map { infos ->
+            SingleItem(infos.name, 0, infos.icon) {
+                UiUtils.tryLaunch(context, infos.pkg)
+            }
+        }
+        var adapter = SingleItemAdapter(apps, R.layout.single_item_app)
+        content.findViewById<RecyclerView>(R.id.rcv_apps).also {
+            it.adapter = adapter
+        }
 
+        val pkg = BYDAutoUtils.getCurrentAudioFocusPackage()
+        val info = UiManager.getAppInfo(listOf(pkg)).firstOrNull()
+        if (info != null) {
+            content.findViewById<ImageView>(R.id.iv_music_icon).setImageDrawable(info.icon)
+        }
     }
 
     private var update = object : Runnable {
