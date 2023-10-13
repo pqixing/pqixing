@@ -59,7 +59,7 @@ object UiManager : LogcatManager.LogCatCallBack {
         sCallBack.remove(callBack)
     }
 
-    fun isResumePkg(pkg: String?): Boolean {
+    fun isResume(pkg: String?): Boolean {
         pkg ?: return false
         return stacks.getOrNull(0) == pkg || (inSplitMode && stacks.getOrNull(1) == pkg)
     }
@@ -74,7 +74,7 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     fun onPkgResume(pkg: String?, ac: String) {
-        if (isResumePkg(pkg)) return
+        if (isResume(pkg)) return
         stacks.remove(pkg)
         stacks.addFirst(pkg)
         sCallBack.forEach { it.onPkgResume(pkg, ac) }

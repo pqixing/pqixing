@@ -76,7 +76,7 @@ class App : Application() {
             crashFile.printWriter().use { e.printStackTrace(it) }
             handle?.uncaughtException(t, e)
         }
-        UiManager.isResumePkg(this.packageName)
+        UiManager.isResume(this.packageName)
     }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {

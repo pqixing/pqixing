@@ -68,11 +68,26 @@ class MenuFloatView : FrameLayout {
     }
 
     private val acInfo = AcInfo(this)
+    private var listener: Any? = null
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        kotlin.runCatching {
+            if (listener == null) listener = AcListener(this)
+            BYDAutoUtils.getAcControl().registerListener(listener as AcListener)
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        kotlin.runCatching {
+            BYDAutoUtils.getAcControl().unregisterListener(listener as AcListener)
+        }
+    }
 
     fun reverseLayout() = layoutDirection == View.LAYOUT_DIRECTION_RTL
     private fun initControl() {
         content.findViewById<ImageView>(R.id.iv_music_icon).setOnClickListener {
-            UiUtils.tryLaunch(it.context, UiUtils.getDefualtMusic())
+            UiUtils.tryLaunch(it.context, UiUtils.getMusicPkg())
         }
         content.findViewById<View>(R.id.btn_music_next).setOnClickListener {
             val audio = context.getSystemService(AudioManager::class.java)
@@ -130,7 +145,7 @@ class MenuFloatView : FrameLayout {
         tempAdapter = SingleItemAdapter(temps, R.layout.single_item_text)
         content.findViewById<RecyclerView>(R.id.rcv_ac_temp).also {
             it.adapter = tempAdapter
-            it.scrollToPosition(4)
+            it.scrollToPosition(3)
         }
 
         appAdapter = SingleItemAdapter(emptyList(), R.layout.single_item_app)
@@ -138,7 +153,7 @@ class MenuFloatView : FrameLayout {
     }
 
     private fun acItems() = listOf(
-        SingleItem("空调", R.drawable.icon_menu_ac_open) {
+        SingleItem("空调", R.drawable.icon_menu_ac_start) {
             if (acInfo.open) {
                 BYDAutoUtils.getAcControl().stop(BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY)
             } else {
@@ -149,7 +164,7 @@ class MenuFloatView : FrameLayout {
         }.update { it.select = acInfo.open },
         SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
             val acControl = BYDAutoUtils.getAcControl()
-            val open = acControl.acCycleMode == BYDAutoAcDevice.AC_CYCLEMODE_INLOOP
+            val open = acInfo.inLoop
             acControl.setAcCycleMode(
                 BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
                 if (open) BYDAutoAcDevice.AC_CYCLEMODE_OUTLOOP else BYDAutoAcDevice.AC_CYCLEMODE_INLOOP
@@ -160,6 +175,30 @@ class MenuFloatView : FrameLayout {
             it.name = if (acInfo.inLoop) "内循环" else "外循环"
             it.select = acInfo.inLoop
             it.icon = if (acInfo.inLoop) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
+        },
+        SingleItem("分控", R.drawable.icon_menu_split) {
+            val open = !acInfo.separate
+            val acControl = BYDAutoUtils.getAcControl()
+            acControl.setAcTemperatureControlMode(
+                BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
+                if (open) BYDAutoAcDevice.AC_TEMPCTRL_SEPARATE_ON else BYDAutoAcDevice.AC_TEMPCTRL_SEPARATE_OFF
+            )
+            acInfo.separate = open
+            acInfo.loadData()
+        }.update {
+            it.select = acInfo.separate
+        },
+        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
+            val open = !acInfo.ventilation
+            val acControl = BYDAutoUtils.getAcControl()
+            acControl.setAcVentilationState(
+                BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
+                if (open) BYDAutoAcDevice.AC_VENTILATION_STATE_ON else BYDAutoAcDevice.AC_VENTILATION_STATE_OFF
+            )
+            acInfo.ventilation = open
+            acInfo.loadData()
+        }.update {
+            it.select = acInfo.ventilation
         },
         SingleItem("更多", R.drawable.icon_menu_ac_more) {
             val intent = Intent().setComponent(
@@ -198,7 +237,7 @@ class MenuFloatView : FrameLayout {
         SingleItem("全屏", R.drawable.icon_menu_full) {
             UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
         },
-        SingleItem("锁屏", R.drawable.icon_menu_lock) {
+        SingleItem("锁屏", R.drawable.icon_menu_lock_screen) {
             BYDUtils.sendDiCmd("关闭屏幕")
         },
 

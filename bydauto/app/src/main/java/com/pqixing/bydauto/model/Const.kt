@@ -4,6 +4,7 @@ import com.pqixing.bydauto.App
 
 object Const {
 
+
     val URL_DOWNLOAD: String =
         "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"
     var lastMediaReceiver: Long = -1L
@@ -19,6 +20,9 @@ object Const {
     var SP_MUSIC_PKG: String
         get() = App.sp.getString("SP_MUSIC_PKG", "")!!
         set(value) = App.sp.edit().putString("SP_MUSIC_PKG", value).apply()
+    var SP_MAP_PKG: String
+        get() = App.sp.getString("SP_MAP_PKG", "com.byd.automap")!!
+        set(value) = App.sp.edit().putString("SP_MAP_PKG", value).apply()
     var SP_MUSIC_SWITCH: Boolean
         get() = App.sp.getBoolean("SP_MUSIC_SWITCH", true)
         set(value) = App.sp.edit().putBoolean("SP_MUSIC_SWITCH", value).apply()

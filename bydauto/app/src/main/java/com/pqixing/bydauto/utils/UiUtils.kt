@@ -26,6 +26,8 @@ import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.ui.EmptyUI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.net.URL
 import kotlin.math.roundToInt
@@ -302,23 +304,58 @@ object UiUtils {
         App.get().sendBroadcast(intent)
     }
 
-    fun getDefualtMusic(): String {
+    fun getMusicPkg(): String {
         return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
             ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
             ?: "com.kugou.android.auto"
     }
-    fun fastLauch(context: Context){
-        val musicPkg = UiUtils.getDefualtMusic()
-        if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
-            && UiManager.isResumePkg(musicPkg)
-        ) {
-            UiUtils.sendDiCmd("左右互换")
-        } else CAService.performs(
-            ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-            LaunchCASExe("com.byd.automap") to 1000L,
-            ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
-            LaunchCASExe(musicPkg) to 1000L,
-        )
+
+    fun fastLauch(context: Context) {
+        val map = Const.SP_MAP_PKG
+        val music = getMusicPkg()
+        val mapVis = UiManager.isResume(map)
+        val musicVis = UiManager.isResume(music)
+
+        val split = UiManager.inSplitMode
+        when {
+            musicVis && mapVis -> sendDiCmd("左右互换")
+            split && musicVis -> App.uiScope.launch {
+                tryLaunch(context, map)
+                delay(2000L)
+                if (!UiManager.isResume(music)) {
+                    sendDiCmd("左右互换")
+                    delay(1500)
+                    tryLaunch(context, music)
+                }
+            }
+
+            split && mapVis -> App.uiScope.launch {
+                tryLaunch(context, music)
+                delay(2000L)
+                if (!UiManager.isResume(map)) {
+                    sendDiCmd("左右互换")
+                    delay(1500)
+                    tryLaunch(context, map)
+                }
+            }
+
+            !split && musicVis -> CAService.performs(
+                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 0L,
+                LaunchCASExe(map) to 1000L,
+            )
+
+            !split && mapVis -> CAService.performs(
+                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 0L,
+                LaunchCASExe(music) to 1000L,
+            )
+
+            else -> CAService.performs(
+                ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
+                LaunchCASExe(map) to 1000L,
+                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
+                LaunchCASExe(music) to 1000L,
+            )
+        }
     }
 
     fun isNightMode(context: Context): Boolean {

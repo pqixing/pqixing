@@ -113,7 +113,7 @@ class MusicItem : SettingImpl(R.layout.setting_music) {
         val bg = when (type) {
             SEARCH_TYPE_BACK -> true
             SEARCH_TYPE_FORE -> false
-            else -> UiManager.isResumePkg(BYDAutoUtils.getCurrentAudioFocusPackage())
+            else -> UiManager.isResume(BYDAutoUtils.getCurrentAudioFocusPackage())
         }
 
 

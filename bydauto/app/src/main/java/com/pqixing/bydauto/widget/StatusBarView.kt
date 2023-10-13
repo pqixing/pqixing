@@ -95,7 +95,7 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
 
     private fun initContent() {
         content.findViewById<View>(R.id.btn_music_open).setOnClickListener {
-            UiUtils.tryLaunch(it.context, UiUtils.getDefualtMusic())
+            UiUtils.tryLaunch(it.context, UiUtils.getMusicPkg())
         }
         content.findViewById<View>(R.id.btn_music_next).setOnClickListener {
             val audio = context.getSystemService(AudioManager::class.java)
@@ -143,9 +143,9 @@ class StatusBarView : FrameLayout, UiManager.IActivityLife {
         content.findViewById<View>(R.id.btn_ac_temp_26).setOnClickListener { UiUtils.sendDiCmd("温度26") }
 
         content.findViewById<View>(R.id.btn_menu_fast).setOnClickListener {
-            val musicPkg = UiUtils.getDefualtMusic()
-            if (UiManager.inSplitMode && UiManager.isResumePkg("com.byd.automap")
-                && UiManager.isResumePkg(musicPkg)
+            val musicPkg = UiUtils.getMusicPkg()
+            if (UiManager.inSplitMode && UiManager.isResume("com.byd.automap")
+                && UiManager.isResume(musicPkg)
             ) {
                 UiUtils.sendDiCmd("左右互换")
             } else CAService.performs(
