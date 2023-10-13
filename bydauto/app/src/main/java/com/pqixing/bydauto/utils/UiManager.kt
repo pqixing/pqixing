@@ -3,8 +3,6 @@ package com.pqixing.bydauto.utils
 import android.content.pm.ApplicationInfo
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.AppInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.LinkedList
 
 object UiManager : LogcatManager.LogCatCallBack {
@@ -23,9 +21,10 @@ object UiManager : LogcatManager.LogCatCallBack {
     init {
         logcat.addCallBack(this@UiManager)
         logcat.start()
-        App.get().uiScope.launch(Dispatchers.IO) { initApps() }
     }
 
+
+    @Synchronized
     private fun initApps() {
         val context = App.get()
         val pm = context.packageManager
@@ -33,14 +32,14 @@ object UiManager : LogcatManager.LogCatCallBack {
             kotlin.runCatching {
                 val name = pm.getApplicationLabel(info).toString()
                 val icon = pm.getApplicationIcon(info)
-                val intent = pm.getLaunchIntentForPackage(info.packageName)
                 AppInfo(
                     info.packageName,
                     name,
                     icon,
                     info.flags.and(ApplicationInfo.FLAG_SYSTEM) != 0,
                     info.sourceDir,
-                    info
+                    info,
+                    pm.getLaunchIntentForPackage(info.packageName) != null
                 )
             }.getOrNull()?.let { info.packageName to it }
         }.toMap().toMutableMap()
@@ -48,6 +47,7 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     fun getAppInfo(pkg: Collection<String>? = null): List<AppInfo> {
+        if (apps.isEmpty()) initApps()
         return pkg?.mapNotNull { apps[it] } ?: apps.values.toList()
     }
 

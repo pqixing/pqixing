@@ -20,7 +20,7 @@
             style="@style/def_button"
             android:layout_marginStart="10dp"
 
-            android:text="下拉设置" />
+            android:text="后视镜翻转" />
 
         <Button
             android:id="@+id/tv_action_split"

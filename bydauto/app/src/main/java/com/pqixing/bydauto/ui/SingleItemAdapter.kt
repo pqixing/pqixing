@@ -13,6 +13,7 @@ import com.pqixing.bydauto.R
 data class SingleItem(var name: String, var icon: Int = 0, var drawable: Drawable? = null, val click: View.OnClickListener) {
     var select = false
     var onUpdate: ((item: SingleItem) -> Unit)? = null
+    var obj: Any? = null
 
     fun update(update: (item: SingleItem) -> Unit): SingleItem {
         this.onUpdate = update
@@ -20,7 +21,7 @@ data class SingleItem(var name: String, var icon: Int = 0, var drawable: Drawabl
     }
 }
 
-class SingleItemAdapter(val items: List<SingleItem>, val resId: Int = R.layout.single_item_tint) :
+class SingleItemAdapter(var items: List<SingleItem>, val resId: Int = R.layout.single_item_tint) :
     RecyclerView.Adapter<SingleItemAdapter.ViewHolder>() {
     fun attach(recyclerView: RecyclerView) {
         recyclerView.adapter = this
@@ -46,6 +47,8 @@ class SingleItemAdapter(val items: List<SingleItem>, val resId: Int = R.layout.s
         }
         holder.name.text = item.name
         holder.itemView.isSelected = item.select
+        holder.icon.isSelected = item.select
+        holder.name.isSelected = item.select
         holder.itemView.setOnClickListener {
             kotlin.runCatching {
                 item.click.onClick(it)

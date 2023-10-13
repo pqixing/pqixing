@@ -3,18 +3,18 @@ package com.pqixing.bydauto.setting.item
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
+import android.hardware.bydauto.setting.BYDAutoSettingDevice
 import android.view.View
 import android.view.ViewGroup
 import com.cgutman.androidremotedebugger.AdbUtils
 import com.cgutman.androidremotedebugger.ConnectActivity
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.service.GestureCASExe
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
+import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.launch
 
@@ -51,11 +51,9 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
                         )
                     )
 
-                    R.id.tv_pull_setting -> CAService.performs(
-                        GestureCASExe()
-                            .moveTo(100f, if (Const.SP_FULL_SCREEN) -10f else 10f)
-                            .lineTo(100f, 500f) to 0L
-                    )
+                    R.id.tv_pull_setting -> {
+                        BYDAutoUtils.getSetting()?.setRearViewMirrorFlip(BYDAutoSettingDevice.SET_ON)
+                    }
 
                     R.id.tv_action_split -> {
                         CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
