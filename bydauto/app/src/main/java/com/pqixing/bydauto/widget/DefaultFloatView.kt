@@ -20,7 +20,6 @@ class DefaultFloatView : View {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        "onConfigurationChanged = ${newConfig.orientation}".toast()
         UiUtils.switchFullScreen(context, Const.SP_FULL_SCREEN, newConfig.orientation)
     }
 

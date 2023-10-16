@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.PointF
-import android.hardware.bydauto.ac.BYDAutoAcDevice
 import android.media.AudioManager
 import android.util.AttributeSet
 import android.view.Gravity
@@ -35,6 +34,7 @@ import com.pqixing.bydauto.utils.BYDUtils
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue
@@ -43,9 +43,7 @@ class MenuFloatView : FrameLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     )
 
 
@@ -65,26 +63,12 @@ class MenuFloatView : FrameLayout {
         minimumWidth = UiUtils.dp2dx(10)
         SingleItemAdapter(menuItems()).attach(menus)
         initControl()
+        findViewById<ViewGroup>(R.id.rl_music_content).layoutDirection = View.LAYOUT_DIRECTION_LTR
     }
 
-    private val acInfo = AcInfo(this)
-    private var listener: Any? = null
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        kotlin.runCatching {
-            if (listener == null) listener = AcListener(this)
-            BYDAutoUtils.getAcControl().registerListener(listener as AcListener)
-        }
-    }
+    private val acControl = AcControlInfo(this)
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        kotlin.runCatching {
-            BYDAutoUtils.getAcControl().unregisterListener(listener as AcListener)
-        }
-    }
-
-    fun reverseLayout() = layoutDirection == View.LAYOUT_DIRECTION_RTL
+    fun reverse() = layoutDirection == View.LAYOUT_DIRECTION_RTL
     private fun initControl() {
         content.findViewById<ImageView>(R.id.iv_music_icon).setOnClickListener {
             UiUtils.tryLaunch(it.context, UiUtils.getMusicPkg())
@@ -113,11 +97,9 @@ class MenuFloatView : FrameLayout {
 
         val winds = (1..7).toList().map { i ->
             SingleItem("$i") {
-                BYDAutoUtils.getAcControl().setAcWindLevel(BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY, i)
-                acInfo.wind = i
-                acInfo.loadData()
+                acControl.wind = i
             }.update {
-                it.select = acInfo.wind == i
+                it.select = acControl.wind == i
             }
         }
         windAdapter = SingleItemAdapter(winds, R.layout.single_item_text)
@@ -125,21 +107,9 @@ class MenuFloatView : FrameLayout {
 
         val temps = (17..33).toList().map { i ->
             SingleItem(if (i == 17) "Lo" else if (i == 33) "Hi" else i.toString()) {
-                val acControl = BYDAutoUtils.getAcControl()
-                val type = when {
-                    !acInfo.separate -> BYDAutoAcDevice.AC_TEMPERATURE_MAIN_DEPUTY
-                    else -> if (reverseLayout()) BYDAutoAcDevice.AC_TEMPERATURE_DEPUTY else BYDAutoAcDevice.AC_TEMPERATURE_MAIN
-                }
-                acControl.setAcTemperature(
-                    type,
-                    i,
-                    BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
-                    BYDAutoAcDevice.AC_TEMPERATURE_UNIT_OC
-                )
-                acInfo.wind = i
-                acInfo.loadData()
+                this.acControl.temp = i
             }.update {
-                it.select = acInfo.temp == i
+                it.select = acControl.temp == i
             }
         }
         tempAdapter = SingleItemAdapter(temps, R.layout.single_item_text)
@@ -154,66 +124,95 @@ class MenuFloatView : FrameLayout {
 
     private fun acItems() = listOf(
         SingleItem("空调", R.drawable.icon_menu_ac_start) {
-            if (acInfo.open) {
-                BYDAutoUtils.getAcControl().stop(BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY)
-            } else {
-                BYDAutoUtils.getAcControl().start(BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY)
+            acControl.open = !acControl.open
+        }.update { it.select = acControl.open },
+
+        SingleItem("下拉菜单", R.drawable.icon_menu_pull_down) {
+            App.uiScope.launch {
+                AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+                delay(100)
+                AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
             }
-            acInfo.open = !acInfo.open
-            acInfo.loadData()
-        }.update { it.select = acInfo.open },
-        SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
-            val acControl = BYDAutoUtils.getAcControl()
-            val open = acInfo.inLoop
-            acControl.setAcCycleMode(
-                BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
-                if (open) BYDAutoAcDevice.AC_CYCLEMODE_OUTLOOP else BYDAutoAcDevice.AC_CYCLEMODE_INLOOP
-            )
-            acInfo.inLoop = !open
-            acInfo.loadData()
+        },
+
+        SingleItem("座椅通风", R.drawable.icon_menu_seat_vent) {
+            if (reverse()) {
+                acControl.deputyVent = !acControl.deputyVent
+            } else {
+                acControl.mainVent = !acControl.mainVent
+            }
         }.update {
-            it.name = if (acInfo.inLoop) "内循环" else "外循环"
-            it.select = acInfo.inLoop
-            it.icon = if (acInfo.inLoop) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
+            it.name = if (reverse()) "副驾通风" else "主驾通风"
+            it.select = if (reverse()) acControl.deputyVent else acControl.mainVent
+        },
+
+        SingleItem("主副通风", R.drawable.icon_menu_seat_vent) {
+            App.uiScope.launch {
+                val close = acControl.mainVent && acControl.deputyVent
+                acControl.mainVent = !close
+                delay(1000)
+                acControl.deputyVent = !close
+            }
+        }.update {
+            it.select = acControl.mainVent && acControl.deputyVent
+        },
+        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
+            acControl.auto = !acControl.auto
+        }.update {
+            it.select = acControl.auto
         },
         SingleItem("分控", R.drawable.icon_menu_split) {
-            val open = !acInfo.separate
-            val acControl = BYDAutoUtils.getAcControl()
-            acControl.setAcTemperatureControlMode(
-                BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
-                if (open) BYDAutoAcDevice.AC_TEMPCTRL_SEPARATE_ON else BYDAutoAcDevice.AC_TEMPCTRL_SEPARATE_OFF
-            )
-            acInfo.separate = open
-            acInfo.loadData()
+            acControl.separate = !acControl.separate
         }.update {
-            it.select = acInfo.separate
+            it.select = acControl.separate
         },
-        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
-            val open = !acInfo.ventilation
-            val acControl = BYDAutoUtils.getAcControl()
-            acControl.setAcVentilationState(
-                BYDAutoAcDevice.AC_CTRL_SOURCE_UI_KEY,
-                if (open) BYDAutoAcDevice.AC_VENTILATION_STATE_ON else BYDAutoAcDevice.AC_VENTILATION_STATE_OFF
-            )
-            acInfo.ventilation = open
-            acInfo.loadData()
+
+        SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
+            acControl.inLoop = !acControl.inLoop
         }.update {
-            it.select = acInfo.ventilation
+            it.name = if (acControl.inLoop) "内循环" else "外循环"
+            it.select = acControl.inLoop
+            it.icon = if (acControl.inLoop) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
         },
-        SingleItem("更多", R.drawable.icon_menu_ac_more) {
+
+        SingleItem("空调面板", R.drawable.icon_menu_ac_more) {
             val intent = Intent().setComponent(
                 ComponentName("com.byd.airconditioning", "com.byd.airconditioning.mainactivity.FullScreenMainActivity")
             )
             UiUtils.tryLaunch(it.context, intent)
             close.run()
         },
+
+        SingleItem("座椅加热", R.drawable.icon_menu_seat_heat) {
+            if (reverse()) {
+                acControl.deputyHeat = !acControl.deputyHeat
+            } else {
+                acControl.mainHeat = !acControl.mainHeat
+            }
+        }.update {
+            it.name = if (reverse()) "副驾加热" else "主驾加热"
+            it.select = if (reverse()) acControl.deputyHeat else acControl.mainHeat
+        },
+
+        SingleItem("主副加热", R.drawable.icon_menu_seat_heat) {
+            App.uiScope.launch {
+                val close = acControl.mainHeat && acControl.deputyHeat
+                acControl.mainHeat = !close
+                delay(1000)
+                acControl.deputyHeat = !close
+            }
+        }.update {
+            it.select = acControl.mainHeat && acControl.deputyHeat
+        },
+
+        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
+            acControl.ventilation = !acControl.ventilation
+        }.update {
+            it.select = acControl.ventilation
+        },
     )
 
     private fun menuItems() = listOf(
-
-        SingleItem("下拉", R.drawable.icon_menu_arrow_down) {
-            AdbManager.getClient().runAsync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-        },
         SingleItem("地图|音乐", R.drawable.icon_menu_app) {
             UiUtils.fastLauch(it.context)
         },
@@ -257,9 +256,10 @@ class MenuFloatView : FrameLayout {
         if (other.childCount > 0) {
             other.removeAllViews()
         }
+        acControl.onHide()
     }
 
-    fun open() {
+    fun open(ts: Long = 0) {
         content.visibility = View.VISIBLE
         for (i in 0 until content.childCount) {
             val child = content.getChildAt(i)
@@ -268,9 +268,13 @@ class MenuFloatView : FrameLayout {
                 break
             }
         }
+        if (ts >= 500) {
+            controls.visibility = View.VISIBLE
+        }
         if (controls.visibility == VISIBLE) {
             update()
         }
+        acControl.onVisible()
     }
 
     lateinit var appAdapter: SingleItemAdapter
@@ -280,8 +284,9 @@ class MenuFloatView : FrameLayout {
 
     @SuppressLint("NotifyDataSetChanged")
     fun update() = kotlin.runCatching {
-        acInfo.loadData(0)
         App.get().uiScope.launch {
+            acControl.exeLoad { App.log("loadData ${it}") }
+
             val apps = withContext(Dispatchers.IO) {
                 UiManager.getAppInfo().filter { it.launch }.sortedBy { it.system }.map { info ->
                     SingleItem(info.name, 0, info.icon) {
@@ -289,7 +294,7 @@ class MenuFloatView : FrameLayout {
                     }.also { it.obj = info }
                 }
             }
-            val pkg = BYDAutoUtils.getCurrentAudioFocusPackage()
+            val pkg = UiUtils.getMusicPkg()
             val icon = apps.find { (it.obj as AppInfo).pkg == pkg }?.drawable
             if (icon != null) {
                 content.findViewById<ImageView>(R.id.iv_music_icon).setImageDrawable(icon)
@@ -302,7 +307,7 @@ class MenuFloatView : FrameLayout {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun notifyAcControl() {
+    fun notifyAcControl() = post {
         acAdapter.notifyDataSetChanged()
         windAdapter.notifyDataSetChanged()
         tempAdapter.notifyDataSetChanged()
@@ -323,6 +328,7 @@ class MenuFloatView : FrameLayout {
                 removeCallbacks(close)
                 intercept = 0
                 downEvent = PointF(ev.x, ev.y)
+                downTs = System.currentTimeMillis()
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -342,15 +348,17 @@ class MenuFloatView : FrameLayout {
                     val diffX = ev.x - (downEvent?.x ?: 0f)
                     val open =
                         (layoutDirection == LAYOUT_DIRECTION_LTR && diffX > 0) || (layoutDirection == LAYOUT_DIRECTION_RTL && diffX < 0)
-                    if (open) open() else close.run()
+                    if (open) open(System.currentTimeMillis() - downTs) else close.run()
                 }
                 downEvent = null
+                downTs = -1L
             }
         }
     }
 
     private var intercept = 0
     private var downEvent: PointF? = null
+    private var downTs: Long = -1L
 
     private fun isOpen(): Boolean = content.visibility == View.VISIBLE
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
@@ -366,8 +374,7 @@ class MenuFloatView : FrameLayout {
             it.width = WindowManager.LayoutParams.WRAP_CONTENT
             it.height = WindowManager.LayoutParams.MATCH_PARENT
             it.format = PixelFormat.RGBA_8888
-            it.flags =
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             it.gravity =
                 if (layoutDirection == LAYOUT_DIRECTION_LTR) Gravity.START or Gravity.CENTER_VERTICAL else Gravity.END or Gravity.CENTER_VERTICAL
