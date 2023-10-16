@@ -305,9 +305,12 @@ object UiUtils {
     }
 
     fun getMusicPkg(): String {
-        return BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()?.takeIf { it.isNotEmpty() }
-            ?: Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() }
-            ?: "com.kugou.android.auto"
+        val play = BYDAutoUtils.getCurrentAudioFocusPackage()?.trim()
+        if (play?.isNotEmpty() == true) {
+            Const.SP_MUSIC_PKG = play
+            return play
+        }
+        return Const.SP_MUSIC_PKG.trim().takeIf { it.isNotEmpty() } ?: "com.kugou.android.auto"
     }
 
     fun fastLauch(context: Context) {
