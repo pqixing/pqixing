@@ -20,6 +20,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
@@ -50,6 +51,7 @@ class MenuFloatView : FrameLayout {
     private val content = inflate(context, R.layout.float_menu, this).findViewById<LinearLayout>(R.id.content)
     private var controls = content.findViewById<LinearLayout>(R.id.ll_control)
     private var menus = content.findViewById<RecyclerView>(R.id.menus)
+    private var refresh = content.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
     private var other = content.findViewById<ViewGroup>(R.id.fl_others)
     private val touchBar: View = View(context).also {
         it.setBackgroundColor(Color.YELLOW)
@@ -64,6 +66,13 @@ class MenuFloatView : FrameLayout {
         SingleItemAdapter(menuItems()).attach(menus)
         initControl()
         findViewById<ViewGroup>(R.id.rl_music_content).layoutDirection = View.LAYOUT_DIRECTION_LTR
+        refresh.setColorSchemeResources(
+            android.R.color.holo_blue_light,
+            android.R.color.holo_red_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_green_light,
+        )
+        refresh.setOnRefreshListener { pullDownStatusbar() }
     }
 
     private val acControl = AcControlInfo(this)
@@ -126,13 +135,10 @@ class MenuFloatView : FrameLayout {
         SingleItem("空调", R.drawable.icon_menu_ac_start) {
             acControl.open = !acControl.open
         }.update { it.select = acControl.open },
-
-        SingleItem("下拉菜单", R.drawable.icon_menu_pull_down) {
-            App.uiScope.launch {
-                AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-                delay(100)
-                AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-            }
+        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
+            acControl.auto = !acControl.auto
+        }.update {
+            it.select = acControl.auto
         },
 
         SingleItem("座椅通风", R.drawable.icon_menu_seat_vent) {
@@ -156,15 +162,12 @@ class MenuFloatView : FrameLayout {
         }.update {
             it.select = acControl.mainVent && acControl.deputyVent
         },
-        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
-            acControl.auto = !acControl.auto
+
+
+        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
+            acControl.ventilation = !acControl.ventilation
         }.update {
-            it.select = acControl.auto
-        },
-        SingleItem("分控", R.drawable.icon_menu_split) {
-            acControl.separate = !acControl.separate
-        }.update {
-            it.select = acControl.separate
+            it.select = acControl.ventilation
         },
 
         SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
@@ -175,6 +178,11 @@ class MenuFloatView : FrameLayout {
             it.icon = if (acControl.inLoop) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
         },
 
+        SingleItem("分控", R.drawable.icon_menu_split) {
+            acControl.separate = !acControl.separate
+        }.update {
+            it.select = acControl.separate
+        },
         SingleItem("空调面板", R.drawable.icon_menu_ac_more) {
             val intent = Intent().setComponent(
                 ComponentName("com.byd.airconditioning", "com.byd.airconditioning.mainactivity.FullScreenMainActivity")
@@ -205,12 +213,16 @@ class MenuFloatView : FrameLayout {
             it.select = acControl.mainHeat && acControl.deputyHeat
         },
 
-        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
-            acControl.ventilation = !acControl.ventilation
-        }.update {
-            it.select = acControl.ventilation
-        },
-    )
+        )
+
+    private fun pullDownStatusbar() {
+        postDelayed({ refresh.isRefreshing = false }, 500)
+        App.uiScope.launch {
+            AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+            delay(100)
+            AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
+        }
+    }
 
     private fun menuItems() = listOf(
         SingleItem("地图|音乐", R.drawable.icon_menu_app) {

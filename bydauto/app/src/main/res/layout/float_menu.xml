@@ -11,15 +11,21 @@
     android:maxHeight="600dp"
     android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/menus"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="64dp"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_float_ac_control"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:visibility="visible" />
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/menus"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_float_ac_control"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:visibility="visible" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/ll_control"
