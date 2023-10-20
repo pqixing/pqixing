@@ -52,6 +52,8 @@ class SingleItemAdapter(var items: List<SingleItem>, val resId: Int = R.layout.s
         holder.itemView.setOnClickListener {
             kotlin.runCatching {
                 item.click.onClick(it)
+            }
+            kotlin.runCatching {
                 item.onUpdate?.invoke(item)
             }
             notifyItemChanged(position)

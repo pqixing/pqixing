@@ -57,7 +57,7 @@ object Const {
         set(value) = App.sp.edit().putBoolean("SP_PERM_ADB_CONNECT", value).apply()
 
     var SP_DELAY_DISMISS: Long
-        get() = App.sp.getLong("SP_DELAY_DISMISS", 60000)!!
+        get() = App.sp.getLong("SP_DELAY_DISMISS", 30000)!!
         set(value) = App.sp.edit().putLong("SP_DELAY_DISMISS", value).apply()
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"

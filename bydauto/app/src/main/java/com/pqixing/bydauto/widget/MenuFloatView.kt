@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.PointF
 import android.media.AudioManager
@@ -19,6 +18,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pqixing.bydauto.App
@@ -54,7 +54,7 @@ class MenuFloatView : FrameLayout {
     private var refresh = content.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
     private var other = content.findViewById<ViewGroup>(R.id.fl_others)
     private val touchBar: View = View(context).also {
-        it.setBackgroundColor(Color.YELLOW)
+        it.setBackgroundColor(context.getColor(android.R.color.holo_blue_light))
         it.visibility = View.INVISIBLE
         addView(it, LayoutParams(UiUtils.dp2dx(5), LayoutParams.MATCH_PARENT))
     }
@@ -216,7 +216,11 @@ class MenuFloatView : FrameLayout {
         )
 
     private fun pullDownStatusbar() {
-        postDelayed({ refresh.isRefreshing = false }, 500)
+        postDelayed({
+            refresh.isRefreshing = false
+            (menus.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(1, 0)
+        }, 500)
+
         App.uiScope.launch {
             AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
             delay(100)
@@ -225,6 +229,9 @@ class MenuFloatView : FrameLayout {
     }
 
     private fun menuItems() = listOf(
+        SingleItem("下拉菜单", R.drawable.icon_menu_pull_down) {
+            pullDownStatusbar()
+        },
         SingleItem("地图|音乐", R.drawable.icon_menu_app) {
             UiUtils.fastLauch(it.context)
         },
@@ -271,7 +278,7 @@ class MenuFloatView : FrameLayout {
         acControl.onHide()
     }
 
-    fun open(ts: Long = 0) {
+    fun open(openAc: Boolean) {
         content.visibility = View.VISIBLE
         for (i in 0 until content.childCount) {
             val child = content.getChildAt(i)
@@ -280,7 +287,7 @@ class MenuFloatView : FrameLayout {
                 break
             }
         }
-        if (ts >= 500) {
+        if (openAc) {
             controls.visibility = View.VISIBLE
         }
         if (controls.visibility == VISIBLE) {
@@ -360,7 +367,7 @@ class MenuFloatView : FrameLayout {
                     val diffX = ev.x - (downEvent?.x ?: 0f)
                     val open =
                         (layoutDirection == LAYOUT_DIRECTION_LTR && diffX > 0) || (layoutDirection == LAYOUT_DIRECTION_RTL && diffX < 0)
-                    if (open) open(System.currentTimeMillis() - downTs) else close.run()
+                    if (open) open(diffX.absoluteValue > diff || System.currentTimeMillis() - downTs > 500) else close.run()
                 }
                 downEvent = null
                 downTs = -1L
@@ -368,6 +375,7 @@ class MenuFloatView : FrameLayout {
         }
     }
 
+    private var diff: Int = UiUtils.dp2dx(64)
     private var intercept = 0
     private var downEvent: PointF? = null
     private var downTs: Long = -1L

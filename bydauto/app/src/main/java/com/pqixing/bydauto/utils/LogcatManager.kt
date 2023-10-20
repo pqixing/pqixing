@@ -88,7 +88,7 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
                 stop()
                 start()
             }
-        }, 2000)
+        }, 5000)
     }
 
     interface LogCatCallBack {

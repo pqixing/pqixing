@@ -61,8 +61,8 @@ class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
         }
     }
 
-    override fun onPkgResume(pkg: String?, ac: String) {
-        val isAutoVideo = RADAR_PKG == pkg || ac == RADAR_ACTIVITY
+    override fun onPkgResume(pkg: String) {
+        val isAutoVideo = RADAR_PKG == pkg
         if (isAutoVideo && !UiUtils.isShow(FLOAT_TAG_RADAR)) {
             UiUtils.showOrUpdate(FLOAT_TAG_RADAR) {
                 RadarFloatView(App.get())
