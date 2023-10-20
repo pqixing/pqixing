@@ -18,7 +18,6 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pqixing.bydauto.App
@@ -135,13 +134,15 @@ class MenuFloatView : FrameLayout {
         SingleItem("空调", R.drawable.icon_menu_ac_start) {
             acControl.open = !acControl.open
         }.update { it.select = acControl.open },
-        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
-            acControl.auto = !acControl.auto
+
+        SingleItem("智保", R.drawable.icon_menu_soc_save) {
+            acControl.socSave = !acControl.socSave
         }.update {
-            it.select = acControl.auto
+            it.select = acControl.socSave
+            it.name = "${if (acControl.socSave) "强保" else "智保"}:${acControl.soc}"
         },
 
-        SingleItem("座椅通风", R.drawable.icon_menu_seat_vent) {
+        SingleItem("主驾通风", R.drawable.icon_menu_seat_vent) {
             if (reverse()) {
                 acControl.deputyVent = !acControl.deputyVent
             } else {
@@ -162,12 +163,10 @@ class MenuFloatView : FrameLayout {
         }.update {
             it.select = acControl.mainVent && acControl.deputyVent
         },
-
-
-        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
-            acControl.ventilation = !acControl.ventilation
+        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
+            acControl.auto = !acControl.auto
         }.update {
-            it.select = acControl.ventilation
+            it.select = acControl.auto
         },
 
         SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
@@ -183,12 +182,11 @@ class MenuFloatView : FrameLayout {
         }.update {
             it.select = acControl.separate
         },
-        SingleItem("空调面板", R.drawable.icon_menu_ac_more) {
-            val intent = Intent().setComponent(
-                ComponentName("com.byd.airconditioning", "com.byd.airconditioning.mainactivity.FullScreenMainActivity")
-            )
-            UiUtils.tryLaunch(it.context, intent)
-            close.run()
+
+        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
+            acControl.ventilation = !acControl.ventilation
+        }.update {
+            it.select = acControl.ventilation
         },
 
         SingleItem("座椅加热", R.drawable.icon_menu_seat_heat) {
@@ -213,13 +211,18 @@ class MenuFloatView : FrameLayout {
             it.select = acControl.mainHeat && acControl.deputyHeat
         },
 
+        SingleItem("空调面板", R.drawable.icon_menu_ac_more) {
+            val intent = Intent().setComponent(
+                ComponentName("com.byd.airconditioning", "com.byd.airconditioning.mainactivity.FullScreenMainActivity")
+            )
+            UiUtils.tryLaunch(it.context, intent)
+            close.run()
+        },
+
         )
 
     private fun pullDownStatusbar() {
-        postDelayed({
-            refresh.isRefreshing = false
-            (menus.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(1, 0)
-        }, 500)
+        postDelayed({ refresh.isRefreshing = false }, 500)
 
         App.uiScope.launch {
             AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
@@ -229,9 +232,6 @@ class MenuFloatView : FrameLayout {
     }
 
     private fun menuItems() = listOf(
-        SingleItem("下拉菜单", R.drawable.icon_menu_pull_down) {
-            pullDownStatusbar()
-        },
         SingleItem("地图|音乐", R.drawable.icon_menu_app) {
             UiUtils.fastLauch(it.context)
         },

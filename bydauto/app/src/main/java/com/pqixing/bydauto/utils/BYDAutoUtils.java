@@ -46,13 +46,6 @@ public class BYDAutoUtils {
         return BYDAutoChargingDevice.getInstance(mContext);
     }
 
-//    /**
-//     * 设置空调开关
-//     */
-//    public static void setAir(int state) {
-//        invokeSet(getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202), state, int.class);
-//    }
-
     /**
      * 设置空调开关
      */
@@ -63,17 +56,6 @@ public class BYDAutoUtils {
 //            int id = getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202);
 //            getSetMethod(int.class).invoke(instance, deviceType, id, open ? 1 : 2);
             return "setWirelessCharging " + i;
-        });
-    }
-
-    /**
-     * 设置空调开关
-     */
-    public static String setSocSaveModel(boolean open) {
-        return call("error", () -> {
-            BYDAutoChargingDevice instance = BYDAutoChargingDevice.getInstance(mContext);
-            instance.setSocSaveSwitch(open ? 2 : 1);
-            return "setSocSaveModel ";
         });
     }
 

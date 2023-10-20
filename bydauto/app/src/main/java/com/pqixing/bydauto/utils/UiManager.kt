@@ -9,7 +9,7 @@ object UiManager : LogcatManager.LogCatCallBack {
     private var sCallBack = arrayListOf<IActivityLife>()
     private val logcat = LogcatManager(listOf("ActivityTaskManager:D"))
 
-    private var resumes = HashSet<String>()
+    private var resumes = LinkedList<String>()
     private var history = LinkedList<String>()
 
     var inSplitMode = false
@@ -64,7 +64,7 @@ object UiManager : LogcatManager.LogCatCallBack {
 
     fun isResume(pkg: String?): Boolean {
         pkg ?: return false
-        return resumes.contains(pkg)
+        return resumes.firstOrNull() == pkg || (inSplitMode && resumes.getOrNull(1) == pkg)
     }
 
 
@@ -73,25 +73,32 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(onConfigurationChanged|startPausingLocked).*"
+        return ".*ActivityTaskManager.*(activityResumedForAcBar|onConfigurationChanged|startPausingLocked).*"
     }
 
     override fun onReceiveLog(line: String) {
-        when {
-            line.contains("onConfigurationChanged") -> {
-                val mode = line.substringAfter("windowingMode:").trim()
-                inSplitMode = (mode == "3" || mode == "4")
-            }
-
-            line.contains("startPausingLocked") -> {
-                val mPausingPkg = line.substringAfter("mPausingPkg =").substringBefore(",").trim()
-                val mResumingPkg = line.substringAfter("mResumingPkg =").trim()
-                resumes.remove(mPausingPkg)
-                history.remove(mResumingPkg)
-                history.addFirst(mResumingPkg)
-                if (resumes.add(mResumingPkg)) {
-                    sCallBack.forEach { it.onPkgResume(mResumingPkg) }
+        kotlin.runCatching {
+            when {
+                line.contains("activityResumedForAcBar") -> {
+                    val pkg = line.substringAfter("className:").trim().split(".").subList(0, 3).joinToString(".")
+                    history.remove(pkg)
+                    history.addFirst(pkg)
+                    resumes.remove(pkg)
+                    resumes.addFirst(pkg)
+                    sCallBack.forEach { it.onPkgResume(pkg) }
                 }
+
+                line.contains("onConfigurationChanged") -> {
+                    val mode = line.substringAfter("windowingMode:").trim()
+                    inSplitMode = (mode == "3" || mode == "4")
+                }
+
+                line.contains("startPausingLocked") -> {
+                    val mPausingPkg = line.substringAfter("mPausingPkg =").substringBefore(",").trim()
+                    resumes.remove(mPausingPkg)
+                }
+
+                else -> {}
             }
         }
     }
