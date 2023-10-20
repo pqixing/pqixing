@@ -3,7 +3,10 @@ package com.pqixing.bydauto.setting.item
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
-import android.hardware.bydauto.setting.BYDAutoSettingDevice
+import android.hardware.IBYDAutoEvent
+import android.hardware.bydauto.charging.AbsBYDAutoChargingListener
+import android.hardware.bydauto.charging.BYDAutoChargingDevice
+import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice
 import android.view.View
 import android.view.ViewGroup
 import com.cgutman.androidremotedebugger.AdbUtils
@@ -16,6 +19,7 @@ import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.launch
 
 class AdbItem : SettingImpl(R.layout.setting_adb) {
@@ -52,7 +56,13 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
                     )
 
                     R.id.tv_pull_setting -> {
-                        BYDAutoUtils.getSetting()?.setRearViewMirrorFlip(BYDAutoSettingDevice.SET_ON)
+//                        BYDAutoChargingDevice.getInstance(App.get()).registerListener(object :AbsBYDAutoChargingListener(){
+//                            override fun onSocSaveSwitchChanged(i: Int) {
+//                                super.onSocSaveSwitchChanged(i)
+//                                "onSocSaveSwitchChanged $i".toast()
+//                            }
+//                        })
+                        BYDAutoInstrumentDevice::class.java.methods.filter { it.name.toUpperCase().contains("WIRELESS") }.joinToString { it.name }.toast()
                     }
 
                     R.id.tv_action_split -> {

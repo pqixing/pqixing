@@ -1,11 +1,8 @@
 //refactor
 package android.hardware.bydauto.charging;
+
 import android.content.Context;
-import android.hardware.IBYDAutoListener;
 import android.hardware.bydauto.AbsBYDAutoDevice;
-import android.hardware.bydauto.BYDAutoEvent;
-import android.util.Log;
-import java.util.Arrays;
 public final class BYDAutoChargingDevice extends AbsBYDAutoDevice {
 public static final int BATTERY_TYPE = 53;
 public static final int BATTERY_TYPE_INVALID = 65535;
@@ -208,6 +205,10 @@ public int setChargeTempCtlState(int i) { return 0; }
 public int setChargingMode(int i) { return 0; }
 public int setChargingTimerInfo(ChargingTimerInfo chargingTimerInfo) { return 0; }
 public int setWirelessChargingSwitchState(int i) { return 0; }
+
+ public int setSocSaveSwitch(int i){return 0;}
+ public int getWirelessChargingState(int i){return 0;}
+ public int getSocSaveSwitch(){return 0;}
 public void unregisterListener(AbsBYDAutoChargingListener absBYDAutoChargingListener) { }
 public boolean postEvent(int i, int i2, double d2, Object obj) { return false; }
 public void registerListener(AbsBYDAutoChargingListener absBYDAutoChargingListener, int[] iArr) { }

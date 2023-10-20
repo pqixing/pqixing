@@ -1,8 +1,8 @@
 //refactor
 package android.hardware.bydauto.charging;
+
 import android.hardware.IBYDAutoEvent;
 import android.hardware.IBYDAutoListener;
-import android.util.Log;
 public abstract class AbsBYDAutoChargingListener implements IBYDAutoListener {
 public void onBatteryManagementDeviceStateChanged(int i) { }
 public void onBatteryTypeChanged(int i) { }
@@ -33,4 +33,6 @@ public void onSmartChargingStateChanged(int i) { }
 public void onWirelessChargingOnline5sStateChanged(int i) { }
 public void onWirelessChargingSwitchStateChanged(int i) { }
 public void onWirlessChargingStateChanged(int i) { }
+public void onSocSaveSwitchChanged(int i) { }
+
  }

@@ -2,6 +2,7 @@ package com.pqixing.bydauto.utils;
 
 import android.content.Context;
 import android.hardware.bydauto.ac.BYDAutoAcDevice;
+import android.hardware.bydauto.charging.BYDAutoChargingDevice;
 import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice;
 import android.hardware.bydauto.radar.BYDAutoRadarDevice;
 import android.hardware.bydauto.setting.BYDAutoSettingDevice;
@@ -41,6 +42,10 @@ public class BYDAutoUtils {
         return BYDAutoInstrumentDevice.getInstance(mContext);
     }
 
+    public static BYDAutoChargingDevice getAutoCharging() {
+        return BYDAutoChargingDevice.getInstance(mContext);
+    }
+
 //    /**
 //     * 设置空调开关
 //     */
@@ -53,11 +58,22 @@ public class BYDAutoUtils {
      */
     public static String setWirelessCharging(boolean open) {
         return call("error", () -> {
-            BYDAutoInstrumentDevice instance = BYDAutoInstrumentDevice.getInstance(mContext);
-            int deviceType = instance.getType();
-            int id = getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202);
-            getSetMethod(int.class).invoke(instance, deviceType, id, open ? 1 : 2);
-            return "setWirelessCharging " + deviceType + " ; " + id;
+            int i = getAutoCharging().setWirelessChargingSwitchState(open ? 1 : 2);
+//            int deviceType = instance.getType();
+//            int id = getAutoFeatureId("CHARGING_CHARGE_WIRELESS_CHARGING_SWITCH_SET", 82051202);
+//            getSetMethod(int.class).invoke(instance, deviceType, id, open ? 1 : 2);
+            return "setWirelessCharging " + i;
+        });
+    }
+
+    /**
+     * 设置空调开关
+     */
+    public static String setSocSaveModel(boolean open) {
+        return call("error", () -> {
+            BYDAutoChargingDevice instance = BYDAutoChargingDevice.getInstance(mContext);
+            instance.setSocSaveSwitch(open ? 2 : 1);
+            return "setSocSaveModel ";
         });
     }
 
