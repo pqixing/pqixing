@@ -1,10 +1,7 @@
 package com.pqixing.bydauto.widget
 
-import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.graphics.PixelFormat
 import android.graphics.PointF
 import android.media.AudioManager
@@ -18,23 +15,20 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.AppInfo
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.ui.MainUI
+import com.pqixing.bydauto.model.ItemFactory
 import com.pqixing.bydauto.ui.SingleItem
 import com.pqixing.bydauto.ui.SingleItemAdapter
-import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.BYDUtils
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue
@@ -49,35 +43,46 @@ class MenuFloatView : FrameLayout {
 
     private val content = inflate(context, R.layout.float_menu, this).findViewById<LinearLayout>(R.id.content)
     private var controls = content.findViewById<LinearLayout>(R.id.ll_control)
-    private var menus = content.findViewById<RecyclerView>(R.id.menus)
-    private var refresh = content.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
-    private var other = content.findViewById<ViewGroup>(R.id.fl_others)
     private val touchBar: View = View(context).also {
         it.setBackgroundColor(context.getColor(android.R.color.holo_blue_light))
         it.visibility = View.INVISIBLE
         addView(it, LayoutParams(UiUtils.dp2dx(5), LayoutParams.MATCH_PARENT))
     }
+    private val notifyListeners = mutableListOf<NotifyListener>()
+    private val autoInfo = AutoInfo(this)
+    private var appAdapter: SingleItemAdapter
 
     init {
         content.visibility = View.GONE
         isClickable = true
         minimumWidth = UiUtils.dp2dx(10)
-        SingleItemAdapter(menuItems()).attach(menus)
-        initControl()
+        SingleItemAdapter(ItemFactory.createMenus(autoInfo), R.layout.single_item_tint)
+            .register(R.id.menus, "soc_", listOf(1))
+        SingleItemAdapter(ItemFactory.createAc(autoInfo), R.layout.single_item_ac_state)
+            .register(R.id.rcv_ac_state, "ac_")
+
+        SingleItemAdapter(ItemFactory.createWinds(autoInfo), R.layout.single_item_text)
+            .register(R.id.rcv_ac_wind, "ac_wind")
+        SingleItemAdapter(ItemFactory.createTemps(autoInfo), R.layout.single_item_text)
+            .register(R.id.rcv_ac_temp, "ac_temp")
+        appAdapter = SingleItemAdapter(emptyList(), R.layout.single_item_app).register(R.id.rcv_apps)
+
         findViewById<ViewGroup>(R.id.rl_music_content).layoutDirection = View.LAYOUT_DIRECTION_LTR
-        refresh.setColorSchemeResources(
-            android.R.color.holo_blue_light,
-            android.R.color.holo_red_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_green_light,
-        )
-        refresh.setOnRefreshListener { pullDownStatusbar() }
+        initMediaButton()
     }
 
-    private val acControl = AcControlInfo(this)
+
+    private fun SingleItemAdapter.register(redId: Int, prefix: String? = null, targets: List<Int> = emptyList()): SingleItemAdapter {
+        findViewById<RecyclerView>(redId)?.adapter = this
+        if (prefix != null) {
+            notifyListeners.add(AdapterNotify(prefix, this, targets))
+        }
+
+        return this
+    }
 
     fun reverse() = layoutDirection == View.LAYOUT_DIRECTION_RTL
-    private fun initControl() {
+    private fun initMediaButton() {
         content.findViewById<ImageView>(R.id.iv_music_icon).setOnClickListener {
             UiUtils.tryLaunch(it.context, UiUtils.getMusicPkg())
         }
@@ -100,182 +105,25 @@ class MenuFloatView : FrameLayout {
             }
         }
 
-        acAdapter = SingleItemAdapter(acItems(), R.layout.single_item_ac_state)
-        content.findViewById<RecyclerView>(R.id.rcv_ac_state).adapter = acAdapter
 
-        val winds = (1..7).toList().map { i ->
-            SingleItem("$i") {
-                acControl.wind = i
-            }.update {
-                it.select = acControl.wind == i
-            }
-        }
-        windAdapter = SingleItemAdapter(winds, R.layout.single_item_text)
-        content.findViewById<RecyclerView>(R.id.rcv_ac_wind).adapter = windAdapter
-
-        val temps = (17..33).toList().map { i ->
-            SingleItem(if (i == 17) "Lo" else if (i == 33) "Hi" else i.toString()) {
-                this.acControl.temp = i
-            }.update {
-                it.select = acControl.temp == i
-            }
-        }
-        tempAdapter = SingleItemAdapter(temps, R.layout.single_item_text)
-        content.findViewById<RecyclerView>(R.id.rcv_ac_temp).also {
-            it.adapter = tempAdapter
-            it.scrollToPosition(3)
-        }
-
-        appAdapter = SingleItemAdapter(emptyList(), R.layout.single_item_app)
-        content.findViewById<RecyclerView>(R.id.rcv_apps).adapter = appAdapter
     }
 
-    private fun acItems() = listOf(
-        SingleItem("空调", R.drawable.icon_menu_ac_start) {
-            acControl.open = !acControl.open
-        }.update { it.select = acControl.open },
-
-        SingleItem("智保", R.drawable.icon_menu_soc_save) {
-            acControl.socSave = !acControl.socSave
-        }.update {
-            it.select = acControl.socSave
-            it.name = "${if (acControl.socSave) "强保" else "智保"}:${acControl.soc}"
-        },
-
-        SingleItem("主驾通风", R.drawable.icon_menu_seat_vent) {
-            if (reverse()) {
-                acControl.deputyVent = !acControl.deputyVent
-            } else {
-                acControl.mainVent = !acControl.mainVent
-            }
-        }.update {
-            it.name = if (reverse()) "副驾通风" else "主驾通风"
-            it.select = if (reverse()) acControl.deputyVent else acControl.mainVent
-        },
-
-        SingleItem("主副通风", R.drawable.icon_menu_seat_vent) {
-            App.uiScope.launch {
-                val close = acControl.mainVent && acControl.deputyVent
-                acControl.mainVent = !close
-                delay(1000)
-                acControl.deputyVent = !close
-            }
-        }.update {
-            it.select = acControl.mainVent && acControl.deputyVent
-        },
-        SingleItem("自动模式", R.drawable.icon_menu_ac_auto) {
-            acControl.auto = !acControl.auto
-        }.update {
-            it.select = acControl.auto
-        },
-
-        SingleItem("内循环", R.drawable.icon_menu_ac_inloop) {
-            acControl.inLoop = !acControl.inLoop
-        }.update {
-            it.name = if (acControl.inLoop) "内循环" else "外循环"
-            it.select = acControl.inLoop
-            it.icon = if (acControl.inLoop) R.drawable.icon_menu_ac_inloop else R.drawable.icon_menu_ac_outloop
-        },
-
-        SingleItem("分控", R.drawable.icon_menu_split) {
-            acControl.separate = !acControl.separate
-        }.update {
-            it.select = acControl.separate
-        },
-
-        SingleItem("通风", R.drawable.icon_menu_ac_ventilation) {
-            acControl.ventilation = !acControl.ventilation
-        }.update {
-            it.select = acControl.ventilation
-        },
-
-        SingleItem("座椅加热", R.drawable.icon_menu_seat_heat) {
-            if (reverse()) {
-                acControl.deputyHeat = !acControl.deputyHeat
-            } else {
-                acControl.mainHeat = !acControl.mainHeat
-            }
-        }.update {
-            it.name = if (reverse()) "副驾加热" else "主驾加热"
-            it.select = if (reverse()) acControl.deputyHeat else acControl.mainHeat
-        },
-
-        SingleItem("主副加热", R.drawable.icon_menu_seat_heat) {
-            App.uiScope.launch {
-                val close = acControl.mainHeat && acControl.deputyHeat
-                acControl.mainHeat = !close
-                delay(1000)
-                acControl.deputyHeat = !close
-            }
-        }.update {
-            it.select = acControl.mainHeat && acControl.deputyHeat
-        },
-
-        SingleItem("空调面板", R.drawable.icon_menu_ac_more) {
-            val intent = Intent().setComponent(
-                ComponentName("com.byd.airconditioning", "com.byd.airconditioning.mainactivity.FullScreenMainActivity")
-            )
-            UiUtils.tryLaunch(it.context, intent)
-            close.run()
-        },
-
-        )
-
-    private fun pullDownStatusbar() {
-        postDelayed({ refresh.isRefreshing = false }, 500)
-
-        App.uiScope.launch {
-            AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-            delay(100)
-            AdbManager.getClient().runSync("input swipe 100 ${if (Const.SP_FULL_SCREEN) -10 else 0} 100 300")
-        }
-    }
-
-    private fun menuItems() = listOf(
-        SingleItem("地图|音乐", R.drawable.icon_menu_app) {
-            UiUtils.fastLauch(it.context)
-        },
-        SingleItem("返回", R.drawable.icon_menu_back) {
-            CAService.perform(AccessibilityService.GLOBAL_ACTION_BACK)
-        },
-        SingleItem("桌面", R.drawable.icon_menu_home) {
-            CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
-        },
-        SingleItem("最近", R.drawable.icon_menu_recent) {
-            CAService.perform(AccessibilityService.GLOBAL_ACTION_RECENTS)
-        },
-        SingleItem("分屏", R.drawable.icon_menu_split) {
-            CAService.perform(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN)
-        },
-
-        SingleItem("互换", R.drawable.icon_menu_change) {
-            BYDUtils.sendDiCmd("左右屏幕互换")
-        },
-
-        SingleItem("全屏", R.drawable.icon_menu_full) {
-            UiUtils.switchFullScreen(context, !Const.SP_FULL_SCREEN)
-        },
-        SingleItem("锁屏", R.drawable.icon_menu_lock_screen) {
-            BYDUtils.sendDiCmd("关闭屏幕")
-        },
-
-        SingleItem("设置", R.drawable.icon_menu_setting) {
-            UiUtils.tryLaunch(context, Intent(context, MainUI::class.java))
-        },
-        SingleItem("通知", R.drawable.icon_menu_notify) {
-            CAService.perform(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
-        },
-    )
 
     private var close = Runnable {
         for (i in 0 until content.childCount) {
             content.getChildAt(i).visibility = View.GONE
         }
         content.visibility = View.GONE
-        if (other.childCount > 0) {
-            other.removeAllViews()
-        }
-        acControl.onHide()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        autoInfo.onAttach()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        autoInfo.onDetach()
     }
 
     fun open(openAc: Boolean) {
@@ -293,18 +141,13 @@ class MenuFloatView : FrameLayout {
         if (controls.visibility == VISIBLE) {
             update()
         }
-        acControl.onVisible()
+        (findViewById<RecyclerView>(R.id.menus).layoutManager as LinearLayoutManager).scrollToPositionWithOffset(1, 0)
     }
-
-    lateinit var appAdapter: SingleItemAdapter
-    lateinit var acAdapter: SingleItemAdapter
-    lateinit var windAdapter: SingleItemAdapter
-    lateinit var tempAdapter: SingleItemAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     fun update() = kotlin.runCatching {
         App.get().uiScope.launch {
-            acControl.exeLoad { App.log("loadData ${it}") }
+            autoInfo.exeLoad { App.log("loadData ${it}") }
 
             val apps = withContext(Dispatchers.IO) {
                 UiManager.getAppInfo().filter { it.launch }.sortedBy { it.system }.map { info ->
@@ -325,14 +168,8 @@ class MenuFloatView : FrameLayout {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun notifyAcControl() = post {
-        acAdapter.notifyDataSetChanged()
-        windAdapter.notifyDataSetChanged()
-        tempAdapter.notifyDataSetChanged()
-//        kotlin.runCatching {
-//            content.findViewById<RecyclerView>(R.id.rcv_ac_temp).smoothScrollToPosition((17..33).indexOf(acInfo.temp))
-//        }
+    fun notifyAcControl(notify: Set<String>) = post {
+        notifyListeners.filter { notify.any { n -> it.handle(n) } }.forEach { it.notifyData() }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -413,4 +250,28 @@ class MenuFloatView : FrameLayout {
             }
         }
     }
+
+
+    class AdapterNotify(val prefix: String, val adapter: RecyclerView.Adapter<*>, val targets: List<Int> = emptyList()) :
+        NotifyListener {
+        override fun handle(type: String): Boolean {
+            return type.isEmpty() || type.startsWith(prefix)
+        }
+
+        override fun notifyData() {
+            if (targets.isEmpty()) {
+                adapter.notifyDataSetChanged()
+            } else {
+                targets.forEach { adapter.notifyItemChanged(it) }
+            }
+        }
+    }
+
+    interface NotifyListener {
+        fun handle(type: String): Boolean
+        fun notifyData()
+    }
+
 }
+
+

@@ -27,37 +27,37 @@ import android.hardware.bydauto.setting.BYDAutoSettingDevice.SEAT_VENTILATING_OF
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.toast
 
-class SetListener(val info: AcControlInfo) : AbsBYDAutoSettingListener() {
+class SetListener(val info: AutoInfo) : AbsBYDAutoSettingListener() {
     override fun onSeatVentilatingStateChanged(i: Int, i2: Int) {
         super.onSeatVentilatingStateChanged(i, i2)
-        info.exeLoad { it.mainVent;it.deputyVent }
+        info.exeLoad { it.ac_vent_main;it.ac_vent_deputy }
     }
 
     override fun onSeatHeatingStateChanged(i: Int, i2: Int) {
         super.onSeatHeatingStateChanged(i, i2)
-        info.exeLoad { it.mainHeat;it.deputyHeat }
+        info.exeLoad { it.ac_heat_main;it.ac_heat_deputy }
     }
 
     override fun onSOCTargetRangeChanged(i: Int) {
         super.onSOCTargetRangeChanged(i)
-        info.exeLoad { it.soc;it.socSave }
+        info.exeLoad { it.soc_target;it.soc_mode }
     }
 }
 
-class ChargeListener(val info: AcControlInfo) : AbsBYDAutoChargingListener() {
+class ChargeListener(val info: AutoInfo) : AbsBYDAutoChargingListener() {
     override fun onSocSaveSwitchChanged(i: Int) {
         super.onSocSaveSwitchChanged(i)
-        info.exeLoad { it.soc;it.socSave }
+        info.exeLoad { it.soc_target;it.soc_mode }
     }
 }
 
-class AcControlInfo(val host: MenuFloatView) {
+class AutoInfo(val host: MenuFloatView) {
     private var load = false
     private var acListener: Any? = null
     private var setListener: Any? = null
     private var chargeListener: Any? = null
 
-    fun onVisible() {
+    fun onAttach() {
         kotlin.runCatching {
             if (acListener == null) {
                 val l = AcListener(this)
@@ -77,7 +77,7 @@ class AcControlInfo(val host: MenuFloatView) {
         }
     }
 
-    fun onHide() {
+    fun onDetach() {
         kotlin.runCatching {
             if (acListener != null) {
                 ac.unregisterListener(acListener as AcListener)
@@ -94,18 +94,24 @@ class AcControlInfo(val host: MenuFloatView) {
         }
     }
 
-    var open: Boolean = false
+    private val notify = mutableSetOf<String>()
+
+    var ac_open: Boolean = false
         get() {
-            if (load) field = ac.acStartState == AC_POWER_ON
+            if (load) {
+                field = ac.acStartState == AC_POWER_ON
+                notify += "ac_open"
+            }
             return field
         }
         set(value) {
             field = value
             if (value) ac.start(AC_CTRL_SOURCE_UI_KEY) else ac.stop(AC_CTRL_SOURCE_UI_KEY)
         }
-    var inLoop: Boolean = false
+    var ac_loop: Boolean = false
         get() {
             if (load) {
+                notify += "ac_loop"
                 field = ac.acCycleMode == AC_CYCLEMODE_INLOOP
             }
             return field
@@ -114,9 +120,10 @@ class AcControlInfo(val host: MenuFloatView) {
             field = value
             ac.setAcCycleMode(AC_CTRL_SOURCE_UI_KEY, if (value) AC_CYCLEMODE_OUTLOOP else AC_CYCLEMODE_INLOOP)
         }
-    var auto: Boolean = false
+    var ac_control_model: Boolean = false
         get() {
             if (load) {
+                notify += "ac_control_model"
                 field = ac.acControlMode == AC_CTRLMODE_AUTO
             }
             return field
@@ -126,9 +133,10 @@ class AcControlInfo(val host: MenuFloatView) {
             ac.setAcControlMode(AC_CTRL_SOURCE_UI_KEY, if (value) AC_CTRLMODE_AUTO else AC_CTRLMODE_MANUAL)
         }
 
-    var separate: Boolean = false
+    var ac_separate: Boolean = false
         get() {
             if (load) {
+                notify += "ac_separate"
                 field = ac.acTemperatureControlMode == AC_TEMPCTRL_SEPARATE_ON
             }
             return field
@@ -139,9 +147,10 @@ class AcControlInfo(val host: MenuFloatView) {
                 AC_CTRL_SOURCE_UI_KEY, if (value) AC_TEMPCTRL_SEPARATE_ON else AC_TEMPCTRL_SEPARATE_OFF
             )
         }
-    var wind: Int = 0
+    var ac_wind: Int = 0
         get() {
             if (load) {
+                notify += "ac_wind"
                 field = ac.acWindLevel ?: 0
             }
             return field
@@ -150,9 +159,10 @@ class AcControlInfo(val host: MenuFloatView) {
             field = value
             ac.setAcWindLevel(AC_CTRL_SOURCE_UI_KEY, value)
         }
-    var temp: Int = 0
+    var ac_temp: Int = 0
         get() {
             if (load) {
+                notify += "ac_temp"
                 field = ac.getTemprature(if (host.reverse()) AC_TEMPERATURE_DEPUTY else AC_TEMPERATURE_MAIN)
             }
             return field
@@ -160,22 +170,24 @@ class AcControlInfo(val host: MenuFloatView) {
         set(value) {
             field = value
             val type = when {
-                !separate -> BYDAutoAcDevice.AC_TEMPERATURE_MAIN_DEPUTY
+                !ac_separate -> BYDAutoAcDevice.AC_TEMPERATURE_MAIN_DEPUTY
                 else -> if (host.reverse()) AC_TEMPERATURE_DEPUTY else AC_TEMPERATURE_MAIN
             }
             ac.setAcTemperature(type, value, AC_CTRL_SOURCE_UI_KEY, AC_TEMPERATURE_UNIT_OC)
         }
-    var soc: Int = 0
+    var soc_target: Int = 60
         get() {
             if (load) {
+                notify += "soc_target"
                 field = set.socTarget
             }
             return field
         }
         private set
-    var socSave: Boolean = false
+    var soc_mode: Boolean = false
         get() {
             if (load) {
+                notify += "soc_mode"
                 field = charge.socSaveSwitch == 2
             }
             return field
@@ -186,9 +198,10 @@ class AcControlInfo(val host: MenuFloatView) {
         }
 
 
-    var ventilation: Boolean = false
+    var ac_vent: Boolean = false
         get() {
             if (load) {
+                notify += "ac_vent"
                 field = ac.acVentilationState == AC_VENTILATION_STATE_ON
             }
             return field
@@ -200,9 +213,10 @@ class AcControlInfo(val host: MenuFloatView) {
             )
         }
 
-    var mainVent: Boolean = false
+    var ac_vent_main: Boolean = false
         get() {
             if (load) {
+                notify += "ac_vent_main"
                 field = set.getSeatVentilatingState(DRIVER_SEAT) != SEAT_VENTILATING_OFF
             }
             return field
@@ -214,9 +228,10 @@ class AcControlInfo(val host: MenuFloatView) {
             )
         }
 
-    var deputyVent: Boolean = false
+    var ac_vent_deputy: Boolean = false
         get() {
             if (load) {
+                notify += "ac_vent_deputy"
                 field = set.getSeatVentilatingState(PASSENGER_SEAT) != SEAT_VENTILATING_OFF
             }
             return field
@@ -227,9 +242,10 @@ class AcControlInfo(val host: MenuFloatView) {
                 PASSENGER_SEAT, if (value) SEAT_VENTILATING_LOW else SEAT_VENTILATING_OFF
             )
         }
-    var mainHeat: Boolean = false
+    var ac_heat_main: Boolean = false
         get() {
             if (load) {
+                notify += "ac_heat_main"
                 field = set.getSeatHeatingState(DRIVER_SEAT) != SEAT_HEATING_OFF
             }
             return field
@@ -240,9 +256,10 @@ class AcControlInfo(val host: MenuFloatView) {
                 DRIVER_SEAT, if (value) SEAT_HEATING_LOW else SEAT_HEATING_OFF
             )
         }
-    var deputyHeat: Boolean = false
+    var ac_heat_deputy: Boolean = false
         get() {
             if (load) {
+                notify += "ac_heat_deputy"
                 field = set.getSeatHeatingState(PASSENGER_SEAT) != SEAT_HEATING_OFF
             }
             return field
@@ -263,16 +280,19 @@ class AcControlInfo(val host: MenuFloatView) {
     private val charge: BYDAutoChargingDevice
         get() = BYDAutoUtils.getAutoCharging()
 
-    fun exeLoad(block: (info: AcControlInfo) -> Unit) {
+    fun exeLoad(block: (info: AutoInfo) -> Unit) {
         load = true
         kotlin.runCatching {
             block(this)
         }.onFailure { it.message?.toast() }
         load = false
-        host.notifyAcControl()
+        host.notifyAcControl(notify.toSet())
+        notify.clear()
     }
 
     override fun toString(): String {
-        return "AcControlInfo(load=$load, open=$open, separate=$separate, inLoop=$inLoop, auto=$auto, wind=$wind, temp=$temp, ventilation=$ventilation, mainVent=$mainVent, deputyVent=$deputyVent, mainHeat=$mainHeat, deputyHeat=$deputyHeat)"
+        return "AutoInfo(open=$ac_open, inLoop=$ac_loop, auto=$ac_control_model, separate=$ac_separate, wind=$ac_wind, temp=$ac_temp, soc=$soc_target, socSave=$soc_mode, ventilation=$ac_vent, mainVent=$ac_vent_main, deputyVent=$ac_vent_deputy, mainHeat=$ac_heat_main, deputyHeat=$ac_heat_deputy)"
     }
+
+
 }

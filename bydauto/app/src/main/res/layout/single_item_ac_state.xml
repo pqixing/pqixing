@@ -16,7 +16,7 @@
         android:padding="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/app_logo"
-        android:tint="@android:color/white" />
+        android:tint="@color/tint_simple_icon" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -26,7 +26,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="测试文本"
-        android:textColor="@android:color/white"
+        android:textColor="@color/tint_simple_icon"
         android:textSize="12sp"
         tools:textColor="@android:color/black" />
 </LinearLayout>

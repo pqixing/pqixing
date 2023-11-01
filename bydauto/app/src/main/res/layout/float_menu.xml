@@ -11,21 +11,15 @@
     android:maxHeight="600dp"
     android:orientation="horizontal">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menus"
         android:layout_width="64dp"
         android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/menus"
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_float_ac_control"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:visibility="visible" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:background="@drawable/bg_float_ac_control"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/ll_control"
@@ -105,9 +99,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_ac_state"
                 android:layout_width="140dp"
-                android:layout_margin="10dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
+                android:layout_margin="10dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2" />
@@ -116,10 +110,10 @@
                 android:id="@+id/tv_temp_name"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/rcv_ac_state"
                 android:background="@drawable/bg_single_item_app"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
                 android:singleLine="true"
                 android:text="温度"
                 android:textColor="@android:color/white"
@@ -141,11 +135,11 @@
                 android:id="@+id/tv_wind_name"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/rcv_ac_temp"
                 android:background="@drawable/bg_single_item_app"
                 android:gravity="center"
                 android:singleLine="true"
-                android:layout_marginTop="10dp"
                 android:text="风量"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
@@ -182,11 +176,5 @@
             app:spanCount="4" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_others"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_light"
-        android:visibility="gone" />
 
 </LinearLayout>

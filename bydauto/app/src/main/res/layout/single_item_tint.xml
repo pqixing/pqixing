@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/single_item_width"
     android:layout_height="85dp"
-    android:background="@drawable/bg_single_item_app"
+    android:background="@drawable/bg_single_item_tint"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="2dp">
@@ -12,10 +12,10 @@
         android:id="@+id/iv_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:scaleType="fitCenter"
         android:padding="3dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/app_logo"
-        android:tint="@android:color/white" />
+        android:tint="@color/tint_simple_icon" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -25,7 +25,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="测试文本"
-        android:textColor="@android:color/white"
+        android:textColor="@color/tint_simple_icon"
         android:textSize="12sp"
         tools:textColor="@android:color/black" />
 </LinearLayout>
