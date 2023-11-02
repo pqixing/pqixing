@@ -49,14 +49,15 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
             while (curTs == startProTs) runCatching {
                 //监听雷达距离和页面切换启动
                 val cmd = "logcat -T 0 -s ${catTags.joinToString(" ")} *:S"
+                App.mHandle.postDelayed({ Log.i(TAG_START_TEST, "start $cmd $curTs") }, 500)
+                App.mHandle.postDelayed({ checkIfLive() }, 5000)
                 val pro = Runtime.getRuntime().exec(cmd)
-                App.log("start $cmd")
                 Log.i(TAG_START_TEST, "start $cmd $curTs")
 //                    Runtime.getRuntime().exec("logcat -T 0")
                 pro.inputStream.bufferedReader().use {
                     while (curTs == startProTs) {
                         val line = it.readLine() ?: continue
-
+                        Log.d("TAG_START_TEST", "read: $line")
                         hasLog = true
                         if (allPatterns?.matcher(line)?.matches() != true || line.contains(TAG_START_TEST)) continue
 
@@ -77,18 +78,14 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
             }.onFailure { it.message?.toast() }
         }
         thread(block = watch)
-        checkIfLive()
         return true
     }
 
     private fun checkIfLive() {
-        App.mHandle.postDelayed({
-            if (!hasLog) {
-                "重启日志管理器".toast()
-                stop()
-                start()
-            }
-        }, 5000)
+        if (hasLog) return
+        "重启日志管理器".toast()
+        stop()
+        start()
     }
 
     interface LogCatCallBack {

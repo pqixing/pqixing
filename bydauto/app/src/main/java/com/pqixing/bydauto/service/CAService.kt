@@ -1,9 +1,11 @@
 package com.pqixing.bydauto.service
 
+import android.accessibilityservice.AccessibilityGestureEvent
 import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityEvent
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.utils.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -47,6 +49,15 @@ class CAService : AccessibilityService() {
         actions.clear()
     }
 
+    override fun onGesture(gestureId: Int): Boolean {
+        App.log("onGesture ${gestureId}")
+
+        return true
+    }
+    override fun onGesture(gestureEvent: AccessibilityGestureEvent): Boolean {
+        App.log("onGesture ${gestureEvent}")
+        return super.onGesture(gestureEvent)
+    }
     fun performs(actions: List<Pair<CASExe, Long>>) {
         App.uiScope.launch {
             actions.forEach { action ->
@@ -57,7 +68,7 @@ class CAService : AccessibilityService() {
 
                 }.onFailure { App.toast("performGlobalAction :${action.first} ${it.message}") }
             }
-            UiUtils.enableAccessibility(App.get(), false)
+//            UiUtils.enableAccessibility(App.get(), false)
         }
     }
 

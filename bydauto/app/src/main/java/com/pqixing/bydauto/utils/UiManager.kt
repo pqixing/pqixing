@@ -11,6 +11,7 @@ object UiManager : LogcatManager.LogCatCallBack {
 
     private var resumes = LinkedList<String>()
     private var history = LinkedList<String>()
+    private var c2p = hashMapOf<String, String>()
 
     var inSplitMode = false
         private set
@@ -73,18 +74,25 @@ object UiManager : LogcatManager.LogCatCallBack {
     }
 
     override fun getFilterRex(): String {
-        return ".*ActivityTaskManager.*(activityResumedForAcBar|onConfigurationChanged|startPausingLocked).*"
+        return ".*ActivityTaskManager.*(START|activityResumedForAcBar|onConfigurationChanged|startPausingLocked).*"
+    }
+
+    fun getPkgByClass(clazz: String): String {
+        return c2p.getOrPut(clazz) { clazz.split(".").subList(0, 3).joinToString(".") }
     }
 
     override fun onReceiveLog(line: String) {
         kotlin.runCatching {
             when {
                 line.contains("activityResumedForAcBar") -> {
-                    val pkg = line.substringAfter("className:").trim().split(".").subList(0, 3).joinToString(".")
+                    val pkg = getPkgByClass(line.substringAfter("className:").trim())
+
                     history.remove(pkg)
                     history.addFirst(pkg)
+
                     resumes.remove(pkg)
                     resumes.addFirst(pkg)
+
                     sCallBack.forEach { it.onPkgResume(pkg) }
                 }
 
@@ -96,6 +104,17 @@ object UiManager : LogcatManager.LogCatCallBack {
                 line.contains("startPausingLocked") -> {
                     val mPausingPkg = line.substringAfter("mPausingPkg =").substringBefore(",").trim()
                     resumes.remove(mPausingPkg)
+                }
+
+                line.contains("START") -> {
+                    val name = line.substringAfterLast("{").substringBefore("}").trim().split(" ")
+                        .find { it.contains("/") }
+                        ?: return
+
+                    val pkg = name.substringBefore("/").replace("cmp=", "")
+                    val clazz =
+                        name.substringAfter("/").let { if (it.startsWith(".")) pkg + it else it }
+                    c2p[clazz] = pkg
                 }
 
                 else -> {}

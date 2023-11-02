@@ -39,6 +39,7 @@ class MainUI : BaseActivity() {
         rvData.adapter = mainAdapter
         rvData.isNestedScrollingEnabled = true
         updateLayoutManager(rvData)
+        UiUtils.enableAccessibility(this,true)
     }
 
     private fun showHideMenu() {
