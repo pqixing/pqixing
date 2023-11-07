@@ -29,7 +29,7 @@ object UiManager : LogcatManager.LogCatCallBack {
 
 
     @Synchronized
-    private fun initApps() {
+    fun initApps() {
         val context = App.get()
         val pm = context.packageManager
         apps = pm.getInstalledApplications(0).mapNotNull { info ->

@@ -134,10 +134,6 @@ class MusicItem : SettingImpl(R.layout.setting_music) {
         //获取当前正在播放的软件
         val currentPlayPkg = BYDAutoUtils.getCurrentAudioFocusPackage()
         val lastPkg = Const.SP_MUSIC_PKG
-        if (currentPlayPkg.isNotEmpty() && Const.SP_MUSIC_PKG == currentPlayPkg) {
-            return currentPlayPkg
-        }
-
         val matchs = withContext(Dispatchers.IO) { matchPkgs(context) }
         if (Const.SP_MUSIC_SWITCH) {
             return when {
