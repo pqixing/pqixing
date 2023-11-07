@@ -58,7 +58,7 @@ class MainUI : BaseActivity() {
                 4 -> backupThird()
             }
         }.setOnDismissListener {
-            mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
+            mainAdapter.setDiffData(SettingManager.updateSettings())
         }.show()
     }
 
@@ -107,12 +107,12 @@ class MainUI : BaseActivity() {
         val names = Array<CharSequence>(hides.size) { getString(hides[it].first.getNameId()) }
         val checks = BooleanArray(hides.size) { !hides[it].second }
 
-        AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
-            .setMultiChoiceItems(names, checks) { d, w, c ->
-                SettingManager.hideSetting(this, hides[w].first, !c)
-            }.setOnDismissListener {
-                mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
-            }.show()
+//        AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
+//            .setMultiChoiceItems(names, checks) { d, w, c ->
+//                SettingManager.changeSetting(this, hides[w].first, !c)
+//            }.setOnDismissListener {
+//                mainAdapter.setDiffData(SettingManager.updateSettings())
+//            }.show()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -124,7 +124,7 @@ class MainUI : BaseActivity() {
     override fun onStart() {
         super.onStart()
         PermType.clearCache()
-        mainAdapter.setDiffData(SettingManager.updateCurSettings(this))
+        mainAdapter.setDiffData(SettingManager.updateSettings())
     }
 
     private fun updateLayoutManager(rvData: RecyclerView?) {

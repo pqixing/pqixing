@@ -1,14 +1,12 @@
 package com.pqixing.bydauto.setting.item
 
 import android.content.Context
-import android.view.View
 import android.widget.CheckBox
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiUtils
-import com.pqixing.bydauto.widget.MenuFloatView
 import com.pqixing.bydauto.widget.StatusBarView
 
 class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
@@ -37,14 +35,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
     private fun float(context: Context, types: Array<String>) {
         types.forEach {
             UiUtils.showOrUpdate(it) {
-                if (it == FLOAT_TAG_BAR_TOP) {
-                    StatusBarView(context.applicationContext)
-                } else {
-                    MenuFloatView(context.applicationContext).also { view ->
-                        view.setDirection(if (it == FLOAT_TAG_BAR_RIGHT) View.LAYOUT_DIRECTION_RTL else View.LAYOUT_DIRECTION_LTR)
-//                        view.setDirection(View.LAYOUT_DIRECTION_RTL)
-                    }
-                }
+                StatusBarView(context.applicationContext)
             }
         }
     }

@@ -22,33 +22,33 @@ object SettingManager {
         RotationItem(),
         AdbItem(),
     )
-    private var curs: List<ISetting> = emptyList()
+    private var shows: List<ISetting> = emptyList()
+    private var hides: List<ISetting> = emptyList()
 
     @Synchronized
-    fun updateCurSettings(context: Context): List<ISetting> {
+    fun updateSettings(): List<ISetting> {
 
-        val sets = Const.SP_SETTING_HIDE.split(",").toSet()
-        val filter = settings.filter { !sets.contains(it.javaClass.simpleName) && it.isShow(context) }
+        val context = App.get()
+        val lastShows = shows
 
-        curs.minus(filter).forEach {
+        shows = settings.filter { it.isShow(context) }
+        hides = settings.filter { !it.isShow(context) }
+
+        lastShows.minus(shows.toSet()).forEach {
             it.onDestroy(context)
             App.log("${it.javaClass.simpleName} onDestroy")
         }
-        filter.minus(curs).forEach {
+        shows.minus(lastShows.toSet()).forEach {
             it.onCreate(context)
             App.log("${it.javaClass.simpleName} onCreate")
         }
-        curs = filter
-        return curs
+        return getSettings()
     }
 
-    fun getSettings(context: Context) = curs
+    fun getSettings() = shows + hides
 
-    fun hideSetting(context: Context, setting: ISetting, hide: Boolean) {
-        val key = setting.javaClass.simpleName
-        Const.SP_SETTING_HIDE = Const.SP_SETTING_HIDE.split(",")
-            .toSet().let { if (hide) it.plus(key) else it.minus(key) }
-            .joinToString(",")
+    fun changeSetting(setting: ISetting, show: Boolean) {
+        return App.sp.edit().putBoolean("show_${setting.javaClass.simpleName}", show).apply()
     }
 
     fun getHides(context: Context): List<Pair<ISetting, Boolean>> {
@@ -57,7 +57,7 @@ object SettingManager {
     }
 
     fun <T : ISetting> findSetting(clazz: Class<T>): T? {
-        return curs.find { it.javaClass == clazz } as? T
+        return shows.find { it.javaClass == clazz } as? T
     }
 
 }

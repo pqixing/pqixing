@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -27,13 +28,15 @@ class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>
 
     override fun onBindViewHolder(holder: SViewHolder, position: Int) {
         val setting = datas.getOrNull(position) ?: return
+        val show = setting.isShow(holder.context)
         holder.title?.setText(setting.getNameId())
         holder.title?.setOnLongClickListener {
-            SettingManager.hideSetting(holder.context, setting, true)
-            setDiffData(SettingManager.updateCurSettings(holder.context))
+            SettingManager.changeSetting(setting, !show)
+            setDiffData(SettingManager.updateSettings())
             true
         }
-        App.uiScope.launch { setting.onBindViewHolder(holder) }
+        holder.itemView.findViewById<View>(R.id.fl_content)?.visibility = if (show) View.VISIBLE else View.GONE
+        if (show) App.uiScope.launch { setting.onBindViewHolder(holder) }
     }
 
     fun setDiffData(news: List<ISetting>) {

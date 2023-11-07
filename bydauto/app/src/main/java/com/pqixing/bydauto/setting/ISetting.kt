@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.PermType
 
 interface ISetting {
     fun getNameId(): Int
@@ -36,6 +36,6 @@ abstract class SettingImpl(val _layoutId: Int) : ISetting {
     }
 
     override fun isShow(context: Context): Boolean {
-        return PermType.Float.enable()
+        return App.sp.getBoolean("show_${this.javaClass.simpleName}", true)
     }
 }

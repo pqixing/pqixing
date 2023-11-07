@@ -20,7 +20,7 @@ class MainService : Service() {
         super.onCreate()
         musicInfo.onCreate(this)
         carInfo.onCreate(this)
-        SettingManager.updateCurSettings(this)
+        SettingManager.updateSettings()
         App.mThread.post { UiManager.initApps() }
     }
 
@@ -29,7 +29,7 @@ class MainService : Service() {
         super.onDestroy()
         musicInfo.onDestroy(this)
         carInfo.onDestroy(this)
-        SettingManager.getSettings(this).forEach { it.onDestroy(this) }
+        SettingManager.getSettings().forEach { it.onDestroy(this) }
     }
 
     override fun enforceCallingOrSelfPermission(permission: String, message: String?) {
