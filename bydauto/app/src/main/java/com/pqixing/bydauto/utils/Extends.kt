@@ -5,6 +5,9 @@ import android.util.Log
 import android.widget.Toast
 import com.pqixing.bydauto.App
 
+val app: App
+    get() = App.get()
+
 //fun Context.hook(pkg: String? = null): Context = HookContext(this, pkg)
 fun inMainThread(): Boolean {
     return Looper.myLooper() == Looper.getMainLooper()
@@ -12,6 +15,22 @@ fun inMainThread(): Boolean {
 
 val Int.dp: Int
     get() = UiUtils.dp2dx(this)
+
+var String.spBoolean
+    get() = App.sp.getBoolean(this, false)
+    set(value) {
+        App.sp.edit().putBoolean(this, value).apply()
+    }
+var String.spLong
+    get() = App.sp.getLong(this, 0L)
+    set(value) {
+        App.sp.edit().putLong(this, value).apply()
+    }
+var String.spString
+    get() = App.sp.getString(this, "")
+    set(value) {
+        App.sp.edit().putString(this, value).apply()
+    }
 
 fun CharSequence.toast(): CharSequence {
     log(tag = getStackName(4))

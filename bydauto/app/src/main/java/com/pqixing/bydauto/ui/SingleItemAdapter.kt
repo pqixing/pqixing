@@ -9,12 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pqixing.bydauto.R
 
-data class SingleItem(var name: String, var icon: Int = 0, var drawable: Drawable? = null, val click: View.OnClickListener) {
-    var select = false
+data class SingleItem(var name: String, var icon: Int = 0, var drawable: Drawable? = null, var select: Boolean = false, val click: View.OnClickListener? = null) {
+    companion object {
+        val empty = SingleItem("")
+    }
+
     var onUpdate: ((item: SingleItem) -> Unit)? = null
     var obj: Any? = null
-
-
     fun update(update: (item: SingleItem) -> Unit): SingleItem {
         this.onUpdate = update
         return this
@@ -46,7 +47,7 @@ class SingleItemAdapter(var items: List<SingleItem>, val resId: Int) :
         holder.name.isSelected = item.select
         holder.itemView.setOnClickListener {
             kotlin.runCatching {
-                item.click.onClick(it)
+                item.click?.onClick(it)
             }
             kotlin.runCatching {
                 item.onUpdate?.invoke(item)

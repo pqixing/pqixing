@@ -1,11 +1,11 @@
 package com.pqixing.bydauto.utils
 
-import android.content.Context
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.model.Perms
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.AdbItem
 import com.pqixing.bydauto.setting.item.FloatBarItem
+import com.pqixing.bydauto.setting.item.HideItem
 import com.pqixing.bydauto.setting.item.MusicItem
 import com.pqixing.bydauto.setting.item.PermItem
 import com.pqixing.bydauto.setting.item.RadarItem
@@ -13,6 +13,7 @@ import com.pqixing.bydauto.setting.item.RotationItem
 import com.pqixing.bydauto.setting.item.WireChargeItem
 
 object SettingManager {
+
     private val settings = arrayOf<ISetting>(
         PermItem(),
         FloatBarItem(),
@@ -21,18 +22,24 @@ object SettingManager {
         MusicItem(),
         RotationItem(),
         AdbItem(),
+        HideItem(),
     )
     private var shows: List<ISetting> = emptyList()
     private var hides: List<ISetting> = emptyList()
+    val perms = Perms()
+
+    val prepare: Boolean
+        get() = perms.all()
+
 
     @Synchronized
     fun updateSettings(): List<ISetting> {
-
+        perms.updatePermission()
         val context = App.get()
         val lastShows = shows
 
-        shows = settings.filter { it.isShow(context) }
-        hides = settings.filter { !it.isShow(context) }
+        shows = if (!prepare) listOf(settings[0]) else settings.filter { it.isShow(context) }
+        hides = if (!prepare) emptyList() else settings.filter { !it.isShow(context) }
 
         lastShows.minus(shows.toSet()).forEach {
             it.onDestroy(context)
@@ -48,12 +55,11 @@ object SettingManager {
     fun getSettings() = shows + hides
 
     fun changeSetting(setting: ISetting, show: Boolean) {
-        return App.sp.edit().putBoolean("show_${setting.javaClass.simpleName}", show).apply()
+        "SHOW_${setting.javaClass.simpleName}".spBoolean = show
     }
 
-    fun getHides(context: Context): List<Pair<ISetting, Boolean>> {
-        val hideNames = Const.SP_SETTING_HIDE.split(",").toSet()
-        return settings.filter { it.isShow(context) }.map { it to hideNames.contains(it.javaClass.simpleName) }
+    fun getHides(): List<ISetting> {
+        return hides
     }
 
     fun <T : ISetting> findSetting(clazz: Class<T>): T? {

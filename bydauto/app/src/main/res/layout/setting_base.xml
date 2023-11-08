@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginBottom="10dp"
-    android:orientation="vertical">
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <TextView
+    <CheckBox
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="5dp"
         android:clickable="true"
         android:textSize="16sp" />
 
@@ -19,7 +18,8 @@
         android:id="@+id/fl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:background="@drawable/bg_item_rect"
         android:padding="10dp" />
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

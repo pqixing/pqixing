@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|start"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/v_min_bar"
+        android:layout_width="5dp"
+        android:layout_height="180dp"
+        android:background="@drawable/bg_item_press" />
+
+    <LinearLayout
+        android:id="@+id/ll_min_menu"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_min_menu"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_menu_back"
+            android:tint="@android:color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_menu_home"
+            android:tint="@color/tint_simple_icon" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_menu_app"
+            android:tint="@color/tint_simple_icon" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_menu_split"
+            android:tint="@color/tint_simple_icon" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_max_menu"
+        android:layout_width="60dp"
+        android:layout_height="600dp"
+        android:background="@drawable/bg_item_max_menu"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_max_card"
+        android:layout_width="400dp"
+        android:layout_height="600dp"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>

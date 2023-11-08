@@ -10,6 +10,7 @@ import com.pqixing.bydauto.R
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.utils.SettingManager
+import com.pqixing.bydauto.utils.app
 import kotlinx.coroutines.launch
 
 class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>() {
@@ -30,18 +31,21 @@ class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>
         val setting = datas.getOrNull(position) ?: return
         val show = setting.isShow(holder.context)
         holder.title?.setText(setting.getNameId())
-        holder.title?.setOnLongClickListener {
-            SettingManager.changeSetting(setting, !show)
-            setDiffData(SettingManager.updateSettings())
-            true
+        holder.title?.isChecked = setting.isShow(holder.context)
+        holder.title?.setOnCheckedChangeListener { _, show ->
+            SettingManager.changeSetting(setting, show)
+            app.mHandle.post { setDiffData(SettingManager.updateSettings()) }
         }
         holder.itemView.findViewById<View>(R.id.fl_content)?.visibility = if (show) View.VISIBLE else View.GONE
         if (show) App.uiScope.launch { setting.onBindViewHolder(holder) }
     }
 
+    fun notifyDiff() = setDiffData(SettingManager.updateSettings())
+
     fun setDiffData(news: List<ISetting>) {
-        DiffUtil.calculateDiff(DiffCallBack(datas, news), false).dispatchUpdatesTo(this)
+        val diff = DiffUtil.calculateDiff(DiffCallBack(datas, news), true)
         datas = news
+        diff.dispatchUpdatesTo(this)
     }
 
     class DiffCallBack(val olds: List<ISetting>, val news: List<ISetting>) : DiffUtil.Callback() {

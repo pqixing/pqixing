@@ -3,26 +3,16 @@ package com.pqixing.bydauto.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.litao.slider.NiftySlider
-import com.litao.slider.effect.ITEffect
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
-import com.pqixing.bydauto.utils.dp
 import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,15 +25,8 @@ class MainUI : BaseActivity() {
     val mainAdapter = MainAdapter(emptyList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startService(Intent(this, MainService::class.java))
         setContentView(R.layout.activity_settings)
-        findViewById<View>(R.id.tv_title).setOnClickListener { showHideMenu() }
-        findViewById<View>(R.id.tv_title).setOnLongClickListener { showHideSetting();true }
-        val rvData = findViewById<RecyclerView>(R.id.rv_data)
-        rvData.adapter = mainAdapter
-        rvData.isNestedScrollingEnabled = true
-        updateLayoutManager(rvData)
-        UiUtils.enableAccessibility(this,true)
+        findViewById<RecyclerView>(R.id.rv_data).adapter = mainAdapter
     }
 
     private fun showHideMenu() {
@@ -107,9 +90,9 @@ class MainUI : BaseActivity() {
     }
 
     private fun showHideSetting() {
-        val hides = SettingManager.getHides(this)
-        val names = Array<CharSequence>(hides.size) { getString(hides[it].first.getNameId()) }
-        val checks = BooleanArray(hides.size) { !hides[it].second }
+//        val hides = SettingManager.getHides()
+//        val names = Array<CharSequence>(hides.size) { getString(hides[it].first.getNameId()) }
+//        val checks = BooleanArray(hides.size) { !hides[it].second }
 
 //        AlertDialog.Builder(this).setTitle(getString(R.string.main_title_add_setting))
 //            .setMultiChoiceItems(names, checks) { d, w, c ->
@@ -118,47 +101,36 @@ class MainUI : BaseActivity() {
 //                mainAdapter.setDiffData(SettingManager.updateSettings())
 //            }.show()
 
-        val niftySlider2:NiftySlider
-        niftySlider2.apply {
-            effect = ITEffect(this).apply {
-                setStartIcon(R.drawable.icon_font)
-                setEndIcon(R.drawable.icon_font)
-                startIconSize = 10.dp
-                endIconSize = 14.dp
-                startTintList = ColorStateList.valueOf(iconTintColor)
-                endTintList = ColorStateList.valueOf(iconTintColor)
-                startPadding = 12.dp
-                endPadding = 12.dp
-            }
-            setTrackTintList(ColorStateList.valueOf(activeTrackColor))
-            setTrackInactiveTintList(ColorStateList.valueOf(inactiveTrackColor))
-            addOnIntValueChangeListener { slider, value, fromUser ->
-                setThumbText(Data.weReadFontSizeMap[value].toString())
-            }
-        }
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        updateLayoutManager(findViewById(R.id.rv_data))
+//        val niftySlider2: NiftySlider
+//        niftySlider2.apply {
+//            effect = ITEffect(this).apply {
+//                setStartIcon(R.drawable.icon_font)
+//                setEndIcon(R.drawable.icon_font)
+//                startIconSize = 10.dp
+//                endIconSize = 14.dp
+//                startTintList = ColorStateList.valueOf(iconTintColor)
+//                endTintList = ColorStateList.valueOf(iconTintColor)
+//                startPadding = 12.dp
+//                endPadding = 12.dp
+//            }
+//            setTrackTintList(ColorStateList.valueOf(activeTrackColor))
+//            setTrackInactiveTintList(ColorStateList.valueOf(inactiveTrackColor))
+//            addOnIntValueChangeListener { slider, value, fromUser ->
+//                setThumbText(Data.weReadFontSizeMap[value].toString())
+//            }
+//        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onStart() {
         super.onStart()
-        PermType.clearCache()
-        mainAdapter.setDiffData(SettingManager.updateSettings())
-    }
-
-    private fun updateLayoutManager(rvData: RecyclerView?) {
-        rvData ?: return
-        val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE && !UiManager.inSplitMode) {
-            rvData.layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-        } else {
-            rvData.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mainAdapter.notifyDiff()
+        if (SettingManager.prepare) {
+            startService(Intent(this, MainService::class.java))
         }
     }
+
+
 }
 
 

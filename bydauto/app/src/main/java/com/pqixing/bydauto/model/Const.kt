@@ -1,6 +1,7 @@
 package com.pqixing.bydauto.model
 
 import com.pqixing.bydauto.App
+import com.pqixing.bydauto.utils.spBoolean
 
 object Const {
 
@@ -45,13 +46,6 @@ object Const {
         get() = App.sp.getString("SP_SETTING_HIDE", "")!!
         set(value) = App.sp.edit().putString("SP_SETTING_HIDE", value).apply()
 
-    var SP_FLOAT_BAR: Boolean
-        get() = App.sp.getBoolean("SP_FLOAT_BAR", false)
-        set(value) = App.sp.edit().putBoolean("SP_FLOAT_BAR", value).apply()
-    var SP_FLOAT_STATUS: Boolean
-        get() = App.sp.getBoolean("SP_FLOAT_STATUS", false)
-        set(value) = App.sp.edit().putBoolean("SP_FLOAT_STATUS", value).apply()
-
     var SP_PERM_ADB_CONNECT: Boolean
         get() = App.sp.getBoolean("SP_PERM_ADB_CONNECT", false)!!
         set(value) = App.sp.edit().putBoolean("SP_PERM_ADB_CONNECT", value).apply()
@@ -59,6 +53,7 @@ object Const {
     var SP_DELAY_DISMISS: Long
         get() = App.sp.getLong("SP_DELAY_DISMISS", 30000)!!
         set(value) = App.sp.edit().putLong("SP_DELAY_DISMISS", value).apply()
+
 
     const val ACTION_AUTOVOICE_SEARCH_PLUS = "com.byd.action.AUTOVOICE_SEARCH_PLUS"
     const val MEDIA_HOST = "host.intent.action.MEDIA"

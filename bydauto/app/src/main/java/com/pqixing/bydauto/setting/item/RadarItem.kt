@@ -6,7 +6,6 @@ import android.widget.CheckBox
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiManager
@@ -16,10 +15,6 @@ import com.pqixing.bydauto.widget.RadarFloatView
 class RadarItem : SettingImpl(R.layout.setting_radar), UiManager.IActivityLife {
     companion object {
         const val FLOAT_TAG_RADAR = "FLOAT_TAG_RADAR"
-    }
-
-    override fun isShow(context: Context): Boolean {
-        return PermType.ReadLogs.enable()
     }
 
     private val RADAR_ACTIVITY = "com.byd.avc.AutoVideoActivity"

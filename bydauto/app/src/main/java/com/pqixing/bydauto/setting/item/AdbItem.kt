@@ -1,23 +1,16 @@
 package com.pqixing.bydauto.setting.item
 
 import android.accessibilityservice.AccessibilityService
-import android.content.Context
 import android.content.Intent
-import android.hardware.IBYDAutoEvent
-import android.hardware.bydauto.charging.AbsBYDAutoChargingListener
-import android.hardware.bydauto.charging.BYDAutoChargingDevice
 import android.hardware.bydauto.instrument.BYDAutoInstrumentDevice
 import android.view.View
 import android.view.ViewGroup
-import com.cgutman.androidremotedebugger.AdbUtils
 import com.cgutman.androidremotedebugger.ConnectActivity
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.PermType
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.setting.SViewHolder
 import com.pqixing.bydauto.setting.SettingImpl
-import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.launch
@@ -32,15 +25,6 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
             group.getChildAt(i).setOnClickListener { onChildCick(it) }
         }
 
-    }
-
-    override fun onCreate(context: Context) {
-        super.onCreate(context)
-        AdbUtils.updateCryptoIfNeed(context.filesDir) {}
-    }
-
-    override fun isShow(context: Context): Boolean {
-        return PermType.Adb.enable()
     }
 
     private fun onChildCick(view: View) {
@@ -62,7 +46,9 @@ class AdbItem : SettingImpl(R.layout.setting_adb) {
 //                                "onSocSaveSwitchChanged $i".toast()
 //                            }
 //                        })
-                        BYDAutoInstrumentDevice::class.java.methods.filter { it.name.toUpperCase().contains("WIRELESS") }.joinToString { it.name }.toast()
+                        BYDAutoInstrumentDevice::class.java.methods.filter {
+                            it.name.toUpperCase().contains("WIRELESS")
+                        }.joinToString { it.name }.toast()
                     }
 
                     R.id.tv_action_split -> {

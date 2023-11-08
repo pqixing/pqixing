@@ -1,33 +1,79 @@
 package com.pqixing.bydauto.setting.item
 
+import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
-import android.widget.CheckBox
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import com.cgutman.androidremotedebugger.AdbUtils
+import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
-import com.pqixing.bydauto.model.PermType
-import com.pqixing.bydauto.setting.SViewHolder
-import com.pqixing.bydauto.setting.SettingImpl
+import com.pqixing.bydauto.setting.GridSetting
+import com.pqixing.bydauto.ui.MainUI
+import com.pqixing.bydauto.ui.SingleItem
+import com.pqixing.bydauto.ui.SingleItemAdapter
+import com.pqixing.bydauto.utils.AdbManager
+import com.pqixing.bydauto.utils.SettingManager
+import com.pqixing.bydauto.utils.toast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
-class PermItem : SettingImpl(R.layout.setting_permission) {
+class PermItem : GridSetting(R.string.setting_name_permission) {
 
-    override fun getNameId(): Int = R.string.setting_name_permission
 
-    override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
-        val view = viewHolder.itemView
-
-        val permMap = mapOf(
-            PermType.Float to view.findViewById(R.id.cb_float),
-            PermType.ReadLogs to view.findViewById(R.id.cb_read_logs),
-            PermType.WriteSecure to view.findViewById(R.id.cb_write_system),
-            PermType.Adb to view.findViewById<CheckBox>(R.id.cb_adb),
+    override fun getGridDatas(context: Context, adapter: SingleItemAdapter): List<SingleItem> {
+        SettingManager.perms.updatePermission()
+        return listOf(
+            SingleItem("一键授权") { grantAll(context, adapter) },
+            SingleItem.empty, SingleItem.empty, SingleItem("停止应用") { exitProcess(0) },
+            SingleItem(context.getString(R.string.permission_float), select = SettingManager.perms.float) {
+                context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).setData(Uri.parse("package:${context.packageName}")))
+            },
+            SingleItem(context.getString(R.string.permission_read_logs), select = SettingManager.perms.log) {
+                val cmd = "pm grant ${context.packageName} ${Manifest.permission.READ_LOGS}"
+                context.getSystemService(ClipboardManager::class.java)
+                    .setPrimaryClip(ClipData.newPlainText("Label", cmd))
+                "命令已复制:$cmd".toast()
+            },
+            SingleItem(context.getString(R.string.permission_write_secure), select = SettingManager.perms.secure) {
+                context.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS))
+            },
+            SingleItem(context.getString(R.string.permission_notify), select = SettingManager.perms.notify) {
+                context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+            },
         )
-        permMap.forEach { item ->
-            item.value.isChecked = item.key.enable()
-            item.value.setOnClickListener {
-                item.key.toSet(view.context) { check -> item.value.isChecked = check }
-                item.value.isChecked = item.key.enable()
+    }
+
+
+    override fun onCreate(context: Context) {
+        super.onCreate(context)
+        AdbUtils.updateCryptoIfNeed(context.filesDir) {}
+    }
+
+    private fun grantAll(context: Context, adapter: SingleItemAdapter) {
+        App.uiScope.launch {
+            val adb = AdbManager.getClient()
+            if (adb.runSync("getprop ro.build.id").isFailure) {
+                "adb权限异常".toast()
+                return@launch
             }
+            "开始执行权限".toast()
+            adb.runSync(gs(Manifest.permission.SYSTEM_ALERT_WINDOW))
+            adb.runSync(gs(Manifest.permission.READ_LOGS))
+            adb.runSync(gs(Manifest.permission.WRITE_SECURE_SETTINGS))
+            adb.runSync(gs(Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE))
+
+            "执行完成，即将重启".toast()
+            delay(500)
+            context.startActivity(Intent(context, MainUI::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            exitProcess(0)
         }
     }
+
+    private fun gs(perm: String) = "pm grant ${App.get().packageName} $perm"
 
     override fun isShow(context: Context): Boolean {
         return true

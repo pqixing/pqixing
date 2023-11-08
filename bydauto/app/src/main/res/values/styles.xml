@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppMainTheme" parent="android:Theme.Holo.NoActionBar.TranslucentDecor">
+    <style name="AppMainTheme" parent="android:Theme.Material.Dialog">
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
@@ -28,6 +28,7 @@
         <item name="android:textColor">@android:color/white</item>
 
     </style>
+
     <style name="def_textview_status_bar">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>

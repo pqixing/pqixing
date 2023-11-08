@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:padding="5dp"
-              android:orientation="vertical">
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"
-        android:text="@string/app_main_name"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_data"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible"/>
-
-</LinearLayout>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rv_data"
+    android:layout_width="350dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="15dp"
+    android:orientation="vertical"
+    android:visibility="visible"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
