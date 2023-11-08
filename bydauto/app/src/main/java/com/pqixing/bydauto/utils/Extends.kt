@@ -10,7 +10,10 @@ fun inMainThread(): Boolean {
     return Looper.myLooper() == Looper.getMainLooper()
 }
 
-fun CharSequence.toast():CharSequence {
+val Int.dp: Int
+    get() = UiUtils.dp2dx(this)
+
+fun CharSequence.toast(): CharSequence {
     log(tag = getStackName(4))
     val t = { Toast.makeText(App.get(), this, Toast.LENGTH_SHORT).show() }
     if (inMainThread()) {

@@ -3,6 +3,7 @@ package com.pqixing.bydauto.ui
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.litao.slider.NiftySlider
+import com.litao.slider.effect.ITEffect
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
@@ -19,6 +22,7 @@ import com.pqixing.bydauto.utils.AdbManager
 import com.pqixing.bydauto.utils.SettingManager
 import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
+import com.pqixing.bydauto.utils.dp
 import com.pqixing.bydauto.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -113,6 +117,25 @@ class MainUI : BaseActivity() {
 //            }.setOnDismissListener {
 //                mainAdapter.setDiffData(SettingManager.updateSettings())
 //            }.show()
+
+        val niftySlider2:NiftySlider
+        niftySlider2.apply {
+            effect = ITEffect(this).apply {
+                setStartIcon(R.drawable.icon_font)
+                setEndIcon(R.drawable.icon_font)
+                startIconSize = 10.dp
+                endIconSize = 14.dp
+                startTintList = ColorStateList.valueOf(iconTintColor)
+                endTintList = ColorStateList.valueOf(iconTintColor)
+                startPadding = 12.dp
+                endPadding = 12.dp
+            }
+            setTrackTintList(ColorStateList.valueOf(activeTrackColor))
+            setTrackInactiveTintList(ColorStateList.valueOf(inactiveTrackColor))
+            addOnIntValueChangeListener { slider, value, fromUser ->
+                setThumbText(Data.weReadFontSizeMap[value].toString())
+            }
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

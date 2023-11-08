@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="we_read_thumb_color">#fbf7eb</color>
+    <color name="we_read_thumb_shadow_color">#bbbbbb</color>
+    <color name="we_read_theme_color">#444138</color>
+</resources>
