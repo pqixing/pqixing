@@ -26,7 +26,6 @@ class PermItem : GridSetting(R.string.setting_name_permission) {
 
 
     override fun getGridDatas(context: Context, adapter: SingleItemAdapter): List<SingleItem> {
-        SettingManager.perms.updatePermission()
         return listOf(
             SingleItem("一键授权") { grantAll(context, adapter) },
             SingleItem.empty, SingleItem.empty, SingleItem("停止应用") { exitProcess(0) },

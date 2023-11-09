@@ -32,6 +32,7 @@ class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>
         val show = setting.isShow(holder.context)
         holder.title?.setText(setting.getNameId())
         holder.title?.isChecked = setting.isShow(holder.context)
+        holder.title?.visibility = if (setting.showTitle(holder.context)) View.VISIBLE else View.GONE
         holder.title?.setOnCheckedChangeListener { _, show ->
             SettingManager.changeSetting(setting, show)
             app.mHandle.post { setDiffData(SettingManager.updateSettings()) }
@@ -62,7 +63,7 @@ class MainAdapter(var datas: List<ISetting>) : RecyclerView.Adapter<SViewHolder>
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return false
+            return oldItemPosition == newItemPosition
         }
     }
 }

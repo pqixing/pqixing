@@ -32,6 +32,11 @@ class SingleItemAdapter(var items: List<SingleItem>, val resId: Int) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        if (item == SingleItem.empty) {
+            holder.itemView.visibility = View.INVISIBLE
+            return
+        }
+        holder.itemView.visibility = View.VISIBLE
         kotlin.runCatching {
             item.onUpdate?.invoke(item)
         }

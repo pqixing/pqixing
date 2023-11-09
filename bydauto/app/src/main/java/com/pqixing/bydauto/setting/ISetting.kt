@@ -17,6 +17,7 @@ interface ISetting {
     fun onCreate(context: Context)
     fun onDestroy(context: Context)
     fun isShow(context: Context): Boolean
+    fun showTitle(context: Context): Boolean = true
 }
 
 class SViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,11 +49,12 @@ abstract class GridSetting(val _nameId: Int) : SettingImpl(R.layout.setting_grid
         return _nameId
     }
 
+    open fun getItemLayoutId() = R.layout.single_item_grid
     override suspend fun onBindViewHolder(viewHolder: SViewHolder) {
         val recyclerView = viewHolder.findViewById<RecyclerView>(R.id.rcv_grid)
         var adapter = recyclerView.adapter as? SingleItemAdapter
         if (adapter == null) {
-            adapter = SingleItemAdapter(emptyList(), R.layout.single_item_grid)
+            adapter = SingleItemAdapter(emptyList(), getItemLayoutId())
             recyclerView.adapter = adapter
         }
         onBindAdapter(viewHolder.context, adapter)

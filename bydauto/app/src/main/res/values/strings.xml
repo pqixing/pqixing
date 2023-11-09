@@ -2,6 +2,7 @@
 <resources>
     <string name="app_main_name">工具箱</string>
     <string name="setting_name_permission">权限设置</string>
+    <string name="setting_name_sp">分割线</string>
     <string name="setting_name_charge">无线充电</string>
     <string name="setting_name_music">音乐助手</string>
     <string name="setting_name_radar">倒车雷达</string>

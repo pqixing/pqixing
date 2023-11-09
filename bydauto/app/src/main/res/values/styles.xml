@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppMainTheme" parent="android:Theme.Material.Dialog">
+    <style name="AppMainTheme" parent="android:Theme.Material.Dialog.NoActionBar">
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">@drawable/bg_main_ui</item>
