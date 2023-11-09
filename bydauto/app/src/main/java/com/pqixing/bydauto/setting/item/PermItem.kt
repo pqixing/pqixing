@@ -10,6 +10,7 @@ import android.provider.Settings
 import com.cgutman.androidremotedebugger.AdbUtils
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.service.NTService
 import com.pqixing.bydauto.setting.GridSetting
 import com.pqixing.bydauto.ui.MainUI
 import com.pqixing.bydauto.ui.SingleItem
@@ -56,15 +57,15 @@ class PermItem : GridSetting(R.string.setting_name_permission) {
     private fun grantAll(context: Context, adapter: SingleItemAdapter) {
         App.uiScope.launch {
             val adb = AdbManager.getClient()
-            if (adb.runSync("getprop ro.build.id").isFailure) {
+            if (adb.connection() == null) {
                 "adb权限异常".toast()
                 return@launch
             }
-            "开始执行权限".toast()
-            adb.runSync(gs(Manifest.permission.SYSTEM_ALERT_WINDOW))
-            adb.runSync(gs(Manifest.permission.READ_LOGS))
-            adb.runSync(gs(Manifest.permission.WRITE_SECURE_SETTINGS))
-            adb.runSync(gs(Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE))
+            adb.queueCommand(gs(Manifest.permission.READ_LOGS))
+            adb.queueCommand("cmd notification allow_listener ${context.packageName}/${NTService::class.java.canonicalName}")
+            adb.queueCommand(gs(Manifest.permission.WRITE_SECURE_SETTINGS))
+            adb.queueCommand(gs(Manifest.permission.SYSTEM_ALERT_WINDOW))
+            adb.queueCommand(gs(Manifest.permission.HIDE_OVERLAY_WINDOWS))
 
             "执行完成，即将重启".toast()
             delay(500)

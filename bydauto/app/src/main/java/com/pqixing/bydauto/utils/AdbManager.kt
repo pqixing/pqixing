@@ -54,13 +54,19 @@ class AdbManager private constructor(val host: String = "127.0.0.1", val port: I
         return App.uiScope.async { runSync(cmd) }
     }
 
-    suspend fun runSync(cmd: String): Result<String> {
+    suspend fun runSync(cmd: String) = kotlin.runCatching {
         buffer.clear()
-        val conn = connection() ?: return Result.failure(Exception("not connect"))
+        val conn = connection() ?: throw Exception("not connect")
         conn.queueCommand("$cmd \n".log())
         delay(500)
-        return Result.success(buffer.toString())
+        buffer.toString()
     }
+
+    suspend fun queueCommand(cmd: String) = kotlin.runCatching {
+        val conn = connection() ?: throw Exception("not connect")
+        conn.queueCommand("$cmd \n".log())
+    }
+
 
     suspend fun connection(): DeviceConnection? {
         if (conn == null) {
