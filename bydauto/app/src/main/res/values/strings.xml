@@ -4,9 +4,10 @@
     <string name="setting_name_permission">权限设置</string>
     <string name="setting_name_sp">分割线</string>
     <string name="setting_name_charge">无线充电</string>
+    <string name="setting_name_boot">启动执行</string>
     <string name="setting_name_music">音乐助手</string>
     <string name="setting_name_radar">倒车雷达</string>
-    <string name="setting_name_rotate">强制旋转</string>
+    <string name="setting_name_rotate">屏幕旋转</string>
     <string name="close">关闭</string>
     <string name="open">开启</string>
     <string name="none">忽略</string>

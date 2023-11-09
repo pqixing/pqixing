@@ -3,25 +3,23 @@ package com.pqixing.bydauto.utils
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.Perms
 import com.pqixing.bydauto.setting.ISetting
-import com.pqixing.bydauto.setting.item.AdbItem
+import com.pqixing.bydauto.setting.item.BootItem
 import com.pqixing.bydauto.setting.item.FloatBarItem
 import com.pqixing.bydauto.setting.item.HideItem
 import com.pqixing.bydauto.setting.item.MusicItem
 import com.pqixing.bydauto.setting.item.PermItem
 import com.pqixing.bydauto.setting.item.RadarItem
-import com.pqixing.bydauto.setting.item.RotationItem
-import com.pqixing.bydauto.setting.item.WireChargeItem
+import com.pqixing.bydauto.setting.item.ToolItem
 
 object SettingManager {
 
     private val settings = arrayOf<ISetting>(
         PermItem(),
+        ToolItem(),
         FloatBarItem(),
-        WireChargeItem(),
-        RadarItem(),
         MusicItem(),
-        RotationItem(),
-        AdbItem(),
+        RadarItem(),
+        BootItem(),
         HideItem(),
     )
     private var shows: List<ISetting> = emptyList()
@@ -63,7 +61,7 @@ object SettingManager {
     }
 
     fun <T : ISetting> findSetting(clazz: Class<T>): T? {
-        return shows.find { it.javaClass == clazz } as? T
+        return shows.find { it.isShow(app) && it.javaClass == clazz } as? T
     }
 
 }

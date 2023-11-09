@@ -76,6 +76,6 @@ class PermItem : GridSetting(R.string.setting_name_permission) {
     private fun gs(perm: String) = "pm grant ${App.get().packageName} $perm"
 
     override fun isShow(context: Context): Boolean {
-        return true
+        return !SettingManager.prepare || super.isShow(context)
     }
 }

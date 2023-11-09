@@ -8,7 +8,7 @@ android {
 
     namespace 'com.pqixing.bydauto'
     defaultConfig {
-        applicationId "com.pqixing.bydauto2"
+        applicationId "com.pqixing.bydauto"
         versionCode 1
         versionName "1.0.${new SimpleDateFormat("yyMMddHH").format(new Date())}"
     }
