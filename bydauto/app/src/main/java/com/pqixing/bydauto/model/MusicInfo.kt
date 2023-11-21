@@ -8,6 +8,7 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.service.NTService
+import com.pqixing.bydauto.utils.log
 import com.pqixing.bydauto.utils.toast
 
 class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
@@ -21,11 +22,14 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
     private var callback = object : MediaController.Callback() {
         override fun onPlaybackStateChanged(state: PlaybackState?) {
             super.onPlaybackStateChanged(state)
+            "onPlaybackStateChanged --- $state".log()
+
             updateInfo()
         }
 
         override fun onMetadataChanged(metadata: MediaMetadata?) {
             super.onMetadataChanged(metadata)
+            "onMetadataChanged --- $metadata".log()
             updateInfo()
         }
     }
@@ -43,6 +47,7 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
             song.setValue(metadata.getString(MediaMetadata.METADATA_KEY_TITLE))
             singer.setValue(metadata.getString(MediaMetadata.METADATA_KEY_ARTIST))
         }
+        "update: ${pkg.getValue()},${play.getValue()},${song.getValue()},${singer.getValue()}".log()
     }
 
 //    fun onMetadataChanged(metadata: MediaMetadata?) {
@@ -67,7 +72,7 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
     fun onCreate(context: Context) = kotlin.runCatching {
         val service = context.getSystemService(MediaSessionManager::class.java)
         val comn = ComponentName(context, NTService::class.java)
-        service.addOnActiveSessionsChangedListener(this, comn)
+        service.addOnActiveSessionsChangedListener(this, comn,App.mHandle)
         onActiveSessionsChanged(service.getActiveSessions(comn))
 
         pkg.observe { Const.SP_MUSIC_PKG = it }
@@ -76,7 +81,7 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
         it.message?.toast()
     }
 
-    fun onDestroy(context: Context) = kotlin.runCatching{
+    fun onDestroy(context: Context) = kotlin.runCatching {
         val service = context.getSystemService(MediaSessionManager::class.java)
         service.removeOnActiveSessionsChangedListener(this)
     }.onFailure {
@@ -85,8 +90,10 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+        "onActiveSessionsChanged ${controllers?.joinToString { it.packageName }}".log()
         this.controllers.forEach { it.unregisterCallback(callback) }
         this.controllers = controllers ?: return
+        this.controllers.forEach { it.registerCallback(callback) }
         updateInfo()
     }
 

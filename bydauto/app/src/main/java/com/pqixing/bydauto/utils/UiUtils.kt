@@ -22,9 +22,7 @@ import androidx.core.content.FileProvider
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.Const
-import com.pqixing.bydauto.service.ActionCASExe
 import com.pqixing.bydauto.service.CAService
-import com.pqixing.bydauto.service.LaunchCASExe
 import com.pqixing.bydauto.ui.EmptyUI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,6 +51,14 @@ object UiUtils {
                 floatViews[tag] = newView
             }
         }.onFailure { it.message?.toast() }
+    }
+
+    fun pullStatusBar() {
+        App.uiScope.launch {
+            "正在打开状态栏".toast()
+            AdbManager.getClient().queueCommand("input swipe 100 -10 100 300")
+            AdbManager.getClient().queueCommand("input swipe 100 0 100 300")
+        }
     }
 
 
@@ -319,45 +325,13 @@ object UiUtils {
         val mapVis = UiManager.isResume(map)
         val musicVis = UiManager.isResume(music)
 
-        val split = UiManager.inSplitMode
         when {
             musicVis && mapVis -> sendDiCmd("左右互换")
-            split && musicVis -> App.uiScope.launch {
-                tryLaunch(context, map)
-                delay(2000L)
-                if (!UiManager.isResume(music)) {
-                    sendDiCmd("左右互换")
-                    delay(1500)
-                    tryLaunch(context, music)
-                }
-            }
-
-            split && mapVis -> App.uiScope.launch {
+            else -> App.uiScope.launch {
+                sendDiCmd("左侧打开地图")
+                delay(if (mapVis) 2000 else 4000)
                 tryLaunch(context, music)
-                delay(2000L)
-                if (!UiManager.isResume(map)) {
-                    sendDiCmd("左右互换")
-                    delay(1500)
-                    tryLaunch(context, map)
-                }
             }
-
-            !split && musicVis -> CAService.performs(
-                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 0L,
-                LaunchCASExe(map) to 1000L,
-            )
-
-            !split && mapVis -> CAService.performs(
-                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 0L,
-                LaunchCASExe(music) to 1000L,
-            )
-
-            else -> CAService.performs(
-                ActionCASExe(AccessibilityService.GLOBAL_ACTION_HOME) to 0L,
-                LaunchCASExe(map) to 1000L,
-                ActionCASExe(AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN) to 1000L,
-                LaunchCASExe(music) to 1000L,
-            )
         }
     }
 

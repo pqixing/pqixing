@@ -166,3 +166,18 @@
 
 
 2023-07-25 13:42:32.413  1203-2530  ActivityTaskManager     system_server                        I  START u0 {act=android.intent.action.MAIN flg=0x10200000 cmp=com.byd.carsettings/.MainActivity} from uid 1000
+
+--------- beginning of main
+--------- beginning of system
+2023-11-10 13:52:13.861 kuwolog                 pid-17459                            D  null[Line: 104] kuwolog BYDAutoInstrumentDevice sendMusicState:STOP
+2023-11-10 13:52:13.927 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:52:13.965 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:52:13.979 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:52:13.982 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:52:14.035 kuwolog                 pid-17459                            D  null[Line: 41] kuwolog BYDAutoInstrumentDevice sendMusicState:PLAYING
+2023-11-10 13:52:15.434 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:52:15.434 kuwolog                 pid-17459                            D  null[Line: 74] kuwolog BYDAutoInstrumentDevice sendMusicState:PAUSE
+2023-11-10 13:52:24.372 kuwolog                 pid-17459                            D  null[Line: 104] kuwolog BYDAutoInstrumentDevice sendMusicState:STOP
+
+
+

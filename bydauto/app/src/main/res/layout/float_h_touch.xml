@@ -1,90 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:gravity="center_vertical|start"
+    android:minWidth="5dp"
+    android:minHeight="100dp"
+    android:background="@drawable/bg_item_rect_white"
     android:orientation="horizontal">
 
-    <View
-        android:id="@+id/v_min_bar"
-        android:layout_width="5dp"
-        android:layout_height="180dp"
-        android:background="@drawable/bg_item_press" />
-
-    <LinearLayout
-        android:id="@+id/ll_min_menu"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_menu_min"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|start"
         android:background="@drawable/bg_item_min_menu"
         android:orientation="vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_menu_back"
-            android:tint="@android:color/white" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ccc" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="3dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_menu_home"
-            android:tint="@color/tint_simple_icon" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ccc" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_menu_app"
-            android:tint="@color/tint_simple_icon" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ccc" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_menu_split"
-            android:tint="@color/tint_simple_icon" />
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_max_menu"
-        android:layout_width="60dp"
-        android:layout_height="600dp"
-        android:background="@drawable/bg_item_max_menu"
-        android:orientation="vertical"
+        android:id="@+id/rcv_menu_max"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_item_min_menu"
+        android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_max_card"
-        android:layout_width="400dp"
-        android:layout_height="600dp"
-        android:layout_marginStart="15dp"
-        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/bg_item_min_menu"
+        android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-</LinearLayout>
+</FrameLayout>

@@ -1,0 +1,4 @@
+2023-11-10 13:45:19.189 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoInstrumentDevice sendMusicName: 满天星辰不及你
+2023-11-10 13:45:19.191 kuwolog                 pid-17459                            D  null[Line: 33] kuwolog BYDAutoAudioDevice sendSingerName: 流浪痞子
+2023-11-10 13:45:19.191 kuwolog                 pid-17459                            D  null[Line: 51] kuwolog BYDAutoAudioDevice sendSingerName fail
+2023-11-10 13:45:19.203 kuwolog                 pid-17459                            D  null[Line: 41] kuwolog BYDAutoInstrumentDevice sendMusicState:PLAYING

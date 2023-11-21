@@ -41,15 +41,15 @@ class SingleItemAdapter(var items: List<SingleItem>, val resId: Int) :
             item.onUpdate?.invoke(item)
         }
         if (item.icon != 0) {
-            holder.icon.setImageResource(item.icon)
+            holder.icon?.setImageResource(item.icon)
         }
         if (item.drawable != null) {
-            holder.icon.setImageDrawable(item.drawable)
+            holder.icon?.setImageDrawable(item.drawable)
         }
-        holder.name.text = item.name
+        holder.name?.text = item.name
         holder.itemView.isSelected = item.select
-        holder.icon.isSelected = item.select
-        holder.name.isSelected = item.select
+        holder.icon?.isSelected = item.select
+        holder.name?.isSelected = item.select
         holder.itemView.setOnClickListener {
             kotlin.runCatching {
                 item.click?.onClick(it)
@@ -65,8 +65,8 @@ class SingleItemAdapter(var items: List<SingleItem>, val resId: Int) :
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon = itemView.findViewById<ImageView>(R.id.iv_icon)
-        val name = itemView.findViewById<TextView>(R.id.tv_name)
+        val icon:ImageView? = itemView.findViewById(R.id.iv_icon)
+        val name:TextView? = itemView.findViewById(R.id.tv_name)
     }
 
 }

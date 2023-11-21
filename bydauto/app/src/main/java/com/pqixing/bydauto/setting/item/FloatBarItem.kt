@@ -17,7 +17,7 @@ class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
-//        UiUtils.showOrUpdate(FLOAT_TAG_BAR_LEFT) { HTouchView(context.applicationContext) }
+        UiUtils.showOrUpdate(FLOAT_TAG_BAR_LEFT) { HTouchView(context.applicationContext) }
 //        UiUtils.showOrUpdate(FLOAT_TAG_BAR_RIGHT) { HTouchView(context.applicationContext, View.LAYOUT_DIRECTION_RTL) }
     }
 
