@@ -12,10 +12,10 @@ import com.pqixing.bydauto.utils.log
 import com.pqixing.bydauto.utils.toast
 
 class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
-    var pkg = Properties("")
-    var play = Properties(false)
-    var song = Properties("")
-    var singer = Properties("")
+    var pkg = Properties(""){""}
+    var play = Properties(false){false}
+    var song = Properties(""){""}
+    var singer = Properties(""){""}
 
     private var controllers: List<MediaController> = listOf()
 

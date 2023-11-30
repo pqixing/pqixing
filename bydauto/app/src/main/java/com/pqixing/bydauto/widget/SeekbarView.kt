@@ -132,5 +132,17 @@ interface ISeekBarView {
      */
     fun onStopTrackingTouch(seekBar: SeekbarView, progress: Int)
 }
+class SimpleImpl(val onStopTrack: (seekBar: SeekbarView, progress: Int) -> Unit) :ISeekBarView{
+    override fun onProgressChanged(seekBar: SeekbarView, progress: Int, fromUser: Boolean) {
 
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekbarView) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekbarView, progress: Int) {
+        onStopTrack.invoke(seekBar,progress)
+    }
+
+}
 

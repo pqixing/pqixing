@@ -3,14 +3,8 @@ package com.pqixing.bydauto.model
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.utils.toast
 import java.lang.ref.WeakReference
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
-open class BaseSuper<V> {
-    val type: Type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
-}
-
-class Properties<V>(default: V, fetch: () -> V = { default }) : BaseSuper<V>() {
+class Properties<V>(default: V, fetch: () -> V) {
 
 
     val fetchValue: () -> V =

@@ -13,8 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
+import com.pqixing.bydauto.model.CarInfo
 import com.pqixing.bydauto.model.Const
+import com.pqixing.bydauto.model.MusicInfo
 import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.BYDAutoUtils
@@ -22,6 +25,8 @@ import com.pqixing.bydauto.utils.BYDUtils
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.utils.dp
 import com.pqixing.bydauto.utils.toast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class FloatMenuView : FrameLayout, ITouch {
 
@@ -39,14 +44,29 @@ class FloatMenuView : FrameLayout, ITouch {
     ) {
     }
 
+    val content = View.inflate(context, R.layout.float_menu, this).findViewById<View>(R.id.content)
+    private val wms by lazy { context.getSystemService(WindowManager::class.java) }
+    private val inMini: Boolean
+        get() = height <= 15.dp
+    private val miniHeight = 60.dp
+    private val touchHelper = TouchHelper(this)
+    private val seekBar = findViewById<SeekbarView>(R.id.rl_slide)
+
+    private val heightPixels = context.resources.displayMetrics.heightPixels
+    private val carInfo: CarInfo
+        get() = MainService.carInfo
+    private val musicInfo: MusicInfo
+        get() = MainService.musicInfo
+
     init {
         setBackgroundResource(R.drawable.bg_float_menu_default)
-        View.inflate(context, R.layout.float_menu, this)
         addView(View(context), LayoutParams(300.dp, 10.dp))
+        seekBar.setAutoClose { seekBar.visibility = GONE }
         initMenuView()
     }
 
     private fun initMenuView() {
+
         MenuItemTouch(findViewById(R.id.sv_home)).setClick {
             CAService.perform(AccessibilityService.GLOBAL_ACTION_HOME)
         }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_back) {
@@ -57,51 +77,115 @@ class FloatMenuView : FrameLayout, ITouch {
 
         MenuItemTouch(findViewById(R.id.sv_apps)).setClick {
 
-        }.setGravityClick(Gravity.LEFT, android.R.drawable.ic_menu_close_clear_cancel) {
-
+        }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_arrow_left) {
+            BYDUtils.sendDiCmd("返回上个应用")
         }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_fast) {
             UiUtils.fastLauch(context)
         }
 
 
-        MenuItemTouch(findViewById(R.id.sv_soc)).setClick {
-            val mode: Boolean = MainService.carInfo.soc_mode.getValue()
-            MainService.carInfo.soc_mode.setValue(!mode)
-        }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_back) {
-        }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_split) {
+        MenuItemTouch(findViewById(R.id.sv_air)).setClick {
+            carInfo.ac_open.setValue(!it.isSelected)
+        }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_wind) {
+            startWinTrack()
+        }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_temp) {
+            startTempTrack()
+        }.also { item ->
+            val updateTxt = {
+                val sb = StringBuilder()
+                if (carInfo.ac_control_model.getValue()) {
+                    sb.append("A")
+                }
+                sb.append(carInfo.ac_wind.getValue())
+                sb.append("-")
+                sb.append(carInfo.ac_temp_main.getValue())
+                item.singleView.name?.text = sb.toString()
+            }
+            carInfo.ac_open.observe { item.singleView.isSelected = it }
+            carInfo.ac_control_model.observe { updateTxt() }
+            carInfo.ac_wind.observe { updateTxt() }
+            carInfo.ac_temp_main.observe { updateTxt() }
         }
+
+        MenuItemTouch(findViewById(R.id.sv_soc)).setClick {
+            carInfo.soc_mode.setValue(!it.isSelected)
+        }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_soc_save) {
+            startSocTrack()
+        }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_soc_save) {
+            startSocTrack()
+        }.also { item ->
+            carInfo.soc_mode.observe { item.singleView.isSelected = it }
+            carInfo.soc_target.observe { item.singleView.name?.text = it.toString() }
+        }
+
 
         MenuItemTouch(findViewById(R.id.sv_music)).setClick {
             if (BYDAutoUtils.getCurrentAudioFocusPackage().isEmpty()) {
                 BYDUtils.sendDiCmd("播放音乐")
             } else {
-                val audio = context.getSystemService(AudioManager::class.java)
-                val keyCode = if (it.isSelected) KeyEvent.KEYCODE_MEDIA_PAUSE else KeyEvent.KEYCODE_MEDIA_PLAY
-                audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, keyCode))
-                audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, keyCode))
+                postKeyEvent(if (it.isSelected) KeyEvent.KEYCODE_MEDIA_PAUSE else KeyEvent.KEYCODE_MEDIA_PLAY)
             }
         }.setGravityClick(Gravity.LEFT, android.R.drawable.ic_media_previous) {
-            val audio = context.getSystemService(AudioManager::class.java)
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PREVIOUS))
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PREVIOUS))
-
+            postKeyEvent(KeyEvent.KEYCODE_MEDIA_PREVIOUS)
         }.setGravityClick(Gravity.RIGHT, android.R.drawable.ic_media_next) {
-            val audio = context.getSystemService(AudioManager::class.java)
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_NEXT))
-            audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_NEXT))
-        }
+            postKeyEvent(KeyEvent.KEYCODE_MEDIA_NEXT)
+        }.also { item -> musicInfo.play.observe { item.singleView.isSelected = it } }
 
     }
 
-    val content = findViewById<View>(R.id.content)
-    private val wms by lazy { context.getSystemService(WindowManager::class.java) }
-    private val inMini: Boolean
-        get() = height <= 15.dp
-    private val miniHeight = 60.dp
-    private val touchHelper = TouchHelper(this)
-    private val seekBar = findViewById<SeekbarView>(R.id.rl_slide)
+    private fun startTempTrack() {
+        seekBar.visibility = VISIBLE
+        seekBar.setData(
+            carInfo.ac_temp_main.getValue(),
+            (17..33 step 1).toList().toIntArray(),
+            SimpleImpl { v, p ->
+                App.uiScope.launch {
+                    if (carInfo.ac_separate.getValue()) {
+                        carInfo.ac_separate.setValue(false)
+                        delay(1000)
+                    }
+                    carInfo.ac_temp_main.setValue(p)
+                }
+            })
+    }
 
-    private val heightPixels = context.resources.displayMetrics.heightPixels
+    private fun startWinTrack() {
+        seekBar.visibility = VISIBLE
+        seekBar.setData(
+            carInfo.ac_temp_main.getValue(),
+            (0..7 step 1).toList().toIntArray(),
+            SimpleImpl { v, p ->
+                if (p == 0) {
+                    carInfo.ac_control_model.setValue(true)
+                } else {
+                    carInfo.ac_wind.setValue(p)
+                }
+            })
+    }
+
+    private fun postKeyEvent(keyEvent: Int) {
+        val audio = context.getSystemService(AudioManager::class.java)
+        audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, keyEvent))
+        audio.dispatchMediaKeyEvent(KeyEvent(KeyEvent.ACTION_UP, keyEvent))
+    }
+
+    private fun startSocTrack() {
+        var socTarget = MainService.carInfo.soc_target.getValue()
+        val mod = socTarget % 5
+        if (mod != 0) {
+            socTarget -= mod
+            MainService.carInfo.soc_target.setValue(socTarget)
+        }
+        seekBar.visibility = VISIBLE
+        seekBar.setData(
+            socTarget,
+            (25..70 step 5).toList().toIntArray(),
+            SimpleImpl { v, p ->
+                MainService.carInfo.soc_target.setValue(p)
+            })
+    }
+
+
     override fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
         super.requestDisallowInterceptTouchEvent(disallowIntercept)
         touchHelper.requestDisallowInterceptTouchEvent(disallowIntercept)
@@ -181,7 +265,7 @@ class FloatMenuView : FrameLayout, ITouch {
 
     private fun createParams(): WindowManager.LayoutParams {
 
-        val locations = Const.SP_FLOAT_MENU_LOCATION.split(",").map { it.toInt() }
+        val locations = Const.SP_FLOAT_MENU_LOCATION.split(",").map { it.toIntOrNull() }
         return WindowManager.LayoutParams().also {
             it.width = WindowManager.LayoutParams.WRAP_CONTENT
             it.height = WindowManager.LayoutParams.WRAP_CONTENT

@@ -72,10 +72,13 @@ class SingleView : FrameLayout {
 
         a.recycle()
 
-        updateChildSelect()
         isClickable = true
     }
 
+    override fun setSelected(selected: Boolean) {
+        super.setSelected(selected)
+        updateChildSelect()
+    }
     private fun updateChildSelect() {
         children.forEach { it.isSelected = isSelected }
     }

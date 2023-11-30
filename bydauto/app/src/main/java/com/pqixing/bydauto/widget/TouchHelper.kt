@@ -103,7 +103,7 @@ class TouchHelper(val listener: ITouch) : ITouch by listener {
         if (intercept == 0 && ev.action == MotionEvent.ACTION_MOVE) {
             val diffY = (ev.rawY - downEvent.y).absoluteValue
             val diffX = (ev.rawX - downEvent.x).absoluteValue
-            if (diffY >= 2 || diffX >= 2) {
+            if (diffY >= 5 || diffX >= 5) {
                 handle.removeCallbacks(onMoveStart)
                 //仅在边缘点下才需要拦截
                 intercept = if (checkSwipe(ev) == Gravity.NO_GRAVITY) -1 else 1

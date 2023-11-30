@@ -4,7 +4,7 @@ import com.pqixing.bydauto.App
 import com.pqixing.bydauto.model.Perms
 import com.pqixing.bydauto.setting.ISetting
 import com.pqixing.bydauto.setting.item.BootItem
-import com.pqixing.bydauto.setting.item.FloatBarItem
+import com.pqixing.bydauto.setting.item.FloatItem
 import com.pqixing.bydauto.setting.item.HideItem
 import com.pqixing.bydauto.setting.item.MusicItem
 import com.pqixing.bydauto.setting.item.PermItem
@@ -15,8 +15,8 @@ object SettingManager {
 
     private val settings = arrayOf<ISetting>(
         PermItem(),
+        FloatItem(),
         ToolItem(),
-        FloatBarItem(),
         MusicItem(),
         RadarItem(),
         BootItem(),

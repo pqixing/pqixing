@@ -7,7 +7,7 @@ import com.pqixing.bydauto.setting.SettingImpl
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.widget.FloatMenuView
 
-class FloatBarItem : SettingImpl(R.layout.setting_float_bar) {
+class FloatItem : SettingImpl(R.layout.setting_float_bar) {
 
     val FLOAT_TAG_BAR_MENU = "FLOAT_TAG_BAR_MENU"
 

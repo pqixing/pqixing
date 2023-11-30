@@ -18,6 +18,7 @@ class BootItem : SettingImpl(R.layout.setting_boot) {
         const val CHARGE_TYPE_NONE: String = "CHARGE_TYPE_NONE"
         const val CHARGE_TYPE_OPEN: String = "CHARGE_TYPE_OPEN"
         const val CHARGE_TYPE_CLOSE: String = "CHARGE_TYPE_CLOSE"
+        var boot: Boolean = false
     }
 
     val cids = mapOf(
@@ -36,8 +37,11 @@ class BootItem : SettingImpl(R.layout.setting_boot) {
 
     override fun onCreate(context: Context) {
         super.onCreate(context)
-        setChargeState()
-        showRotation(context)
+        if (boot) {
+            setChargeState()
+            showRotation(context)
+            boot = false
+        }
     }
 
     private fun showRotation(context: Context) {
