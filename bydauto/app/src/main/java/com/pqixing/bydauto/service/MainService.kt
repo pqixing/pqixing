@@ -13,8 +13,10 @@ import com.pqixing.bydauto.utils.UiManager
 class MainService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
-    private val carInfo = CarInfo()
-    private val musicInfo = MusicInfo()
+    companion object {
+        val carInfo = CarInfo()
+        val musicInfo = MusicInfo()
+    }
 
     override fun onCreate() {
         super.onCreate()

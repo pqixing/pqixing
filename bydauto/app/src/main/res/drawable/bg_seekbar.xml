@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clipOrientation="horizontal"
+    android:gravity="start">
+    <shape android:shape="rectangle">
+        <corners android:radius="20dp" />
+        <solid android:color="#FD5655" />
+    </shape>
+
+</clip>

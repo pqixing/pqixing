@@ -1,9 +1,20 @@
 package com.pqixing.bydauto.model
 
 import com.pqixing.bydauto.App
+import com.pqixing.bydauto.utils.toast
 import java.lang.ref.WeakReference
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
-class Properties<V>(val fetchValue: () -> V) {
+open class BaseSuper<V> {
+    val type: Type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
+}
+
+class Properties<V>(default: V, fetch: () -> V = { default }) : BaseSuper<V>() {
+
+
+    val fetchValue: () -> V =
+        { kotlin.runCatching { fetch() }.getOrElse { default } }
     private var value: V? = null
 
     private var onSet: ((v: V) -> Unit)? = null
@@ -22,9 +33,9 @@ class Properties<V>(val fetchValue: () -> V) {
 
     fun setValue(value: V) {
         update(value)
-        if (onSet != null && value != fetchValue.invoke()) {
+        if (onSet != null && value != fetchValue.invoke()) kotlin.runCatching {
             onSet?.invoke(value)
-        }
+        }.onFailure { it.message?.toast() }
     }
 
     fun getValue(): V {

@@ -42,4 +42,21 @@
         <item name="android:textColor">@android:color/white</item>
 
     </style>
+
+    <declare-styleable name="SingleView">
+        <attr name="layout" format="reference" />
+        <attr name="icon" format="reference" />
+        <attr name="name" format="reference|string" />
+        <attr name="tip" format="reference|string" />
+
+    </declare-styleable>
+    <!--自定义seekbarstyle-->
+    <style name="CustomSeekbarStyle">
+        <item name="android:maxHeight">10dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:color/holo_orange_light</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:thumb">@drawable/thumb</item>
+    </style>
 </resources>

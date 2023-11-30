@@ -26,7 +26,6 @@ import android.hardware.bydauto.setting.BYDAutoSettingDevice.SEAT_HEATING_OFF
 import android.hardware.bydauto.setting.BYDAutoSettingDevice.SEAT_VENTILATING_LOW
 import android.hardware.bydauto.setting.BYDAutoSettingDevice.SEAT_VENTILATING_OFF
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.BYDAutoUtils
 
 class CarInfo() {
@@ -81,71 +80,71 @@ class CarInfo() {
         }
     }
 
-    var ac_open = Properties { ac.acStartState == AC_POWER_ON }
+    var ac_open = Properties(false) { ac.acStartState == AC_POWER_ON }
         .onSet { if (it) ac.start(AC_CTRL_SOURCE_UI_KEY) else ac.stop(AC_CTRL_SOURCE_UI_KEY) }
 
-    var ac_loop = Properties { ac.acCycleMode == AC_CYCLEMODE_INLOOP }
+    var ac_loop = Properties(false) { ac.acCycleMode == AC_CYCLEMODE_INLOOP }
         .onSet { ac.setAcCycleMode(AC_CTRL_SOURCE_UI_KEY, if (it) AC_CYCLEMODE_OUTLOOP else AC_CYCLEMODE_INLOOP) }
 
-    var ac_control_model = Properties { ac.acControlMode == AC_CTRLMODE_AUTO }
+    var ac_control_model = Properties(false) { ac.acControlMode == AC_CTRLMODE_AUTO }
         .onSet { ac.setAcControlMode(AC_CTRL_SOURCE_UI_KEY, if (it) AC_CTRLMODE_AUTO else AC_CTRLMODE_MANUAL) }
 
 
-    var ac_separate = Properties { ac.acTemperatureControlMode == AC_TEMPCTRL_SEPARATE_ON }
+    var ac_separate = Properties(false) { ac.acTemperatureControlMode == AC_TEMPCTRL_SEPARATE_ON }
         .onSet {
             ac.setAcTemperatureControlMode(
                 AC_CTRL_SOURCE_UI_KEY, if (it) AC_TEMPCTRL_SEPARATE_ON else AC_TEMPCTRL_SEPARATE_OFF
             )
         }
 
-    var ac_wind = Properties { ac.acWindLevel }.onSet { ac.setAcWindLevel(AC_CTRL_SOURCE_UI_KEY, it) }
+    var ac_wind = Properties(0) { ac.acWindLevel }.onSet { ac.setAcWindLevel(AC_CTRL_SOURCE_UI_KEY, it) }
 
-    var ac_temp_main = Properties { ac.getTemprature(AC_TEMPERATURE_MAIN) }.onSet {
+    var ac_temp_main = Properties(0) { ac.getTemprature(AC_TEMPERATURE_MAIN) }.onSet {
         val type = if (ac_separate.getValue()) AC_TEMPERATURE_MAIN else BYDAutoAcDevice.AC_TEMPERATURE_MAIN_DEPUTY
         ac.setAcTemperature(type, it, AC_CTRL_SOURCE_UI_KEY, AC_TEMPERATURE_UNIT_OC)
     }
-    var ac_temp_deputy = Properties { ac.getTemprature(AC_TEMPERATURE_DEPUTY) }.onSet {
+    var ac_temp_deputy = Properties(0) { ac.getTemprature(AC_TEMPERATURE_DEPUTY) }.onSet {
         val type = if (ac_separate.getValue()) AC_TEMPERATURE_DEPUTY else BYDAutoAcDevice.AC_TEMPERATURE_MAIN_DEPUTY
         ac.setAcTemperature(type, it, AC_CTRL_SOURCE_UI_KEY, AC_TEMPERATURE_UNIT_OC)
     }
 
-    var soc_target = Properties { set.socTarget }.onSet { set.socTarget = it }
+    var soc_target = Properties(0) { set.socTarget }.onSet { set.socTarget = it }
 
-    var soc_mode = Properties { charge.socSaveSwitch == 2 }.onSet { charge.socSaveSwitch = if (it) 2 else 1 }
+    var soc_mode = Properties(false) { charge.socSaveSwitch == 2 }.onSet { charge.socSaveSwitch = if (it) 2 else 1 }
 
-    var ac_vent = Properties { ac.acVentilationState == AC_VENTILATION_STATE_ON }.onSet {
+    var ac_vent = Properties(false) { ac.acVentilationState == AC_VENTILATION_STATE_ON }.onSet {
         ac.setAcVentilationState(
             AC_CTRL_SOURCE_UI_KEY, if (it) AC_VENTILATION_STATE_ON else AC_VENTILATION_STATE_OFF
         )
     }
 
 
-    var ac_vent_main = Properties { set.getSeatVentilatingState(DRIVER_SEAT) != SEAT_VENTILATING_OFF }.onSet {
+    var ac_vent_main = Properties(false) { set.getSeatVentilatingState(DRIVER_SEAT) != SEAT_VENTILATING_OFF }.onSet {
         set.setSeatVentilatingState(
             DRIVER_SEAT, if (it) SEAT_VENTILATING_LOW else SEAT_VENTILATING_OFF
         )
     }
 
 
-    var ac_vent_deputy = Properties { set.getSeatVentilatingState(PASSENGER_SEAT) != SEAT_VENTILATING_OFF }.onSet {
+    var ac_vent_deputy = Properties(false) { set.getSeatVentilatingState(PASSENGER_SEAT) != SEAT_VENTILATING_OFF }.onSet {
         set.setSeatVentilatingState(
             PASSENGER_SEAT, if (it) SEAT_VENTILATING_LOW else SEAT_VENTILATING_OFF
         )
     }
 
-    var ac_heat_main = Properties { set.getSeatHeatingState(DRIVER_SEAT) != SEAT_HEATING_OFF }.onSet {
+    var ac_heat_main = Properties(false) { set.getSeatHeatingState(DRIVER_SEAT) != SEAT_HEATING_OFF }.onSet {
         set.setSeatHeatingState(
             DRIVER_SEAT, if (it) SEAT_HEATING_LOW else SEAT_HEATING_OFF
         )
     }
 
-    var ac_heat_deputy = Properties { set.getSeatHeatingState(PASSENGER_SEAT) != SEAT_HEATING_OFF }.onSet {
+    var ac_heat_deputy = Properties(false) { set.getSeatHeatingState(PASSENGER_SEAT) != SEAT_HEATING_OFF }.onSet {
         set.setSeatHeatingState(
             PASSENGER_SEAT, if (it) SEAT_HEATING_LOW else SEAT_HEATING_OFF
         )
     }
 
-    var wcharge = Properties { charge.wirelessChargingSwitchState == CHARGE_WIRELESS_CHARGING_ON }
+    var wcharge = Properties(false) { charge.wirelessChargingSwitchState == CHARGE_WIRELESS_CHARGING_ON }
         .onSet {
             charge.wirelessChargingSwitchState = if (it) CHARGE_WIRELESS_CHARGING_ON else CHARGE_WIRELESS_CHARGING_OFF
         }

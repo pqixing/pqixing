@@ -1,10 +1,13 @@
 package com.pqixing.bydauto.model
 
 import com.pqixing.bydauto.App
-import com.pqixing.bydauto.utils.spBoolean
 
 object Const {
 
+
+    var SP_FLOAT_MENU_LOCATION: String
+        get() = App.sp.getString("SP_FLOAT_MENU_LOCATION", "")!!
+        set(value) = App.sp.edit().putString("SP_FLOAT_MENU_LOCATION", value).apply()
 
     val URL_DOWNLOAD: String =
         "https://ghproxy.com/https://raw.githubusercontent.com/pqixing/pqixing/main/asessts/apks/byd.apk"

@@ -12,10 +12,10 @@ import com.pqixing.bydauto.utils.log
 import com.pqixing.bydauto.utils.toast
 
 class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
-    var pkg = Properties { "" }
-    var play = Properties { false }
-    var song = Properties { "" }
-    var singer = Properties { "" }
+    var pkg = Properties("")
+    var play = Properties(false)
+    var song = Properties("")
+    var singer = Properties("")
 
     private var controllers: List<MediaController> = listOf()
 
@@ -72,7 +72,7 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
     fun onCreate(context: Context) = kotlin.runCatching {
         val service = context.getSystemService(MediaSessionManager::class.java)
         val comn = ComponentName(context, NTService::class.java)
-        service.addOnActiveSessionsChangedListener(this, comn,App.mHandle)
+        service.addOnActiveSessionsChangedListener(this, comn, App.mHandle)
         onActiveSessionsChanged(service.getActiveSessions(comn))
 
         pkg.observe { Const.SP_MUSIC_PKG = it }

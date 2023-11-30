@@ -40,7 +40,7 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
         hasLog = false
     }
 
-    fun start(): Boolean {
+    fun start(retry: Int = 0): Boolean {
         if (startProTs != -1L) return false
 
         startProTs = System.currentTimeMillis()
@@ -50,7 +50,7 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
                 //监听雷达距离和页面切换启动
                 val cmd = "logcat -T 0 -s ${catTags.joinToString(" ")} *:S"
                 App.mHandle.postDelayed({ Log.i(TAG_START_TEST, "start $cmd $curTs") }, 500)
-                App.mHandle.postDelayed({ checkIfLive() }, 5000)
+                App.mHandle.postDelayed({ checkIfLive(retry) }, 5000)
                 val pro = Runtime.getRuntime().exec(cmd)
                 Log.i(TAG_START_TEST, "start $cmd $curTs")
 //                    Runtime.getRuntime().exec("logcat -T 0")
@@ -81,11 +81,14 @@ class LogcatManager(tags: List<String> = listOf("ActivityTaskManager:I", "BYDAut
         return true
     }
 
-    private fun checkIfLive() {
+    private fun checkIfLive(retry: Int) {
         if (hasLog) return
-        "重启日志管理器".toast()
         stop()
-        start()
+        if (retry >= 3) {
+            "日志管理器启动失败".toast()
+            return
+        }
+        start(retry + 1)
     }
 
     interface LogCatCallBack {

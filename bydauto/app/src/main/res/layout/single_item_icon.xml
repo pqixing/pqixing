@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    android:background="@drawable/bg_single_item_tint"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="2dp">
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:padding="3dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/app_logo"
-        app:tint="@color/tint_simple_icon" />
+        app:tint="@color/tint_simple_icon"
+        tools:src="@drawable/app_logo" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</FrameLayout>
