@@ -50,9 +50,12 @@ object UiManager : LogcatManager.LogCatCallBack {
         apps.remove(context.packageName)
     }
 
-    fun getAppInfo(pkg: Collection<String>? = null): List<AppInfo> {
+    fun getAppInfos(pkg: Collection<String>? = null): List<AppInfo> {
         if (apps.isEmpty()) initApps()
         return pkg?.mapNotNull { apps[it] } ?: apps.values.toList()
+    }
+    fun getAppInfo(pkg: String): AppInfo? {
+        return apps[pkg]
     }
 
     fun addCallBack(callBack: IActivityLife) {

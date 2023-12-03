@@ -48,7 +48,7 @@ class ApplicationView : FrameLayout {
             GridLayoutManager.VERTICAL,
             false
         )
-        val infos = UiManager.getAppInfo().sortedBy { it.system || !it.info.enabled }
+        val infos = UiManager.getAppInfos().sortedBy { it.system || !it.info.enabled }
         apps.adapter = AppAdapter(infos, FLOAT_TAG)
     }
 

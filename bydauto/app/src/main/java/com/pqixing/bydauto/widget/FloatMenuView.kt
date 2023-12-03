@@ -22,6 +22,7 @@ import com.pqixing.bydauto.service.CAService
 import com.pqixing.bydauto.service.MainService
 import com.pqixing.bydauto.utils.BYDAutoUtils
 import com.pqixing.bydauto.utils.BYDUtils
+import com.pqixing.bydauto.utils.UiManager
 import com.pqixing.bydauto.utils.UiUtils
 import com.pqixing.bydauto.utils.dp
 import com.pqixing.bydauto.utils.toast
@@ -78,14 +79,14 @@ class FloatMenuView : FrameLayout, ITouch {
         MenuItemTouch(findViewById(R.id.sv_apps)).setClick {
 
         }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_arrow_left) {
-            BYDUtils.sendDiCmd("返回上个应用")
+            BYDUtils.sendDiCmd("返回上个应用  ")
         }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_fast) {
             UiUtils.fastLauch(context)
         }
 
 
         MenuItemTouch(findViewById(R.id.sv_air)).setClick {
-            carInfo.ac_open.setValue(!it.isSelected)
+            carInfo.ac_open.set(!it.isSelected)
         }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_wind) {
             startWinTrack()
         }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_temp) {
@@ -93,12 +94,12 @@ class FloatMenuView : FrameLayout, ITouch {
         }.also { item ->
             val updateTxt = {
                 val sb = StringBuilder()
-                if (carInfo.ac_control_model.getValue()) {
+                if (carInfo.ac_control_model.get()) {
                     sb.append("A")
                 }
-                sb.append(carInfo.ac_wind.getValue())
+                sb.append(carInfo.ac_wind.get())
                 sb.append("-")
-                sb.append(carInfo.ac_temp_main.getValue())
+                sb.append(carInfo.ac_temp_main.get())
                 item.singleView.name?.text = sb.toString()
             }
             carInfo.ac_open.observe { item.singleView.isSelected = it }
@@ -108,7 +109,7 @@ class FloatMenuView : FrameLayout, ITouch {
         }
 
         MenuItemTouch(findViewById(R.id.sv_soc)).setClick {
-            carInfo.soc_mode.setValue(!it.isSelected)
+            carInfo.soc_mode.set(!carInfo.soc_mode.get())
         }.setGravityClick(Gravity.LEFT, R.drawable.icon_menu_soc_save) {
             startSocTrack()
         }.setGravityClick(Gravity.RIGHT, R.drawable.icon_menu_soc_save) {
@@ -129,22 +130,27 @@ class FloatMenuView : FrameLayout, ITouch {
             postKeyEvent(KeyEvent.KEYCODE_MEDIA_PREVIOUS)
         }.setGravityClick(Gravity.RIGHT, android.R.drawable.ic_media_next) {
             postKeyEvent(KeyEvent.KEYCODE_MEDIA_NEXT)
-        }.also { item -> musicInfo.play.observe { item.singleView.isSelected = it } }
+        }.also { item ->
+            musicInfo.play.observe { item.singleView.icon?.alpha = if (it) 1f else 0.5f }
+            musicInfo.pkg.observe {
+                UiManager.getAppInfo(it)?.icon?.run { item.singleView.icon?.setImageDrawable(this) }
+            }
+        }
 
     }
 
     private fun startTempTrack() {
         seekBar.visibility = VISIBLE
         seekBar.setData(
-            carInfo.ac_temp_main.getValue(),
-            (17..33 step 1).toList().toIntArray(),
+            carInfo.ac_temp_main.get().toString(),
+            (17..33 step 1).map { it.toString() },
             SimpleImpl { v, p ->
                 App.uiScope.launch {
-                    if (carInfo.ac_separate.getValue()) {
-                        carInfo.ac_separate.setValue(false)
+                    if (carInfo.ac_separate.get()) {
+                        carInfo.ac_separate.set(false)
                         delay(1000)
                     }
-                    carInfo.ac_temp_main.setValue(p)
+                    carInfo.ac_temp_main.set(p.toInt())
                 }
             })
     }
@@ -152,13 +158,13 @@ class FloatMenuView : FrameLayout, ITouch {
     private fun startWinTrack() {
         seekBar.visibility = VISIBLE
         seekBar.setData(
-            carInfo.ac_temp_main.getValue(),
-            (0..7 step 1).toList().toIntArray(),
+            carInfo.ac_temp_main.get().toString(),
+            (0..7 step 1).map { it.toString() },
             SimpleImpl { v, p ->
-                if (p == 0) {
-                    carInfo.ac_control_model.setValue(true)
+                if (p == "0") {
+                    carInfo.ac_control_model.set(true)
                 } else {
-                    carInfo.ac_wind.setValue(p)
+                    carInfo.ac_wind.set(p.toInt())
                 }
             })
     }
@@ -170,18 +176,18 @@ class FloatMenuView : FrameLayout, ITouch {
     }
 
     private fun startSocTrack() {
-        var socTarget = MainService.carInfo.soc_target.getValue()
+        var socTarget = MainService.carInfo.soc_target.get()
         val mod = socTarget % 5
         if (mod != 0) {
             socTarget -= mod
-            MainService.carInfo.soc_target.setValue(socTarget)
+            MainService.carInfo.soc_target.set(socTarget)
         }
         seekBar.visibility = VISIBLE
         seekBar.setData(
-            socTarget,
-            (25..70 step 5).toList().toIntArray(),
+            socTarget.toString(),
+            (25..70 step 5).map { it.toString() },
             SimpleImpl { v, p ->
-                MainService.carInfo.soc_target.setValue(p)
+                MainService.carInfo.soc_target.set(p.toInt())
             })
     }
 
@@ -286,6 +292,7 @@ class FloatMenuView : FrameLayout, ITouch {
 
         init {
             singleView.setTouchHelper(TouchHelper(this))
+            singleView.setBackgroundResource(R.drawable.bg_float_item_press)
         }
 
         fun setGravityClick(gravity: Int, resId: Int = 0, click: View.OnClickListener): MenuItemTouch {
@@ -300,6 +307,7 @@ class FloatMenuView : FrameLayout, ITouch {
 
         override fun onReset() {
             super.onReset()
+            singleView.isPressed = false
             singleView.icon?.setImageResource(iconId)
             singleView.name?.visibility = View.VISIBLE
             singleView.tip?.visibility = View.VISIBLE
@@ -310,7 +318,8 @@ class FloatMenuView : FrameLayout, ITouch {
         }
 
         override fun canSwipe(gravity: Int): Boolean {
-            return gravity == Gravity.LEFT || gravity == Gravity.RIGHT
+            singleView.isPressed = true
+            return true
         }
 
         override fun onClick() {

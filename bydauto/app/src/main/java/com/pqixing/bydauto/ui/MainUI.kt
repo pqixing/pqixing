@@ -52,7 +52,7 @@ class MainUI : BaseActivity() {
     private fun backupThird() {
         App.uiScope.launch {
             val client = AdbManager.getClient()
-            val apks = UiManager.getAppInfo().filter { !it.system }
+            val apks = UiManager.getAppInfos().filter { !it.system }
             "开始备份${apks.size}个应用".toast()
             client.runSync("mkdir /sdcard/thirdApks/")
             apks.forEach {

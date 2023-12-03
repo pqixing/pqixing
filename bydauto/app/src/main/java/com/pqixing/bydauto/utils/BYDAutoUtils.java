@@ -23,7 +23,7 @@ public class BYDAutoUtils {
     public static void init(Context context) {
         mContext = context;
         //绕过反射Api限制
-//        setHiddenApiExemptions();
+        setHiddenApiExemptions();
     }
 
     public static BYDAutoRadarDevice getRadar() {

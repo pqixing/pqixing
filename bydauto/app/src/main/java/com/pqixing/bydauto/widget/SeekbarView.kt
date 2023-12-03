@@ -17,9 +17,10 @@ class SeekbarView : LinearLayout {
 
 
     private var clipBg: Drawable
-    private var value: Int = -1
+    private var value: String = ""
     private var listener: ISeekBarView? = null
-    private var values: IntArray = IntArray(0)
+    private var values: Array<String> = emptyArray()
+    private val delayMls = 10000L
 
     constructor(context: Context) : this(context, null)
 
@@ -42,36 +43,36 @@ class SeekbarView : LinearLayout {
         addChildTextView(context, Gravity.START)
         addChildTextView(context, Gravity.CENTER)
         addChildTextView(context, Gravity.END)
-        setData(20, IntRange(0, 100).toList().toIntArray(), null)
+        setData("20", IntRange(0, 100).map { it.toString() }, null)
     }
 
     private var autoClose: Runnable? = null
 
     fun setAutoClose(close: Runnable) {
         this.autoClose = close
-        postDelayed(autoClose, 20000)
+        postDelayed(autoClose, delayMls)
     }
 
-    fun setProgress(value: Int) {
-        setProgress(values.indexOf(value), false)
+    fun setValue(value: String) {
+        setValue(values.indexOf(value), false)
     }
 
-    private fun setProgress(index: Int, fromUser: Boolean) {
-        this.value = values.getOrNull(index) ?: -1
+    private fun setValue(index: Int, fromUser: Boolean) {
+        this.value = values.getOrNull(index) ?: return
         clipBg.level = ((index + 1) * 10000f / values.size).roundToInt()
         listener?.onProgressChanged(this, value, fromUser)
-        (getChildAt(1) as TextView).text = value.toString()
+        (getChildAt(1) as TextView).text = value
     }
 
-    fun setData(default: Int, values: IntArray, listener: ISeekBarView?) {
+    fun setData(default: String, values: Collection<String>, listener: ISeekBarView?) {
         this.listener = null
-        this.values = values
+        this.values = values.toTypedArray()
         (getChildAt(0) as TextView).text = values.first().toString()
         (getChildAt(2) as TextView).text = values.last().toString()
-        setProgress(default)
+        setValue(default)
         this.listener = listener
         removeCallbacks(autoClose)
-        postDelayed(autoClose, 20000)
+        postDelayed(autoClose, delayMls)
     }
 
     private fun addChildTextView(context: Context, gravity: Int) {
@@ -103,7 +104,7 @@ class SeekbarView : LinearLayout {
             MotionEvent.ACTION_UP -> {
                 updateProgress(event)
                 listener?.onStopTrackingTouch(this, value)
-                postDelayed(autoClose, 10000)
+                postDelayed(autoClose, delayMls / 3)
             }
         }
         return true
@@ -111,12 +112,12 @@ class SeekbarView : LinearLayout {
 
     private fun updateProgress(event: MotionEvent) {
         val index = ((event.x / width).coerceAtMost(0.999f).coerceAtLeast(0f) * values.size).toInt()
-        setProgress(index, true)
+        setValue(index, true)
     }
 }
 
 interface ISeekBarView {
-    fun onProgressChanged(seekBar: SeekbarView, progress: Int, fromUser: Boolean)
+    fun onProgressChanged(seekBar: SeekbarView, value: String, fromUser: Boolean)
 
     /**
      * Notification that the user has started a touch gesture. Clients may want to use this
@@ -130,18 +131,19 @@ interface ISeekBarView {
      * to re-enable advancing the seekbar.
      * @param seekBar The SeekBar in which the touch gesture began
      */
-    fun onStopTrackingTouch(seekBar: SeekbarView, progress: Int)
+    fun onStopTrackingTouch(seekBar: SeekbarView, value: String)
 }
-class SimpleImpl(val onStopTrack: (seekBar: SeekbarView, progress: Int) -> Unit) :ISeekBarView{
-    override fun onProgressChanged(seekBar: SeekbarView, progress: Int, fromUser: Boolean) {
+
+class SimpleImpl(val onStopTrack: (seekBar: SeekbarView, value: String) -> Unit) : ISeekBarView {
+    override fun onProgressChanged(seekBar: SeekbarView, value: String, fromUser: Boolean) {
 
     }
 
     override fun onStartTrackingTouch(seekBar: SeekbarView) {
     }
 
-    override fun onStopTrackingTouch(seekBar: SeekbarView, progress: Int) {
-        onStopTrack.invoke(seekBar,progress)
+    override fun onStopTrackingTouch(seekBar: SeekbarView, value: String) {
+        onStopTrack.invoke(seekBar, value)
     }
 
 }

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        app:tint="@android:color/white" />
+        app:tint="@color/tint_simple_icon" />
 
     <TextView
         android:id="@+id/tv_name"

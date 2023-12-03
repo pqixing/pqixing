@@ -37,17 +37,17 @@ class MusicInfo() : MediaSessionManager.OnActiveSessionsChangedListener {
     private var update = Runnable {
         val curPlay = controllers.find { it.playbackState.isPlay() }
         if (curPlay == null) {
-            play.setValue(false)
+            play.set(false)
             return@Runnable
         }
-        play.setValue(true)
-        pkg.setValue(curPlay.packageName)
+        play.set(true)
+        pkg.set(curPlay.packageName)
         val metadata = curPlay.metadata
         if (metadata != null) {
-            song.setValue(metadata.getString(MediaMetadata.METADATA_KEY_TITLE))
-            singer.setValue(metadata.getString(MediaMetadata.METADATA_KEY_ARTIST))
+            song.set(metadata.getString(MediaMetadata.METADATA_KEY_TITLE))
+            singer.set(metadata.getString(MediaMetadata.METADATA_KEY_ARTIST))
         }
-        "update: ${pkg.getValue()},${play.getValue()},${song.getValue()},${singer.getValue()}".log()
+        "update: ${pkg.get()},${play.get()},${song.get()},${singer.get()}".log()
     }
 
 //    fun onMetadataChanged(metadata: MediaMetadata?) {
