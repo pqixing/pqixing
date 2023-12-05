@@ -3,7 +3,6 @@ package com.pqixing.bydauto.model
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.utils.log
 import com.pqixing.bydauto.utils.toast
-import java.lang.ref.WeakReference
 
 class Properties<V>(var value: V, init: () -> V) {
 
@@ -21,12 +20,8 @@ class Properties<V>(var value: V, init: () -> V) {
     fun set(value: V, fromUser: Boolean = true) {
         if (this.value == value) return
         this.value = value
-
-        App.mHandle.post {
-            onChanges.mapNotNull { it.value }.forEach {
-                "$it handle $this set :$value".log()
-                it.invoke(value)
-            }
+        onChanges.mapNotNull { it.value }.forEach {
+            App.mHandle.post { it.invoke(value) }
         }
 
         if (fromUser) kotlin.runCatching { onSet?.invoke(value) }.onFailure { it.message?.toast() }

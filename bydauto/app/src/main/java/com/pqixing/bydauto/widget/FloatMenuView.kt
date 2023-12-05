@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.pqixing.bydauto.App
 import com.pqixing.bydauto.R
 import com.pqixing.bydauto.model.CarInfo
@@ -45,6 +46,7 @@ class FloatMenuView : FrameLayout, ITouch {
     ) {
     }
 
+    private val recyclerView = RecyclerView(context)
     val content = View.inflate(context, R.layout.float_menu, this).findViewById<View>(R.id.content)
     private val wms by lazy { context.getSystemService(WindowManager::class.java) }
     private val inMini: Boolean
@@ -206,6 +208,7 @@ class FloatMenuView : FrameLayout, ITouch {
     }
 
     override fun canMove(): Boolean {
+        isSelected = true
         return true
     }
 
@@ -222,7 +225,6 @@ class FloatMenuView : FrameLayout, ITouch {
     }
 
     override fun onMove(dx: Int, dy: Int, up: Boolean) {
-        isSelected = true
         Log.i("FloatMenuView", "onMove: $dx  $dy $up")
         val p = layoutParams as WindowManager.LayoutParams
         p.x += dx
@@ -313,12 +315,16 @@ class FloatMenuView : FrameLayout, ITouch {
             singleView.tip?.visibility = View.VISIBLE
         }
 
+        override fun onDown() {
+            super.onDown()
+            singleView.isPressed = true
+        }
+
         override fun canMove(): Boolean {
             return false
         }
 
         override fun canSwipe(gravity: Int): Boolean {
-            singleView.isPressed = true
             return true
         }
 

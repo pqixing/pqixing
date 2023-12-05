@@ -19,21 +19,25 @@ class TouchHelper(val listener: ITouch) : ITouch by listener {
     //0 未处理，-1 不拦截， 1 拦截普通事件，2 拦截长按拖动事件
     private var intercept: Int = 0
     private val handle = Handler(Looper.getMainLooper())
-    private val onMoveStart = Runnable { intercept = 2;onMove(0, 0, false) }
+    private val onMoveStart = Runnable {
+        if (canMove()) {
+            intercept = 2;
+            onMove(0, 0, false)
+        }
+    }
 
     fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         ev ?: return false
         Log.i("TouchHelper", "onInterceptTouchEvent: ${ev.action}")
         when (ev.action) {
             MotionEvent.ACTION_DOWN -> {
+                onDown()
                 handle.removeCallbacks(onMoveStart)
                 intercept = 0
                 lastGravity = Gravity.NO_GRAVITY
                 downEvent = PointF(ev.rawX, ev.rawY)
                 lastEvent = PointF(ev.rawX, ev.rawY)
-                if (canMove()) {
-                    handle.postDelayed(onMoveStart, 300)
-                }
+                handle.postDelayed(onMoveStart, 300)
             }
 
             MotionEvent.ACTION_MOVE -> checkIntercept(ev)
@@ -128,5 +132,6 @@ interface ITouch {
     fun onSwipe(gravity: Int, up: Boolean) {}
     fun onClick() {}
     fun onReset() {}
+    fun onDown(){}
 }
 

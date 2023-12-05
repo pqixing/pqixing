@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        app:tint="@android:color/white" />
+        app:tint="@color/tint_simple_icon" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -19,10 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
-        android:textStyle="bold"
         android:singleLine="true"
-        android:text="A  26"
+        android:text="26"
         android:textColor="@android:color/holo_green_light"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
